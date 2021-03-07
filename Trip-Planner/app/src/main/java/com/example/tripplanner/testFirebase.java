@@ -115,7 +115,7 @@ public class testFirebase extends AppCompatActivity implements ValueEventListene
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     if (mAuth.getCurrentUser().isEmailVerified()){
-                        Toast.makeText(testFirebase.this, "Authentication successfully.",
+                        Toast.makeText(testFirebase.this, mAuth.getCurrentUser().getUid(),
                                 Toast.LENGTH_SHORT).show();
                     } else{
                         Toast.makeText(testFirebase.this, "Please verify your email.",
