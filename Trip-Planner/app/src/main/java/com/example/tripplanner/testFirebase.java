@@ -15,6 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class testFirebase extends AppCompatActivity implements ValueEventListener {
 
     private Button btnsubmit;
@@ -39,7 +43,17 @@ public class testFirebase extends AppCompatActivity implements ValueEventListene
             }
         });
 
-
+        // Create a Map to store the data we want to set
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("name", "Los Angeles");
+        docData.put("state", "CA");
+        docData.put("country", "USA");
+        docData.put("regions", Arrays.asList("west_coast", "socal"));
+        // Add a new document (asynchronously) in collection "cities" with id "LA"
+        ApiFuture<WriteResult> future = db.collection("cities").document("LA").set(docData);
+        // ...
+        // future.get() blocks on response
+        System.out.println("Update time : " + future.get().getUpdateTime());
     }
 
 
