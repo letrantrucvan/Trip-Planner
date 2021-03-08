@@ -1,0 +1,4 @@
+com/example/tripplanner/MainActivity.java
+ com.example.tripplanner.MainActivity
+com/example/tripplanner/BuildConfig.java
+ com.example.tripplanner.BuildConfig

@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +62,6 @@ public class testFirebase extends AppCompatActivity implements ValueEventListene
 //        User.addUser(a);
         signUp();
     }
-
     private void authentication(){
         ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
                         // URL you want to redirect back to. The domain (www.example.com) for this

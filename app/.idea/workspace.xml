@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="44a70875-c2d8-4a6c-9bae-f257c871efdb" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1p1drP4KNFY6RWXXoq0vTLCUD4D" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="D:/MyApplication" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="44a70875-c2d8-4a6c-9bae-f257c871efdb" name="Default Changelist" comment="" />
+      <created>1614354728748</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1614354728748</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="422" y="82" key="FileChooserDialogImpl" timestamp="1614354762618">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="422" y="82" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1614354762618" />
+    <state x="313" y="45" key="NewModule_or_Project.wizard" timestamp="1614354768928">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="313" y="45" key="NewModule_or_Project.wizard/0.0.1280.680@0.0.1280.680" timestamp="1614354768928" />
+  </component>
+</project>
