@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripplanner.R;
+import com.example.tripplanner.model.User;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -23,6 +24,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -31,23 +38,28 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail;
     private EditText edtPassword;
     private TextView edtForgot;
+
     private FirebaseAuth mAuth;
+    private DatabaseReference ref;
+    private User user;
+    private DataSnapshot dataSnapshot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnSignup = (Button) findViewById(R.id.btnSignup);
-        edtEmail = (EditText) findViewById(R.id.edtEmail);
-        edtPassword = (EditText) findViewById(R.id.edtPassword);
-        edtForgot = (TextView) findViewById(R.id.edtForgot);
+        btnLogin = (Button) findViewById(R.id.login_btnLogin);
+        btnSignup = (Button) findViewById(R.id.login_btnSignup);
+        edtEmail = (EditText) findViewById(R.id.login_edtEmail);
+        edtPassword = (EditText) findViewById(R.id.login_edtPassword);
+        edtForgot = (TextView) findViewById(R.id.login_edtForgot);
 
         btnSignup.setText(Html.fromHtml("<i>Don't have an account?</i> <font size=\"18sp\"><b>SIGN UP</b></font>"));
         edtForgot.setText(Html.fromHtml("<i><u>Forgot your password?</u></i>"));
 
         mAuth = FirebaseAuth.getInstance();
+        ref = FirebaseDatabase.getInstance().getReference();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
         edtForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                edtForgot.setText("buon ngu qua di ngu");
+                Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -82,15 +95,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     if (mAuth.getCurrentUser().isEmailVerified()){
-                        Toast.makeText(LoginActivity.this, "hello " + mAuth.getCurrentUser().getEmail(),
-                                Toast.LENGTH_SHORT).show();
+                        //LOGIN SUCCESSFULLY
+//                        getUserInformation();
+//                        Intent i = new Intent(LoginActivity.this, UserInfomationActivity.class);
+//                        i.putExtra("currentUser", user);
+//                        startActivity(i);
                     } else{
                         Toast.makeText(LoginActivity.this, "Please verify your email.",
                                 Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "Invalid email or password.",
+                    Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -109,13 +125,28 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         else if (password.length()<6){
-            Toast.makeText(LoginActivity.this, "Password contains at least 6 character.",
+            Toast.makeText(LoginActivity.this, "Password contains at least 6 characters.",
                     Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
     }
 
+    private void getUserInformation(){
+        System.out.println("ho");
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                System.out.println("hoho");
+                user = dataSnapshot.child("User").child(mAuth.getUid()).getValue(User.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        ref.addValueEventListener(postListener);
+    }
 
     public static class OnMapAndViewReadyListener implements ViewTreeObserver.OnGlobalLayoutListener, OnMapReadyCallback {
 
@@ -186,4 +217,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
+
 }

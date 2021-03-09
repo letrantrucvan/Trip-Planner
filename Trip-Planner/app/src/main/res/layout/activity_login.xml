@@ -15,7 +15,7 @@
         android:padding="40dp">
 
         <EditText
-            android:id="@+id/edtEmail"
+            android:id="@+id/login_edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
@@ -26,7 +26,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/edtPassword"
+            android:id="@+id/login_edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_white"
@@ -35,7 +35,7 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/login_btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -47,7 +47,7 @@
             app:backgroundTint="@color/orange" />
 
         <Button
-            android:id="@+id/btnSignup"
+            android:id="@+id/login_btnSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -59,7 +59,7 @@
             app:backgroundTint="@color/orange" />
 
         <TextView
-            android:id="@+id/edtForgot"
+            android:id="@+id/login_edtForgot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
