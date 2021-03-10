@@ -1,4 +1,4 @@
-package com.example.tripplanner.view;
+package com.example.travelplanner.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripplanner.R;
-import com.example.tripplanner.model.User;
+import com.example.travelplanner.R;
+import com.example.travelplanner.model.User;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;

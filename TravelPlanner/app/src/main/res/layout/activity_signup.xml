@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginActivity"
+    tools:context=".controller.LoginActivity"
     android:background="@drawable/login_background">
 
-    
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,58 +15,68 @@
         android:padding="40dp">
 
         <EditText
-            android:id="@+id/login_edtEmail"
+            android:id="@+id/signup_edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
-            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_white"
+            android:ems="10"
+            android:hint="Fullname"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/signup_edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_white"
             android:ems="10"
             android:hint="Email"
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/login_edtPassword"
+            android:id="@+id/signup_edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:background="@drawable/edit_text_white"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
 
+        <EditText
+            android:id="@+id/signup_edtRetype"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edit_text_white"
+            android:ems="10"
+            android:hint="Confirm password"
+            android:inputType="textPassword" />
+
         <Button
-            android:id="@+id/login_btnLogin"
+            android:id="@+id/signup_btnSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:background="@color/orange"
-            android:text="Log In"
+            android:text="Sign Up"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
             app:backgroundTint="@color/orange" />
 
         <Button
-            android:id="@+id/login_btnSignup"
+            android:id="@+id/signup_btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:background="@color/orange"
-            android:text="Don't have an account? SIGN UP"
+            android:text="Allready have an account? LOG IN"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:backgroundTint="@color/orange" />
-
-        <TextView
-            android:id="@+id/login_edtForgot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="Forgot your password?"
-            android:textColor="@color/white"
-            android:textStyle="italic"/>
 
     </LinearLayout>
 
