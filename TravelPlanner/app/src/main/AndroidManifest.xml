@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
-        <activity android:name=".controller.UserInfomationActivity"></activity>
+        <activity android:name=".controller.UserInformationActivity">
+
+        </activity>
         <activity android:name=".controller.ForgotPasswordActivity" />
         <activity android:name=".controller.SignupActivity" />
         <activity android:name=".controller.LoginActivity">

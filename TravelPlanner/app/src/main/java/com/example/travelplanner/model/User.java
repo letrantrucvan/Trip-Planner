@@ -27,7 +27,7 @@ public class User implements Serializable {
     public User (String email, String name){
         this.email = email;
         this.fullname = name;
-        this.link_ava_user = "";
+        this.link_ava_user = "Avatar/avatar.png";
         this.active = true;
     }
     public User (String fullname, String email, String link_ava_user, boolean active){
@@ -38,7 +38,16 @@ public class User implements Serializable {
     }
     public String getFullname() { return fullname; }
     public String getEmail() { return email; }
+    public String getLink_ava_user() { return link_ava_user; }
     public Boolean getActive() { return active; }
+
+    public void setLink_ava_user(String link_ava_user) {
+        this.link_ava_user = link_ava_user;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 
     public static void addUser(String userID, User user){
         modelUser.child("User").child(userID).setValue(user);
