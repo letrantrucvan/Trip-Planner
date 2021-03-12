@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="#000000"
+    tools:context=".SearchResult">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="Đà Lạt"
+        android:textColor="#ffffff"
+        android:textSize="22sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="360dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingLeft="20dp"
+            android:paddingBottom="10dp"
+            android:hint="Search for inspirations..."
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+
+
+        <ImageButton
+            android:id="@+id/search_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_baseline_search" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_item"
+        android:layout_width="match_parent"
+        android:layout_height="572dp" />
+    
+
+</LinearLayout>
