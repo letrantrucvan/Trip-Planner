@@ -1,4 +1,4 @@
-package com.example.tripplanner.view;
+package com.example.tripplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,6 @@ public class DiscoverActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_discover);
+        setContentView(R.layout.activity_login);
     }
 }

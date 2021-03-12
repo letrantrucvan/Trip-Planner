@@ -9,24 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
-        <activity android:name=".controller.UserInformationActivity">
-
-        </activity>
-        <activity android:name=".controller.ForgotPasswordActivity" />
-        <activity android:name=".controller.SignupActivity" />
-        <activity android:name=".controller.LoginActivity">
+        <activity android:name=".controller.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".controller.UserInformationActivity"></activity>
+        <activity android:name=".controller.ForgotPasswordActivity" />
+        <activity android:name=".controller.SignupActivity" />
+        <activity android:name=".controller.LoginActivity">
 
+        </activity>
         <activity android:name=".controller.MainActivity" />
 
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="@string/map_api_key" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_api_key" />
     </application>
 
 </manifest>
