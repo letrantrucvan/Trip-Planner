@@ -133,8 +133,7 @@ public class UserInformationActivity extends AppCompatActivity {
                 });
 
                 //saveInfo vo database user
-                User userUpdate = new User(edtName.getText().toString(), edtEmail.getText().toString(), "Avatar/" + mAuth.getUid(), true);
-                User.editInfo(mAuth.getUid(), userUpdate);
+                User.editInfo(mAuth.getUid(), edtName.getText().toString());
             }
         });
     }

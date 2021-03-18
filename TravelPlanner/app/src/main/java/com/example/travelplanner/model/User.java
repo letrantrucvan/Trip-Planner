@@ -13,8 +13,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class User implements Serializable {
     public String fullname;
@@ -22,7 +26,9 @@ public class User implements Serializable {
     public String link_ava_user;
     public Boolean active;
 
-    static DatabaseReference modelUser = FirebaseDatabase.getInstance().getReference();
+    //static DatabaseReference modelUser = FirebaseDatabase.getInstance().getReference();
+    static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public User(){};
     public User (String email, String name){
         this.email = email;
@@ -50,7 +56,7 @@ public class User implements Serializable {
     }
 
     public static void addUser(String userID, User user){
-        modelUser.child("User").child(userID).setValue(user);
+        db.collection("User").document(userID).set(user);
     }
     public static void changePassword(String newPassword){ //password phai co it nhat 6 ky tu
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -64,7 +70,8 @@ public class User implements Serializable {
                     }
                 });
     }
-    public static void editInfo(String userID, User user){
-        modelUser.child("User").child(userID).setValue(user);
+    public static void editInfo(String userID, String newname){
+        db.collection("User").document(userID).update("fullname", newname);
+        db.collection("User").document(userID).update("link_ava_user", "Avatar/" + userID);
     }
 }

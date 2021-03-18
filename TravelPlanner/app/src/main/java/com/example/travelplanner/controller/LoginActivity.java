@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (mAuth.getCurrentUser().isEmailVerified()){
                         //LOGIN SUCCESSFULLY
                         //chuyen qua man hinh khac
-                        Intent i = new Intent(LoginActivity.this, UserInformationActivity.class);
+                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(i);
                     } else{
                         Toast.makeText(LoginActivity.this, "Please verify your email.",

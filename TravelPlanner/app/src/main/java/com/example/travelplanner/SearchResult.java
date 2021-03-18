@@ -80,6 +80,7 @@ public class SearchResult extends AppCompatActivity {
     private void firestoreUserSearch(String text) {
         //Query query =  db.collection("Tour");
         Query searchQuery  = db.collection("Tour").orderBy("name").startAt(text).endAt(text+ '\uf8ff');
+
         //Bind data
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)

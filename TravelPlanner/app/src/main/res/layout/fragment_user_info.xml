@@ -32,7 +32,7 @@
                     android:id="@+id/userinformation_imgvAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/testavatar"
+                    android:src="@drawable/test_avatar"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"/>
             </androidx.cardview.widget.CardView>
@@ -51,7 +51,7 @@
                 android:padding="10dp"
                 android:textStyle="bold"
                 android:textSize="22dp"
-                android:text="Nguyễn Hoàng Minh" />
+                android:text="" />
 
             <TextView
                 android:id="@+id/userinformation_edtEditInfo"
@@ -99,7 +99,7 @@
                 android:layout_marginTop="10dp"
                 android:textStyle="bold|italic"
                 android:textSize="16dp"
-                android:text="minh.nguyen28122000@gmail.com"
+                android:text=""
                 android:drawableRight="@drawable/ic_baseline_lock"/>
 
             <androidx.appcompat.widget.AppCompatButton
