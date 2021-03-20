@@ -68,6 +68,18 @@
             android:text="Forgot your password?"
             android:textColor="@color/white"
             android:textStyle="italic"/>
+        <Button
+            android:id="@+id/login_btnGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_round"
+            android:text="LOG IN WITH GOOGLE"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:backgroundTint="@color/white"
+            android:drawableLeft="@drawable/ic_logo_google"/>
 
     </LinearLayout>
 

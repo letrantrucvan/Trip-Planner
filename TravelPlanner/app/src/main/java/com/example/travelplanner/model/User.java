@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User implements Serializable {
-    public String fullname;
-    public String email;
-    public String link_ava_user;
-    public Boolean active;
+    private String fullname;
+    private String email;
+    private String link_ava_user;
+    private Boolean active;
 
     //static DatabaseReference modelUser = FirebaseDatabase.getInstance().getReference();
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -42,18 +42,33 @@ public class User implements Serializable {
         this.link_ava_user = link_ava_user;
         this.active = active;
     }
-    public String getFullname() { return fullname; }
-    public String getEmail() { return email; }
-    public String getLink_ava_user() { return link_ava_user; }
-    public Boolean getActive() { return active; }
 
-    public void setLink_ava_user(String link_ava_user) {
-        this.link_ava_user = link_ava_user;
+    //set get
+    public String getFullname() {
+        return fullname;
     }
-
     public void setFullname(String fullname) {
         this.fullname = fullname;
     }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getLink_ava_user() {
+        return link_ava_user;
+    }
+    public void setLink_ava_user(String link_ava_user) {
+        this.link_ava_user = link_ava_user;
+    }
+    public Boolean getActive() {
+        return active;
+    }
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+    //set get
 
     public static void addUser(String userID, User user){
         db.collection("User").document(userID).set(user);

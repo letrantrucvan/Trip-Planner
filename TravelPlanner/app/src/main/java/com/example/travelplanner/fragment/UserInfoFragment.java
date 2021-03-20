@@ -19,20 +19,15 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.LoginActivity;
-import com.example.travelplanner.controller.UserInformationActivity;
 import com.example.travelplanner.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -125,12 +120,13 @@ public class UserInfoFragment extends Fragment {
 
         if(mAuth.getCurrentUser() == null){
             Intent i = new Intent(getActivity(), LoginActivity.class);
-            getActivity().onBackPressed();
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
+        } else {
+            //Get User Information
+            getUserInformation();
         }
 
-        //Get User Information
-        getUserInformation();
 
         btnSignout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +215,7 @@ public class UserInfoFragment extends Fragment {
                     edtEmail.setText(user.getEmail());
 
                     //get avatar
-                    StorageReference islandRef = storage.getReference().child(user.link_ava_user);
+                    StorageReference islandRef = storage.getReference().child(user.getLink_ava_user());
 
                     final long ONE_MEGABYTE = 1024 * 1024;
                     islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

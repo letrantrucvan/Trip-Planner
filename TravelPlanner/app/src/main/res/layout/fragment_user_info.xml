@@ -68,10 +68,11 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/userinformation_btnSaveInfo"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:background="@drawable/userinformation_btnsaveinfo"
+                android:background="@drawable/bg_round"
+                app:backgroundTint="@color/orange"
                 android:textColor="@color/black"
                 android:layout_marginTop="20dp"
                 android:textStyle="bold"
@@ -106,7 +107,7 @@
                 android:id="@+id/userinformation_btnSignout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/userinformation_btnsignout"
+                android:background="@color/notSoDark"
                 android:textColor="@color/danger"
                 android:layout_marginTop="50dp"
                 android:textStyle="bold"
