@@ -27,7 +27,6 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
             mView = itemView;
         }
 
-
         public void setDetail(String cover_link, String name_tour,String des_tour){
             ImageView cover = (ImageView) mView.findViewById(R.id.cover);
             TextView name  = (TextView) mView.findViewById(R.id.name);
@@ -49,7 +48,7 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Handle any errors
-                    System.out.println("Fail");
+                    System.out.println(exception.getMessage());
                 }
             });
 

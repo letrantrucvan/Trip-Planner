@@ -2,13 +2,31 @@ package com.example.travelplanner.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.RelativeLayout;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.controller.ToursViewHolder;
+import com.example.travelplanner.model.Tour;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +43,9 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView mytour;
+    private FirestoreRecyclerAdapter adapter;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,6 +82,86 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mytour = (RecyclerView) v.findViewById(R.id.my_tour);
+        mytour.setHasFixedSize(true);
+        mytour.setLayoutManager(layoutManager);
+
+        LinearSnapHelper snapHelper = new LinearSnapHelper() {
+            @Override
+            public int findTargetSnapPosition(RecyclerView.LayoutManager lm, int velocityX, int velocityY) {
+                View centerView = findSnapView(lm);
+                if (centerView == null)
+                    return RecyclerView.NO_POSITION;
+
+                int position = lm.getPosition(centerView);
+                int targetPosition = -1;
+                if (lm.canScrollHorizontally()) {
+                    if (velocityX < 0) {
+                        targetPosition = position - 1;
+                    } else {
+                        targetPosition = position + 1;
+                    }
+                }
+
+                if (lm.canScrollVertically()) {
+                    if (velocityY < 0) {
+                        targetPosition = position - 1;
+                    } else {
+                        targetPosition = position + 1;
+                    }
+                }
+
+                final int firstItem = 0;
+                final int lastItem = lm.getItemCount() - 1;
+                targetPosition = Math.min(lastItem, Math.max(targetPosition, firstItem));
+                return targetPosition;
+            }
+        };
+        snapHelper.attachToRecyclerView(mytour);
+
+        Query searchQuery  = db.collection("Tour");
+
+        //Bind data
+        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                .setQuery(searchQuery, Tour.class)
+                .build();
+
+        adapter = new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
+            @Override
+            public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
+                holder.setDetail(model.getCover(), model.getName(), model.getDes());
+            }
+
+            @Override
+            public ToursViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                View mView = LayoutInflater.from(group.getContext())
+                        .inflate(R.layout.list_my_tour, group, false);
+                return new ToursViewHolder(mView);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.e("error", e.getMessage());
+            }
+        };
+        adapter.notifyDataSetChanged();
+        adapter.startListening();
+        mytour.setAdapter(adapter);
+
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        //adapter.stopListening();
     }
 }

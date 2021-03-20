@@ -28,7 +28,6 @@ public class HomeActivity extends AppCompatActivity {
         BottomNavigationView bt_nav = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         bt_nav.setOnNavigationItemSelectedListener(navListener);
 
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

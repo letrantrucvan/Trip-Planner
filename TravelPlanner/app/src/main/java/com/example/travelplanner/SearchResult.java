@@ -53,7 +53,7 @@ public class SearchResult extends AppCompatActivity {
         mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
 
-
+        firestoreUserSearch("");
 //        firebaseUserSearch();
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override

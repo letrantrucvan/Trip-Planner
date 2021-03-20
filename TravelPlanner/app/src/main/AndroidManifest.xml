@@ -10,19 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
         <activity android:name=".controller.HomeActivity">
-
-        </activity>
-        <activity android:name=".controller.UserInformationActivity"></activity>
-        <activity android:name=".controller.ForgotPasswordActivity" />
-        <activity android:name=".controller.SignupActivity" />
-        <activity android:name=".controller.LoginActivity"></activity>
-        <activity android:name=".controller.MainActivity" />
-        <activity android:name=".SearchResult">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".controller.UserInformationActivity"></activity>
+        <activity android:name=".controller.ForgotPasswordActivity" />
+        <activity android:name=".controller.SignupActivity" />
+        <activity android:name=".controller.LoginActivity">
+
+        </activity>
+        <activity android:name=".controller.MainActivity" />
+        <activity android:name=".SearchResult">
+
         </activity>
 
         <meta-data
