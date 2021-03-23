@@ -32,8 +32,8 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
             TextView name  = (TextView) mView.findViewById(R.id.name);
             TextView des = (TextView) mView.findViewById(R.id.des);
 
-            name.setText(name_tour);
-            des.setText(des_tour);
+            name.setText(formatTourName(name_tour));
+            //des.setText(des_tour);
 
             StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(cover_link);
             final long ONE_MEGABYTE = 1024 * 1024;
@@ -53,7 +53,13 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
             });
 
         }
-
+        String formatTourName(String name){
+            if (name.length() >= 19){
+                name = name.substring(0, 17);
+                name += "...";
+            }
+            return name;
+        }
     }
 
 

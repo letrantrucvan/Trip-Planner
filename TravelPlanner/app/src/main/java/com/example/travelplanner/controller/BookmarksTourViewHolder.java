@@ -60,7 +60,6 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
 
     }
 
-
     String formatTourName(String name){
         if (name.length() > 52){
             name = name.substring(0, 49);

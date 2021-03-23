@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragment.HomeFragment"
     android:background="@color/black"
-    android:scaleY="0.8"
-    android:scaleX="0.8">
+    android:gravity="center"
+    android:layout_marginRight="40dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="353dp"
-        android:layout_height="500dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="20dp">
 
         <ImageView
             android:id="@+id/cover"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="500dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/discover" />
@@ -28,52 +28,37 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="240dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="-50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_width="220dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="-40dp"
         android:layout_below="@+id/cardView"
-        android:background="@color/notSoDark"
-        app:cardBackgroundColor="@color/notSoDark"
-        app:cardCornerRadius="20dp">
+        app:cardCornerRadius="20dp"
+        android:layout_centerHorizontal="true">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="203dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif"
-            android:text="Hong Kong"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:typeface="normal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/notSoDark"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hong Kong"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="204dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="42dp"
-            android:fontFamily="sans-serif"
-            android:text="China"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-
-        <TextView
-            android:id="@+id/des"
-            android:layout_width="202dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="60dp"
-            android:fontFamily="sans-serif"
-            android:text="5 waypoints"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-
+            <TextView
+                android:id="@+id/des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 địa điểm"
+                android:textColor="@color/light_grey"
+                android:textSize="12dp" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
