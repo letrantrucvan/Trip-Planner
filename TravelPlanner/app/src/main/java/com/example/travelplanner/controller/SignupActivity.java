@@ -87,7 +87,7 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(SignupActivity.this, "Sign up successfully, please verify your email.", Toast.LENGTH_SHORT).show();
-                            User a = new User(user.getEmail(), name);
+                            User a = new User(user.getUid(), user.getEmail(), name);
                             User.addUser(user.getUid(), a);
                         }
                     });
@@ -98,6 +98,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+        mAuth.signOut();
     }
 
     private boolean checkInput(String name, String email, String password, String retype){

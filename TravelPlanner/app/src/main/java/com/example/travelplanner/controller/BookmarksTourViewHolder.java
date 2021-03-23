@@ -20,10 +20,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
-public class BookmarksViewHolder extends RecyclerView.ViewHolder{
+public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
     View mView;
 
-    public BookmarksViewHolder(@NonNull View itemView) {
+    public BookmarksTourViewHolder(@NonNull View itemView) {
         super(itemView);
         mView = itemView;
     }
@@ -37,7 +37,7 @@ public class BookmarksViewHolder extends RecyclerView.ViewHolder{
         TextView upvote = (TextView) mView.findViewById(R.id.bookmarkLikeNumber);
 
         name.setText(formatTourName(model.getName()));
-        author.setText("Đăng bởi " + model.getAuthor_id());
+        author.setText("Đăng bởi " + model.getAuthor_name());
         publish_day.setText(model.getPublish_day());
         upvote.setText(model.getUpvote_number().toString());
 
@@ -59,6 +59,8 @@ public class BookmarksViewHolder extends RecyclerView.ViewHolder{
         });
 
     }
+
+
     String formatTourName(String name){
         if (name.length() > 52){
             name = name.substring(0, 49);

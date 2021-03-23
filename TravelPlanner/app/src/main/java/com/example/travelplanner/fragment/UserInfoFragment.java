@@ -33,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 
@@ -147,8 +148,13 @@ public class UserInfoFragment extends Fragment {
                 imgvAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, REQUEST_CODE_IMAGE);
+                        //Mở máy chụp hình
+                        //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        //startActivityForResult(intent, REQUEST_CODE_IMAGE);
+                        Intent i = new Intent();
+                        i.setType("image/*");
+                        i.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(i, REQUEST_CODE_IMAGE);
                     }
                 });
             }
@@ -162,7 +168,7 @@ public class UserInfoFragment extends Fragment {
                 edtName.setEnabled(false);
                 imgvAvatar.setOnClickListener(null);
 
-                //upload Aavatar moi len storage
+                //upload Aavatar moi len storage/
                 // Get the data from an ImageView as bytes
                 StorageReference storageRef = storage.getReference().child("Avatar/" + mAuth.getCurrentUser().getUid());
                 imgvAvatar.setDrawingCacheEnabled(true);
@@ -198,11 +204,13 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data!=null){
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imgvAvatar.setImageBitmap(bitmap);
+            //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            //imgvAvatar.setImageBitmap(bitmap);
+            Picasso.with(getContext()).load(data.getData()).into(imgvAvatar);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     private void getUserInformation(){
         db.collection("User").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

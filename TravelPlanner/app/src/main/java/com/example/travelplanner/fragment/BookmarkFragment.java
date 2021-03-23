@@ -3,7 +3,7 @@ package com.example.travelplanner.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,17 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
+import android.widget.Button;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.BookmarksViewHolder;
-import com.example.travelplanner.controller.ToursViewHolder;
+import com.example.travelplanner.controller.BookmarksPlaceViewHolder;
+import com.example.travelplanner.controller.BookmarksTourViewHolder;
 import com.example.travelplanner.model.Tour;
+import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -32,9 +33,13 @@ import com.google.firebase.firestore.Query;
  * create an instance of this fragment.
  */
 public class BookmarkFragment extends Fragment {
-    private RecyclerView mResultList;
+    private RecyclerView mResultTourList;
+    private RecyclerView mResultPlaceList;
+    private Button btnShowTour;
+    private Button btnShowPlace;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter adapterTour;
+    private FirestoreRecyclerAdapter adapterPlace;
     private View BookmarkFragmentView;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -83,44 +88,135 @@ public class BookmarkFragment extends Fragment {
         // Inflate the layout for this fragment
         BookmarkFragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
 
-        mResultList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewBookmark);
-        mResultList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        btnShowTour = (Button) BookmarkFragmentView.findViewById(R.id.btn_showTourBookmark);
+        btnShowPlace = (Button) BookmarkFragmentView.findViewById(R.id.btn_showPlaceBookmark);
+
+        mResultTourList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewTourBookmark);
+        mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mResultPlaceList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
+        mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        firestoreTourSearch();
+        firestorePlaceSearch();
+
+        btnShowTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnShowTour.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark_active));
+                btnShowTour.setTextColor(getResources().getColor(R.color.black));
+                btnShowPlace.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark));
+                btnShowPlace.setTextColor(getResources().getColor(R.color.orange));
+                mResultTourList.setVisibility(View.VISIBLE);
+                mResultPlaceList.setVisibility(View.GONE);
+            }
+        });
+
+        btnShowPlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnShowPlace.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark_active));
+                btnShowPlace.setTextColor(getResources().getColor(R.color.black));
+                btnShowTour.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark));
+                btnShowTour.setTextColor(getResources().getColor(R.color.orange));
+                mResultTourList.setVisibility(View.GONE);
+                mResultPlaceList.setVisibility(View.VISIBLE);
+            }
+        });
 
 
-        firestoreUserSearch();
+
         return  BookmarkFragmentView;
     }
 
-    private void firestoreUserSearch() {
-        //Query query =  db.collection("Tour");
-        Query searchQuery  = db.collection("Tour").orderBy("name");
-
-        //Bind data
-        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
-                .setQuery(searchQuery, Tour.class)
-                .build();
-
-        adapter = new FirestoreRecyclerAdapter<Tour, BookmarksViewHolder>(response) {
+    private void firestoreTourSearch() {
+        db.collection("User").document(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onBindViewHolder(BookmarksViewHolder holder, int position, Tour model) {
-                holder.setDetail(model);
-            }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    User a = documentSnapshot.toObject(User.class);
+                    //Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour()).orderBy("des");
+                    Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour());
+                    //Bind data
+                    FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                            .setQuery(searchQuery, Tour.class)
+                            .build();
 
-            @Override
-            public BookmarksViewHolder onCreateViewHolder(ViewGroup group, int i) {
-                View mView = LayoutInflater.from(group.getContext())
-                        .inflate(R.layout.recycle_view_bookmarks, group, false);
-                return new BookmarksViewHolder(mView);
-            }
+                    adapterTour = new FirestoreRecyclerAdapter<Tour, BookmarksTourViewHolder>(response) {
+                        @Override
+                        public void onBindViewHolder(BookmarksTourViewHolder holder, int position, Tour model) {
+                            db.collection("User").document(model.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                //chỗ code ngu nè
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()) {
+                                        User b = documentSnapshot.toObject(User.class);
+                                        model.setAuthor_name(b.getFullname());
+                                        holder.setDetail(model);
+                                    }
+                                }
+                            });
+                        }
 
-            @Override
-            public void onError(FirebaseFirestoreException e) {
-                Log.e("error", e.getMessage());
+                        @Override
+                        public BookmarksTourViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                            View mView = LayoutInflater.from(group.getContext())
+                                    .inflate(R.layout.recycle_view_tour_bookmark, group, false);
+                            return new BookmarksTourViewHolder(mView);
+                        }
+
+                        @Override
+                        public void onError(FirebaseFirestoreException e) {
+                            Log.e("error", e.getMessage());
+                        }
+                    };
+                    adapterTour.notifyDataSetChanged();
+                    adapterTour.startListening();
+                    mResultTourList.setAdapter(adapterTour);
+                }
             }
-        };
-        adapter.notifyDataSetChanged();
-        adapter.startListening();
-        mResultList.setAdapter(adapter);
+        });
+
+    }
+
+    private void firestorePlaceSearch() {
+        db.collection("User").document(FirebaseAuth.getInstance().getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    User a = documentSnapshot.toObject(User.class);
+                    Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour());
+                    //Bind data
+                    FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                            .setQuery(searchQuery, Tour.class)
+                            .build();
+
+                    adapterPlace = new FirestoreRecyclerAdapter<Tour, BookmarksPlaceViewHolder>(response) {
+                        @Override
+                        public void onBindViewHolder(BookmarksPlaceViewHolder holder, int position, Tour model) {
+                            holder.setDetail(model);
+                        }
+
+                        @Override
+                        public BookmarksPlaceViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                            View mView = LayoutInflater.from(group.getContext())
+                                    .inflate(R.layout.recycle_view_place_bookmark, group, false);
+                            return new BookmarksPlaceViewHolder(mView);
+                        }
+
+                        @Override
+                        public void onError(FirebaseFirestoreException e) {
+                            Log.e("error", e.getMessage());
+                        }
+                    };
+                    adapterPlace.notifyDataSetChanged();
+                    adapterPlace.startListening();
+                    mResultPlaceList.setAdapter(adapterPlace);
+                }
+            }
+        });
+
     }
 }
 

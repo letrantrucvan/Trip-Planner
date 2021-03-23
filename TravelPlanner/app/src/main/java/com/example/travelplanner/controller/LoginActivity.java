@@ -217,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (!documentSnapshot.exists()){
-                    User a = new User(user.getEmail(), user.getDisplayName());
+                    User a = new User(user.getUid(), user.getEmail(), user.getDisplayName());
                     User.addUser(user.getUid(), a);
                 }
             }

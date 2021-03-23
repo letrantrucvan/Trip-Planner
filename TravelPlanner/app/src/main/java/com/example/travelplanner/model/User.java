@@ -17,26 +17,33 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.Serializable;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class User implements Serializable {
+    private String id;
     private String fullname;
     private String email;
     private String link_ava_user;
     private Boolean active;
+    private List<String> saved_tour;
 
     //static DatabaseReference modelUser = FirebaseDatabase.getInstance().getReference();
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public User(){};
-    public User (String email, String name){
+    public User (String id, String email, String name){
+        this.id = id;
         this.email = email;
         this.fullname = name;
         this.link_ava_user = "Avatar/avatar.png";
         this.active = true;
     }
-    public User (String fullname, String email, String link_ava_user, boolean active){
+    public User (String id, String fullname, String email, String link_ava_user, boolean active){
+        this.id = id;
         this.fullname = fullname;
         this.email = email;
         this.link_ava_user = link_ava_user;
@@ -44,6 +51,12 @@ public class User implements Serializable {
     }
 
     //set get
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
     public String getFullname() {
         return fullname;
     }
@@ -68,7 +81,13 @@ public class User implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    //set get
+    public void setSaved_tour(List<String> saved_tour) {
+        this.saved_tour = saved_tour;
+    }
+    public List<String> getSaved_tour() {
+        return saved_tour;
+    }
+    //end of set get
 
     public static void addUser(String userID, User user){
         db.collection("User").document(userID).set(user);

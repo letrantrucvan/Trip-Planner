@@ -69,5 +69,9 @@ dependencies {
 
     //Algolia - FullTextSearch
     implementation 'com.algolia:algoliasearch-android:3.+'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation fileTree(dir: 'libs', includes: ['*jar'])
 }
 apply plugin: 'com.google.gms.google-services'

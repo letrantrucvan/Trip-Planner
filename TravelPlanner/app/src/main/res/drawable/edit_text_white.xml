@@ -5,5 +5,4 @@
     <padding android:top="10dp"></padding>
     <padding android:right="10dp"></padding>
     <padding android:left="10dp"></padding>
-
 </shape>
