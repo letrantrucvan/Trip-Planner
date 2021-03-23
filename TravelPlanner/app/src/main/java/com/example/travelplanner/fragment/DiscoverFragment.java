@@ -1,14 +1,25 @@
 package com.example.travelplanner.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.travelplanner.R;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +27,11 @@ import com.example.travelplanner.R;
  * create an instance of this fragment.
  */
 public class DiscoverFragment extends Fragment {
+    private RecyclerView test;
+    private View discover;
+    private ArrayList<horizontoModel> testz;
+    horizontoAdapter for_test;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +76,92 @@ public class DiscoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        discover = inflater.inflate(R.layout.fragment_discover, container, false);
+
+        Integer[] logo = {R.drawable.tokyo, R.drawable.okyto, R.drawable.seoul, R.drawable.rome, R.drawable.paris, R.drawable.newyork};
+        String[] name = {"Tokyo", "Okyto", "Seoul", "Rome", "Paris", "New York"};
+
+
+
+        test = (RecyclerView) discover.findViewById(R.id.spring);
+        test.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        testz = new ArrayList<>();
+        for (int i = 0; i < logo.length; i++){
+            horizontoModel temp = new horizontoModel(name[i],logo[i]);
+            testz.add(temp);
+        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+            getActivity(),LinearLayoutManager.HORIZONTAL,false
+        );
+
+        test.setLayoutManager((layoutManager));
+        test.setItemAnimator(new DefaultItemAnimator());
+
+
+        for_test = new horizontoAdapter(getContext(),testz);
+        test.setAdapter(for_test);
+
+        return  discover;
+    }
+
+    private class horizontoModel {
+        String name;
+        Integer logo;
+
+        horizontoModel(String a, Integer b){
+            name = a;
+            logo = b;
+        }
+
+        public Integer getLogo() {
+            return logo;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    private class horizontoAdapter extends RecyclerView.Adapter<horizontoAdapter.ViewHolder> {
+        ArrayList<horizontoModel> models;
+        Context context;
+
+        public horizontoAdapter(Context a, ArrayList<horizontoModel> b){
+            models = b;
+            context = a;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.small_trip,parent,false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.image.setImageResource(models.get(position).getLogo());
+
+            holder.text.setText(models.get(position).getName());
+        }
+
+        @Override
+        public int getItemCount() {
+
+            return models.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            ImageView image;
+            TextView text;
+            public ViewHolder(@NonNull View itemView) {
+
+                super(itemView);
+                image = itemView.findViewById(R.id.logo);
+                text = itemView.findViewById(R.id.trip_name);
+            }
+        }
     }
 }

@@ -32,7 +32,6 @@
                     android:id="@+id/userinformation_imgvAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/testavatar"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"/>
             </androidx.cardview.widget.CardView>
@@ -62,7 +61,6 @@
                 android:textColor="@color/orange"
                 android:textStyle="bold"
                 android:textSize="14dp"
-                android:drawableRight="@drawable/ic_baseline_edit"
                 android:visibility="visible"
                 android:text="Sửa thông tin " />
 
@@ -71,7 +69,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
-                android:background="@drawable/userinformation_btnsaveinfo"
                 android:textColor="@color/black"
                 android:layout_marginTop="20dp"
                 android:textStyle="bold"
@@ -95,19 +92,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/black"
-                android:textColor="@color/grey"
+                android:textColor="#fff"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold|italic"
                 android:textSize="16dp"
-                android:text="minh.nguyen28122000@gmail.com"
-                android:drawableRight="@drawable/ic_baseline_lock"/>
+                android:text="minh.nguyen28122000@gmail.com"></TextView>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/userinformation_btnSignout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/userinformation_btnsignout"
-                android:textColor="@color/danger"
                 android:layout_marginTop="50dp"
                 android:textStyle="bold"
                 android:textSize="16dp"

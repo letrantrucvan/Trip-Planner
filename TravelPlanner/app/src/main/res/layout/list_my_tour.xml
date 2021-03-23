@@ -11,46 +11,38 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="400dp"
-        android:layout_height="700dp"
+        android:layout_width="353dp"
+        android:layout_height="500dp"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="20dp">
 
         <ImageView
             android:id="@+id/cover"
-            android:layout_width="400dp"
-            android:layout_height="500dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             app:srcCompat="@drawable/discover" />
 
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="300dp"
-        android:layout_height="120dp"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="-50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_below="@+id/cardView"
         android:background="@color/notSoDark"
         app:cardBackgroundColor="@color/notSoDark"
         app:cardCornerRadius="20dp">
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="204dp"
-            android:layout_height="27dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="60dp"
-            android:fontFamily="sans-serif"
-            android:text="China"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="203dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="sans-serif"
             android:text="Hong Kong"
             android:textColor="@color/white"
@@ -59,15 +51,29 @@
             android:typeface="normal" />
 
         <TextView
+            android:id="@+id/textView5"
+            android:layout_width="204dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="42dp"
+            android:fontFamily="sans-serif"
+            android:text="China"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+
+        <TextView
             android:id="@+id/des"
             android:layout_width="202dp"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:fontFamily="sans-serif"
             android:text="5 waypoints"
             android:textColor="@color/white"
             android:textSize="12sp" />
+
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
