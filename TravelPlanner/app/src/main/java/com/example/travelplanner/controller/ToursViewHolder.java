@@ -24,6 +24,7 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
 
         public ToursViewHolder(@NonNull View itemView) {
             super(itemView);
+
             mView = itemView;
         }
 

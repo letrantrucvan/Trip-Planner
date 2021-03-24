@@ -1,5 +1,7 @@
 package com.example.travelplanner.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.RelativeLayout;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.controller.DetailsActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -34,7 +37,7 @@ import com.google.firebase.firestore.Query;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-
+    Context context ;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,6 +53,9 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+    public HomeFragment(Context ctx){
+        this.context = ctx;
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -60,7 +66,7 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
+    public HomeFragment newInstance(String param1, String param2,Context context) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -84,6 +90,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+
         mytour = (RecyclerView) v.findViewById(R.id.my_tour);
         mytour.setHasFixedSize(true);
         mytour.setLayoutManager(layoutManager);
@@ -132,6 +139,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
                 holder.setDetail(model.getCover(), model.getName(), model.getDes());
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Intent i = new Intent(view.getContext(), DetailsActivity.class);
+                        view.getContext().startActivity(i);
+                    }
+                });
             }
 
             @Override

@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:layout_gravity="center"
-                android:src="@drawable/bg_item" />
+                android:src="@drawable/discover" />
 
         </androidx.cardview.widget.CardView>
 
