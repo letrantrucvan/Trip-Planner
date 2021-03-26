@@ -7,82 +7,65 @@
     android:background="@color/black"
     tools:context=".fragment.DiscoverFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <View
             android:id="@+id/view2"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_width="match_parent"
+            android:layout_height="64dp"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="251dp"
             android:layout_height="43dp"
-            android:layout_marginStart="16dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif"
             android:text="Khám phá"
             android:textColor="@color/white"
             android:textSize="36sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.956"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_search"
             tools:ignore="VectorDrawableCompat" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:fillViewport="true"
-            android:paddingBottom="70dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2">
+            android:layout_below="@id/view2">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="398dp" />
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView"
                     android:layout_width="353dp"
                     android:layout_height="353dp"
                     android:layout_marginTop="24dp"
-                    app:cardCornerRadius="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_centerHorizontal="true"
+                    app:cardCornerRadius="20dp">
 
                     <ImageView
                         android:id="@+id/imageView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/discover" />
 
                     <TextView
@@ -101,12 +84,12 @@
                     android:id="@+id/cardView2"
                     android:layout_width="240dp"
                     android:layout_height="100dp"
+                    android:layout_marginTop="-50dp"
                     android:background="@color/notSoDark"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/cardView"
                     app:cardBackgroundColor="@color/notSoDark"
-                    app:cardCornerRadius="20dp"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:cardCornerRadius="20dp">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -145,36 +128,31 @@
                         android:textSize="12sp" />
                 </androidx.cardview.widget.CardView>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintGuide_begin="804dp" />
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView3"
                     android:layout_width="353dp"
                     android:layout_height="353dp"
                     android:layout_marginTop="32dp"
-                    app:cardCornerRadius="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView2">
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/cardView2"
+                    app:cardCornerRadius="20dp">
 
                     <ImageView
                         android:id="@+id/imageView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        app:srcCompat="@drawable/discover" />
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/tokyo" />
 
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="213dp"
                         android:layout_height="103dp"
                         android:layout_gravity="center"
-                        android:text="CHUYẾN ĐI CỦA TUẦN"
+                        android:text="CHUYẾN ĐI MỚI NHẤT"
                         android:textColor="@color/white"
                         android:textSize="36sp"
                         android:textStyle="bold" />
@@ -185,12 +163,12 @@
                     android:id="@+id/cardView4"
                     android:layout_width="240dp"
                     android:layout_height="100dp"
+                    android:layout_marginTop="-50dp"
                     android:background="@color/notSoDark"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/cardView3"
                     app:cardBackgroundColor="@color/notSoDark"
-                    app:cardCornerRadius="20dp"
-                    app:layout_constraintBottom_toTopOf="@+id/guideline3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:cardCornerRadius="20dp">
 
                     <TextView
                         android:id="@+id/textView8"
@@ -199,7 +177,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="42dp"
                         android:fontFamily="sans-serif"
-                        android:text="China"
+                        android:text="Japan"
                         android:textColor="@color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
@@ -211,7 +189,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif"
-                        android:text="Hong Kong"
+                        android:text="Tokyo"
                         android:textColor="@color/white"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -224,26 +202,120 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginTop="60dp"
                         android:fontFamily="sans-serif"
-                        android:text="5 waypoints"
+                        android:text="3 waypoints"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
                 </androidx.cardview.widget.CardView>
 
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/spring"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="-70dp"
+                    android:text="Chuyến đi mùa xuân"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/spring"
                     android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="80dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@id/cardView4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/fyp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="-40dp"
+                    android:text="Dành cho bạn"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fyp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@id/spring"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+                    app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="-40dp"
+                    android:layout_above="@+id/island"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:text="Chuyến đi trên biển" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/island"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@id/fyp"/>
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/budget"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="-40dp"
+                    android:text="Chuyến đi rẻ tiền"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/budget"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_below="@id/island"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardView4">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
         </ScrollView>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </FrameLayout>

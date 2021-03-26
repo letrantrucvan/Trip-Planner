@@ -1,37 +1,49 @@
 package com.example.travelplanner.fragment;
 
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.controller.BookmarksTourViewHolder;
+import com.example.travelplanner.controller.ToursViewHolder;
+import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.ArrayList;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DiscoverFragment#newInstance} factory method to
+ * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class DiscoverFragment extends Fragment {
-    private RecyclerView test;
-    private View discover;
-    private ArrayList<horizontoModel> testz;
-    horizontoAdapter for_test;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,6 +53,13 @@ public class DiscoverFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private RecyclerView mytour;
+    private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter adapter_vertical;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private RecyclerView islandTour;
+    private RecyclerView fypTour;
+    private RecyclerView budgetTour;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -52,11 +71,11 @@ public class DiscoverFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DiscoverFragment.
+     * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DiscoverFragment newInstance(String param1, String param2) {
-        DiscoverFragment fragment = new DiscoverFragment();
+    public static HomeFragment newInstance(String param1, String param2) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -76,92 +95,169 @@ public class DiscoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        discover = inflater.inflate(R.layout.fragment_discover, container, false);
+        // Inflate the layout for this fragment
+        View v = inflater.inflate(R.layout.fragment_discover, container, false);
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mytour = (RecyclerView) v.findViewById(R.id.spring);
+        mytour.setHasFixedSize(true);
+        mytour.setLayoutManager(layoutManager);
 
-        Integer[] logo = {R.drawable.tokyo, R.drawable.okyto, R.drawable.seoul, R.drawable.rome, R.drawable.paris, R.drawable.newyork};
-        String[] name = {"Tokyo", "Okyto", "Seoul", "Rome", "Paris", "New York"};
+        islandTour = (RecyclerView) v.findViewById(R.id.island);
+        islandTour.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        fypTour = (RecyclerView) v.findViewById(R.id.fyp);
+        fypTour.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        budgetTour = (RecyclerView) v.findViewById(R.id.budget);
+        budgetTour.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        Query searchQuery  = db.collection("Tour");
+
+        //Bind data
+        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                .setQuery(searchQuery, Tour.class)
+                .build();
+
+        // tạo addapter ngang
+//        adapter = new FirestoreRecyclerAdapter<Tour, ViewHolder>(response) {
+//            @Override
+//            public void onBindViewHolder(ViewHolder holder, int position, Tour model) {
+//                holder.setDetail(model.getCover(), model.getName());
+//            }
+//
+//            @Override
+//            public ViewHolder onCreateViewHolder(ViewGroup group, int i) {
+//                View mView = LayoutInflater.from(group.getContext())
+//                        .inflate(R.layout.small_trip, group, false);
+//                return new ViewHolder(mView);
+//            }
+//
+//            @Override
+//            public void onError(FirebaseFirestoreException e) {
+//                Log.e("error", e.getMessage());
+//            }
+//        };
+        //--
+
+        adapter = horizonto(searchQuery);
+
+        adapter.notifyDataSetChanged();
+        adapter.startListening();
 
 
-
-        test = (RecyclerView) discover.findViewById(R.id.spring);
-        test.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        testz = new ArrayList<>();
-        for (int i = 0; i < logo.length; i++){
-            horizontoModel temp = new horizontoModel(name[i],logo[i]);
-            testz.add(temp);
-        }
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-            getActivity(),LinearLayoutManager.HORIZONTAL,false
-        );
-
-        test.setLayoutManager((layoutManager));
-        test.setItemAnimator(new DefaultItemAnimator());
+        mytour.setAdapter(adapter);
+        fypTour.setAdapter(adapter);
+        budgetTour.setAdapter(adapter);
 
 
-        for_test = new horizontoAdapter(getContext(),testz);
-        test.setAdapter(for_test);
+        //adapter dọc
+        adapter_vertical= new FirestoreRecyclerAdapter<Tour, BookmarksTourViewHolder>(response) {
+            @Override
+            public void onBindViewHolder(BookmarksTourViewHolder holder, int position, Tour model) {
+                holder.setDetail(model);
+            }
 
-        return  discover;
+            @Override
+            public BookmarksTourViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                View mView = LayoutInflater.from(group.getContext())
+                        .inflate(R.layout.recycle_view_tour_bookmark, group, false);
+                return new BookmarksTourViewHolder(mView);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.e("error", e.getMessage());
+            }
+        };
+        //--
+
+        adapter_vertical.notifyDataSetChanged();
+        adapter_vertical.startListening();
+        islandTour.setAdapter(adapter_vertical);
+
+        return v;
     }
 
-    private class horizontoModel {
-        String name;
-        Integer logo;
+    @Override
+    public void onStart() {
+        super.onStart();
+        //adapter.startListening();
+    }
 
-        horizontoModel(String a, Integer b){
-            name = a;
-            logo = b;
+    @Override
+    public void onStop() {
+        super.onStop();
+        //adapter.stopListening();
+    }
+
+    public FirestoreRecyclerAdapter horizonto(Query search){
+        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                .setQuery(search, Tour.class)
+                .build();
+        return new FirestoreRecyclerAdapter<Tour, ViewHolder>(response) {
+            @Override
+            public void onBindViewHolder(ViewHolder holder, int position, Tour model) {
+                holder.setDetail(model.getCover(), model.getName());
+            }
+
+            @Override
+            public ViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                View mView = LayoutInflater.from(group.getContext())
+                        .inflate(R.layout.small_trip, group, false);
+                return new ViewHolder(mView);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.e("error", e.getMessage());
+            }
+        };
+    }
+
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        View mView;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
         }
 
-        public Integer getLogo() {
-            return logo;
-        }
+        public void setDetail(String cover_link, String name_tour){
+            ImageView cover = (ImageView) mView.findViewById(R.id.logo);
+            TextView name  = (TextView) mView.findViewById(R.id.trip_name);
 
-        public String getName() {
+            name.setText(formatTourName(name_tour));
+
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(cover_link);
+            final long ONE_MEGABYTE = 1024 * 1024;
+            imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    // Data for "images/island.jpg" is returns, use this as needed
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    cover.setImageBitmap(bitmap);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    System.out.println(exception.getMessage());
+                }
+            });
+
+
+
+        }
+        String formatTourName(String name){
+            if (name.length() > 15){
+                name = name.substring(0, 14);
+                name += "...";
+            }
             return name;
         }
+
     }
 
-    private class horizontoAdapter extends RecyclerView.Adapter<horizontoAdapter.ViewHolder> {
-        ArrayList<horizontoModel> models;
-        Context context;
-
-        public horizontoAdapter(Context a, ArrayList<horizontoModel> b){
-            models = b;
-            context = a;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.small_trip,parent,false);
-            return new ViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.image.setImageResource(models.get(position).getLogo());
-
-            holder.text.setText(models.get(position).getName());
-        }
-
-        @Override
-        public int getItemCount() {
-
-            return models.size();
-        }
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            ImageView image;
-            TextView text;
-            public ViewHolder(@NonNull View itemView) {
-
-                super(itemView);
-                image = itemView.findViewById(R.id.logo);
-                text = itemView.findViewById(R.id.trip_name);
-            }
-        }
-    }
 }
