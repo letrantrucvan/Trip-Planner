@@ -33,13 +33,13 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
         ImageView cover = (ImageView) mView.findViewById(R.id.bookmarkAvatar);
         TextView name  = (TextView) mView.findViewById(R.id.bookmarkTourName);
         TextView author = (TextView) mView.findViewById(R.id.bookmarkAuthor);
-        TextView publish_day = (TextView) mView.findViewById(R.id.bookmarkPublishDay);
-        TextView upvote = (TextView) mView.findViewById(R.id.bookmarkLikeNumber);
+        //TextView publish_day = (TextView) mView.findViewById(R.id.bookmarkPublishDay);
+        //TextView upvote = (TextView) mView.findViewById(R.id.bookmarkLikeNumber);
 
         name.setText(formatTourName(model.getName()));
         author.setText("Đăng bởi " + model.getAuthor_name());
-        publish_day.setText(model.getPublish_day());
-        upvote.setText(model.getUpvote_number().toString());
+        //publish_day.setText(model.getPublish_day());
+        //upvote.setText(model.getUpvote_number().toString());
 
         StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -61,8 +61,8 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
     }
 
     String formatTourName(String name){
-        if (name.length() > 52){
-            name = name.substring(0, 49);
+        if (name.length() > 40){
+            name = name.substring(0, 37);
             name += "...";
         }
         return name;

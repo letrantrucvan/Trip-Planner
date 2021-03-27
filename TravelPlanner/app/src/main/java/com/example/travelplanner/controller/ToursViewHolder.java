@@ -55,8 +55,8 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
 
         }
         String formatTourName(String name){
-            if (name.length() >= 19){
-                name = name.substring(0, 17);
+            if (name.length() >= 45){
+                name = name.substring(0, 42);
                 name += "...";
             }
             return name;

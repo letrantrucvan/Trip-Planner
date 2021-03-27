@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
@@ -46,6 +47,10 @@ import static android.app.Activity.RESULT_OK;
  */
 public class UserInfoFragment extends Fragment {
 
+    private LinearLayout userInfoGotoLogin;
+    private Button userInfoBtnGotoLogin;
+
+    private LinearLayout userInfoNormal;
     private TextView edtEmail;
     private EditText edtName;
     private ImageView imgvAvatar;
@@ -108,6 +113,29 @@ public class UserInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FrameLayout userInfo = (FrameLayout) inflater.inflate(R.layout.fragment_user_info, container, false);
+
+
+        mAuth = FirebaseAuth.getInstance();
+
+        //check user đăng nhập hay chưa
+        userInfoGotoLogin = (LinearLayout) userInfo.findViewById(R.id.userInfoGotoLogin);
+        userInfoNormal = (LinearLayout) userInfo.findViewById(R.id.userInfoNormal);
+        userInfoBtnGotoLogin = (Button) userInfo.findViewById(R.id.userInfoBtnGotoLogin);
+        if (mAuth.getCurrentUser() == null){
+            userInfoGotoLogin.setVisibility(View.VISIBLE);
+            userInfoNormal.setVisibility(View.GONE);
+            userInfoBtnGotoLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+            });
+            return  userInfo;
+        }
+
+        //user đã đăng nhập thì thực hiện
         edtEmail = (TextView) userInfo.findViewById(R.id.userinformation_edtEmail);
         edtName = (EditText) userInfo.findViewById(R.id.userinformation_edtName);
         imgvAvatar = (ImageView) userInfo.findViewById(R.id.userinformation_imgvAvatar);
@@ -115,18 +143,12 @@ public class UserInfoFragment extends Fragment {
         edtEditInfo = (TextView) userInfo.findViewById(R.id.userinformation_edtEditInfo);
         btnSignout = (Button) userInfo.findViewById(R.id.userinformation_btnSignout);
 
-        mAuth = FirebaseAuth.getInstance();
 
+        mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
-        if(mAuth.getCurrentUser() == null){
-            Intent i = new Intent(getActivity(), LoginActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-        } else {
-            //Get User Information
-            getUserInformation();
-        }
+        //Get User Information
+        getUserInformation();
 
 
         btnSignout.setOnClickListener(new View.OnClickListener() {

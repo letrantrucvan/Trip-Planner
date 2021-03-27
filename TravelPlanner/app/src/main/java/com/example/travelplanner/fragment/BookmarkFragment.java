@@ -1,5 +1,6 @@
 package com.example.travelplanner.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.BookmarksPlaceViewHolder;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
+import com.example.travelplanner.controller.LoginActivity;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -33,6 +36,10 @@ import com.google.firebase.firestore.Query;
  * create an instance of this fragment.
  */
 public class BookmarkFragment extends Fragment {
+
+    private LinearLayout bookmarkGotoLogin;
+    private Button bookmarkBtnGotoLogin;
+
     private RecyclerView mResultTourList;
     private RecyclerView mResultPlaceList;
     private Button btnShowTour;
@@ -88,15 +95,39 @@ public class BookmarkFragment extends Fragment {
         // Inflate the layout for this fragment
         BookmarkFragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
 
-
-        btnShowTour = (Button) BookmarkFragmentView.findViewById(R.id.btn_showTourBookmark);
-        btnShowPlace = (Button) BookmarkFragmentView.findViewById(R.id.btn_showPlaceBookmark);
-
         mResultTourList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewTourBookmark);
         mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mResultPlaceList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
         mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        //check user đăng nhập hay chưa
+        bookmarkGotoLogin = (LinearLayout) BookmarkFragmentView.findViewById(R.id.bookmarkGotoLogin);
+        bookmarkBtnGotoLogin = (Button) BookmarkFragmentView.findViewById(R.id.bookmarkBtnGotoLogin);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+            bookmarkGotoLogin.setVisibility(View.VISIBLE);
+            mResultTourList.setVisibility(View.GONE);
+            mResultPlaceList.setVisibility(View.GONE);
+            bookmarkBtnGotoLogin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+                }
+            });
+            return  BookmarkFragmentView;
+        }
+        else {
+            bookmarkGotoLogin.setVisibility(View.GONE);
+        }
+
+
+        //user đã đăng nhập thì thực hiện
+        btnShowTour = (Button) BookmarkFragmentView.findViewById(R.id.btn_showTourBookmark);
+        btnShowPlace = (Button) BookmarkFragmentView.findViewById(R.id.btn_showPlaceBookmark);
+
+
 
         firestoreTourSearch();
         firestorePlaceSearch();
@@ -124,8 +155,6 @@ public class BookmarkFragment extends Fragment {
                 mResultPlaceList.setVisibility(View.VISIBLE);
             }
         });
-
-
 
         return  BookmarkFragmentView;
     }

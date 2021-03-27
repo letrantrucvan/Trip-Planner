@@ -60,6 +60,49 @@
                 android:background="@drawable/bg_button_switch_bookmark"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/bookmarkGotoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:visibility="visible">
+            <androidx.cardview.widget.CardView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:backgroundTint="@color/black"
+                android:layout_marginBottom="20dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_sentiment_dissatisfied_24"
+                    app:tint="@color/notSoDark"/>
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bạn cần đăng nhập để xem nội dung này"
+                android:textSize="14dp"
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bookmarkBtnGotoLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round"
+                android:backgroundTint="@color/orange"
+                android:layout_marginTop="20dp"
+                android:text="Đăng nhập"
+                android:textSize="16dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"/>
+        </LinearLayout>
+
         <ScrollView
             android:id="@+id/scrollViewTourBookmark"
             android:layout_width="match_parent"

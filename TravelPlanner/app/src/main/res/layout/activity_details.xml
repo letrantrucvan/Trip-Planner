@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -70,7 +70,7 @@
                 <LinearLayout
                     android:id="@+id/ct1"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp"
+                    android:layout_height="65dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:background="@color/gray"
@@ -78,13 +78,13 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView5"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         app:cardCornerRadius="35dp">
 
                         <ImageView
                             android:id="@+id/tour_author_img"
-                            android:layout_width="60dp"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:scaleType="centerCrop"
@@ -119,16 +119,29 @@
                     android:id="@+id/tour_description_txt"
                     android:layout_width="match_parent"
                     android:layout_height= "80dp"
+                    android:minHeight="80dp"
                     android:text="Available flight akjsgdi ashd tasv ajshdt asgdh agsd adas jhdajsdf jafgsd jasd jhavsd hja dfdyfduf kdhkfgsy dgsd  ashdj asjkda ks d  ba hsgd a bsdgahs a  shjsad j hasvd  ahsg d jhasv mavsd  jhafsd h avs  hasfdjdafjsdf ashd  ahsdga ashdg ahsd nasdhav  ahsg dhaks vamsdafgbsn akhsgdahsd amsdgajsd v masdsv ahsfddh am sdma vsdj hasdmha vsdm asgd  mans dmabskdb n hasgd d kudf sd jhas djasd dnamsmgd  hags asgdhd ambnsd hagsdd asmd a"
                     android:padding="20dp"
                     android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/detail_TourDescriptionFull"
+                    android:layout_width="match_parent"
+                    android:layout_height= "wrap_content"
+                    android:text="Available flight akjsgdi ashd tasv ajshdt asgdh agsd adas jhdajsdf jafgsd jasd jhavsd hja dfdyfduf kdhkfgsy dgsd  ashdj asjkda ks d  ba hsgd a bsdgahs a  shjsad j hasvd  ahsg d jhasv mavsd  jhafsd h avs  hasfdjdafjsdf ashd  ahsdga ashdg ahsd nasdhav  ahsg dhaks vamsdafgbsn akhsgdahsd amsdgajsd v masdsv ahsfddh am sdma vsdj hasdmha vsdm asgd  mans dmabskdb n hasgd d kudf sd jhas djasd dnamsmgd  hags asgdhd ambnsd hagsdd asmd a"
+                    android:padding="20dp"
+                    android:visibility="gone"
+                    android:textColor="@color/white"/>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/detail_btnReadMore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
                     android:text="Xem thêm"
+                    android:textSize="12dp"
                     android:textColor="@color/white"
-                    android:background="@color/notSoDark"
+                    android:background="@drawable/bg_round"
+                    android:backgroundTint="@color/notSoDark"
                     android:layout_gravity="center"/>
 
                 <LinearLayout
@@ -142,19 +155,25 @@
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Media"
+                        android:text="Địa điểm"
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:textColor="@color/white"
                         android:layout_marginBottom="10dp"/>
 
-                    <ImageView
-                        android:id="@+id/imageView8"
-                        android:layout_width="200dp"
-                        android:layout_height="120dp"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/img1" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="250dp"
+                        android:layout_height="150dp"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginRight="10dp">
 
+                        <ImageView
+                            android:id="@+id/imageView8"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/img1" />
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
             </LinearLayout>
@@ -164,4 +183,4 @@
 
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

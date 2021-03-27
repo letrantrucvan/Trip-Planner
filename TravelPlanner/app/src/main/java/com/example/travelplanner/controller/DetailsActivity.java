@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
@@ -33,6 +34,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private Button readMore;
     private TextView tourDescription;
+    private TextView tourDescriptionFull;
     private boolean isOpenDescription;
     private Intent intent;
     private TextView tourName;
@@ -68,21 +70,22 @@ public class DetailsActivity extends AppCompatActivity {
         //Start UI
         loadUI();
 
+
         readMore.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (!isOpenDescription){
-                    tourDescription.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-                    tourDescription.requestLayout();
-                    readMore.setText("- Thu gọn");
-                    isOpenDescription = true;
+                if (isOpenDescription){
+                    tourDescription.setVisibility(View.VISIBLE);
+                    tourDescriptionFull.setVisibility(View.GONE);
+                    readMore.setText("Xem thêm");
+                    isOpenDescription = false;
                 }
                 else {
-                    tourDescription.getLayoutParams().height = 80;
-                    tourDescription.requestLayout();
-                    readMore.setText("+ Xem thêm");
-                    isOpenDescription = false;
+                    tourDescription.setVisibility(View.GONE);
+                    tourDescriptionFull.setVisibility(View.VISIBLE);
+                    readMore.setText("Thu gọn");
+                    isOpenDescription = true;
                 }
             }
         });
