@@ -111,4 +111,24 @@ public class Tour {
 
     static public void getHighlightedTour(){}
     static public void getNearByTour(){}
+
+    @Override
+    public String toString() {
+        return "Tour{" +
+                "tour_id='" + tour_id + '\'' +
+                ", name='" + name + '\'' +
+                ", author_id='" + author_id + '\'' +
+                ", author_name='" + author_name + '\'' +
+                ", cover='" + cover + '\'' +
+                ", des='" + des + '\'' +
+                ", publish_day='" + publish_day + '\'' +
+                ", upvote_number=" + upvote_number +
+                ", downvote_number=" + downvote_number +
+                ", views_number=" + views_number +
+                ", saved_number=" + saved_number +
+                ", archived_mode=" + archived_mode +
+                ", isActive=" + isActive +
+                ", commentId=" + commentId +
+                '}';
+    }
 }

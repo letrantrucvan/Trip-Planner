@@ -138,11 +138,15 @@ public class HomeFragment extends Fragment {
         adapter = new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
             @Override
             public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
+
+
                 holder.setDetail(model.getCover(), model.getName(), model.getDes());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
-                        Intent i = new Intent(view.getContext(), DetailsActivity.class);
-                        view.getContext().startActivity(i);
+                        Intent i = new Intent(getActivity(), DetailsActivity.class);
+                        String documentId = getSnapshots().getSnapshot(position).getId();
+                        i.putExtra("Key", documentId);
+                        startActivity(i);
                     }
                 });
             }
@@ -153,6 +157,12 @@ public class HomeFragment extends Fragment {
                         .inflate(R.layout.list_my_tour, group, false);
                 return new ToursViewHolder(mView);
             }
+
+            @Override
+            public int getItemCount() {
+                return super.getItemCount();
+            }
+
 
             @Override
             public void onError(FirebaseFirestoreException e) {

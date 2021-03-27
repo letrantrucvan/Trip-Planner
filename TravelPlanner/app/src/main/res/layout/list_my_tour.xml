@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragment.HomeFragment"
@@ -9,30 +9,32 @@
     android:gravity="center"
     android:layout_marginRight="40dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="20dp">
 
-        <ImageView
-            android:id="@+id/cover"
+    <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="500dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/discover" />
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="20dp">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/discover"
+                android:adjustViewBounds="true"/>
+
+        </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="220dp"
         android:layout_height="80dp"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-90dp"
         android:layout_below="@+id/cardView"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="15dp"
         android:layout_centerHorizontal="true">
 
         <LinearLayout

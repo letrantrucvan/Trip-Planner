@@ -54,9 +54,9 @@ public class UserInfoFragment extends Fragment {
     private Button btnSignout;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference ref;
+
     private FirebaseStorage storage;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
     int REQUEST_CODE_IMAGE = 1;
@@ -116,7 +116,7 @@ public class UserInfoFragment extends Fragment {
         btnSignout = (Button) userInfo.findViewById(R.id.userinformation_btnSignout);
 
         mAuth = FirebaseAuth.getInstance();
-        ref = FirebaseDatabase.getInstance().getReference().child("User");
+
         storage = FirebaseStorage.getInstance();
 
         if(mAuth.getCurrentUser() == null){

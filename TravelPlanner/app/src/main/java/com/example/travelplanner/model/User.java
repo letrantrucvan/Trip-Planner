@@ -108,4 +108,16 @@ public class User implements Serializable {
         db.collection("User").document(userID).update("fullname", newname);
         db.collection("User").document(userID).update("link_ava_user", "Avatar/" + userID);
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", email='" + email + '\'' +
+                ", link_ava_user='" + link_ava_user + '\'' +
+                ", active=" + active +
+                ", saved_tour=" + saved_tour +
+                '}';
+    }
 }
