@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.travelplanner">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +27,8 @@
         </activity>
         <activity android:name=".controller.MainActivity" />
         <activity android:name=".SearchResult"></activity>
-
+        <activity android:name=".testGallery">
+        </activity>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />

@@ -165,7 +165,9 @@ public class BookmarkFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     User a = documentSnapshot.toObject(User.class);
-                    //Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour()).orderBy("des");
+
+                    if (a.getSaved_tour() == null) return;
+
                     Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour());
                     //Bind data
                     FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
@@ -215,6 +217,10 @@ public class BookmarkFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     User a = documentSnapshot.toObject(User.class);
+
+                    if (a.getSaved_tour() == null) return;
+
+
                     Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour());
                     //Bind data
                     FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="detail_tab_text_style" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">12dp</item>
+    </style>
+</resources>
