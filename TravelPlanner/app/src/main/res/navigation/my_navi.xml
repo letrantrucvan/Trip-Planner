@@ -19,7 +19,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.travelplanner.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_create_tour"
+            app:destination="@id/create_tour" />
+    </fragment>
     <fragment
         android:id="@+id/bookmarkFragment"
         android:name="com.example.travelplanner.fragment.BookmarkFragment"
@@ -30,4 +34,9 @@
         android:name="com.example.travelplanner.fragment.NotiFragment"
         android:label="fragment_noti"
         tools:layout="@layout/fragment_noti" />
+    <fragment
+        android:id="@+id/create_tour"
+        android:name="com.example.travelplanner.create_tour"
+        android:label="fragment_create_tour"
+        tools:layout="@layout/fragment_create_tour" />
 </navigation>

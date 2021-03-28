@@ -24,7 +24,8 @@
             android:background="@drawable/edit_text_white"
             android:ems="10"
             android:hint="Email"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            />
 
         <EditText
             android:id="@+id/login_edtPassword"
@@ -37,10 +38,10 @@
 
         <Button
             android:id="@+id/login_btnLogin"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:background="@color/orange"
+            android:background="@drawable/bg_round"
             android:text="Log In"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -49,11 +50,11 @@
 
         <Button
             android:id="@+id/login_btnSignup"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/orange"
-            android:text="Don't have an account? SIGN UP"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/bg_round"
+            android:text="SIGN UP"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14sp"
@@ -66,7 +67,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="Forgot your password?"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textStyle="italic"/>
         <Button
             android:id="@+id/login_btnGoogle"
