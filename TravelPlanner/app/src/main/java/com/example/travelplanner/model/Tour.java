@@ -11,18 +11,16 @@ public class Tour {
     private String cover;
     private String des;
     private String publish_day;
-    private Integer upvote_number;
-    private Integer downvote_number;
-    private Integer views_number;
-    private Integer saved_number;
+    private Integer rating_number;
+    private Double rating_avg;
+
     private boolean archived_mode;
     private boolean isActive;
 
-    private ArrayList<String> commentId;
-
     public Tour(){}
     //get
-    public String getId() {
+
+    public String getTour_id() {
         return tour_id;
     }
     public String getName() {
@@ -43,26 +41,17 @@ public class Tour {
     public String getPublish_day() {
         return publish_day;
     }
-    public Integer getUpvote_number() {
-        return upvote_number;
+    public Integer getRating_number() {
+        return rating_number;
     }
-    public Integer getDownvote_number() {
-        return downvote_number;
-    }
-    public Integer getViews_number() {
-        return views_number;
-    }
-    public Integer getSaved_number() {
-        return saved_number;
+    public Double getRating_avg() {
+        return rating_avg;
     }
     public boolean isArchived_mode() {
         return archived_mode;
     }
     public boolean isActive() {
         return isActive;
-    }
-    public ArrayList<String> getCommentId() {
-        return commentId;
     }
 
     //set
@@ -87,30 +76,26 @@ public class Tour {
     public void setPublish_day(String publish_day) {
         this.publish_day = publish_day;
     }
-    public void setUpvote_number(Integer upvote_number) {
-        this.upvote_number = upvote_number;
+    public void setRating_number(Integer rating_number) {
+        this.rating_number = rating_number;
     }
-    public void setDownvote_number(Integer downvote_number) {
-        this.downvote_number = downvote_number;
+    public void setRating_avg(Double rating_avg) {
+        this.rating_avg = rating_avg;
     }
-    public void setViews_number(Integer views_number) {
-        this.views_number = views_number;
+    public void setTour_id(String tour_id) {
+        this.tour_id = tour_id;
     }
-    public void setSaved_number(Integer saved_number) {
-        this.saved_number = saved_number;
-    }
+
     public void setArchived_mode(boolean archived_mode) {
         this.archived_mode = archived_mode;
     }
     public void setActive(boolean active) {
         isActive = active;
     }
-    public void setCommentId(ArrayList<String> commentId) {
-        this.commentId = commentId;
-    }
 
     static public void getHighlightedTour(){}
     static public void getNearByTour(){}
+
 
     @Override
     public String toString() {
@@ -122,13 +107,8 @@ public class Tour {
                 ", cover='" + cover + '\'' +
                 ", des='" + des + '\'' +
                 ", publish_day='" + publish_day + '\'' +
-                ", upvote_number=" + upvote_number +
-                ", downvote_number=" + downvote_number +
-                ", views_number=" + views_number +
-                ", saved_number=" + saved_number +
                 ", archived_mode=" + archived_mode +
                 ", isActive=" + isActive +
-                ", commentId=" + commentId +
                 '}';
     }
 }
