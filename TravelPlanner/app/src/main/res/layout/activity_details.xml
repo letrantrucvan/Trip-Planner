@@ -337,7 +337,7 @@
                                     android:scaleX="0.7"
                                     android:scaleY="0.7">
 
-                                    <RadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/detail_comment_current_user_rate_1"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -346,7 +346,7 @@
                                         android:buttonTint="@color/light_grey"
                                         android:textColor="@color/white"/>
 
-                                    <RadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/detail_comment_current_user_rate_2"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -354,7 +354,7 @@
                                         android:textSize="14dp"
                                         android:buttonTint="@color/light_grey"
                                         android:textColor="@color/white"/>
-                                    <RadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/detail_comment_current_user_rate_3"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -363,7 +363,7 @@
                                         android:buttonTint="@color/light_grey"
                                         android:textColor="@color/white"/>
 
-                                    <RadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/detail_comment_current_user_rate_4"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -371,7 +371,7 @@
                                         android:textSize="14dp"
                                         android:buttonTint="@color/light_grey"
                                         android:textColor="@color/white"/>
-                                    <RadioButton
+                                    <androidx.appcompat.widget.AppCompatRadioButton
                                         android:id="@+id/detail_comment_current_user_rate_5"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -405,7 +405,7 @@
 
                     <!--recycleview Comment-->
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="20dp">
                         <androidx.recyclerview.widget.RecyclerView

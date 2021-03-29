@@ -1,5 +1,9 @@
 package com.example.travelplanner.model;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,9 +21,12 @@ public class Tour {
     private boolean archived_mode;
     private boolean isActive;
 
-    public Tour(){}
-    //get
+    static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    public Tour(){}
+
+
+    //get
     public String getTour_id() {
         return tour_id;
     }
@@ -96,6 +103,24 @@ public class Tour {
     static public void getHighlightedTour(){}
     static public void getNearByTour(){}
 
+    public static void alterRating(String tourID, Integer rate) {
+        db.collection("Tour").document(tourID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Tour tour = documentSnapshot.toObject(Tour.class);
+                    Integer newRatingNumber = tour.getRating_number() + 1;
+                    Double newRatingAvg = ((tour.getRating_avg()*tour.getRating_number()) + (float) rate) / newRatingNumber;
+                    tour.setRating_number(newRatingNumber);
+                    tour.setRating_avg(newRatingAvg);
+                    Tour.editRating(tour);
+                }
+            }
+        });
+    }
+    public static void editRating(Tour tour){
+        db.collection("Tour").document(tour.getTour_id()).update("rating_number", tour.getRating_number());
+        db.collection("Tour").document(tour.getTour_id()).update("rating_avg", tour.getRating_avg());
+    }
 
     @Override
     public String toString() {
@@ -107,6 +132,8 @@ public class Tour {
                 ", cover='" + cover + '\'' +
                 ", des='" + des + '\'' +
                 ", publish_day='" + publish_day + '\'' +
+                ", rating_number=" + rating_number.toString() +
+                ", rating_avg=" + rating_avg.toString() +
                 ", archived_mode=" + archived_mode +
                 ", isActive=" + isActive +
                 '}';

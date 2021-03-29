@@ -10,8 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.model.Comment;
-import com.example.travelplanner.model.Tour;
+import com.example.travelplanner.model.Rating;
 import com.example.travelplanner.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,15 +25,15 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         mView = itemView;
     }
 
-    public void setDetail(Comment modelComment, User modelUser){
+    public void setDetail(Rating modelRating, User modelUser){
         ImageView user_avatar = (ImageView) mView.findViewById(R.id.detail_comment_avatar);
         TextView name  = (TextView) mView.findViewById(R.id.detail_comment_name);
         TextView rating = (TextView) mView.findViewById(R.id.detail_comment_rating);
         TextView comment = (TextView) mView.findViewById(R.id.detail_comment_comment);
 
         name.setText(modelUser.getFullname());
-        rating.setText(modelComment.getRate().toString());
-        comment.setText(modelComment.getComment());
+        rating.setText(modelRating.getRate().toString());
+        comment.setText(modelRating.getComment());
 
         StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(modelUser.getLink_ava_user());
         final long ONE_MEGABYTE = 1024 * 1024;

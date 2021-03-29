@@ -1,6 +1,7 @@
 package com.example.travelplanner.controller;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +10,6 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,12 +23,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.fragment.FragmentMaps;
 import com.example.travelplanner.fragment.FragmentTwo;
 import com.example.travelplanner.fragment.TabFragmentAdapter;
-import com.example.travelplanner.model.Comment;
+import com.example.travelplanner.model.Rating;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -37,9 +38,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -111,6 +111,10 @@ public class DetailsActivity extends AppCompatActivity {
 
         mResultCommentTour = (RecyclerView) findViewById(R.id.recycleviewCommentDetail);
         mResultCommentTour.setLayoutManager(new LinearLayoutManager(this));
+
+
+        CommentBox = (LinearLayout) findViewById(R.id.detail_comment_current_user_box);
+
         mAuth = FirebaseAuth.getInstance();
 
         //Tab layout
@@ -186,10 +190,14 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void loadUI() {
 
-        db.collection("Tour").document(tourID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
+        db.collection("Tour").document(tourID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     Tour tour = documentSnapshot.toObject(Tour.class);
+
+                    //nếu chủ tour là user thì không cho đánh giá
+                    if (tour.getAuthor_id().equals(mAuth.getUid())) CommentBox.setVisibility(View.GONE);
 
                     //get thông tin tour
                     tourName.setText(formatTourName(tour.getName()));
@@ -246,7 +254,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                             }
                         }
-                        });
+                    });
                 }
             }
         });
@@ -255,13 +263,13 @@ public class DetailsActivity extends AppCompatActivity {
     private void loadRatingComment(){
         Query searchQuery  = db.collection("Rating").whereEqualTo("tour_id", tourID);
         //Bind data
-        FirestoreRecyclerOptions<Comment> response = new FirestoreRecyclerOptions.Builder<Comment>()
-                .setQuery(searchQuery, Comment.class)
+        FirestoreRecyclerOptions<Rating> response = new FirestoreRecyclerOptions.Builder<Rating>()
+                .setQuery(searchQuery, Rating.class)
                 .build();
 
-        adapterTourComment = new FirestoreRecyclerAdapter<Comment, CommentViewHolder>(response) {
+        adapterTourComment = new FirestoreRecyclerAdapter<Rating, CommentViewHolder>(response) {
             @Override
-            public void onBindViewHolder(CommentViewHolder holder, int position, Comment model) {
+            public void onBindViewHolder(CommentViewHolder holder, int position, Rating model) {
                 db.collection("User").document(model.getUser_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     //chỗ code ngu nè
                     @Override
@@ -269,6 +277,10 @@ public class DetailsActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             User b = documentSnapshot.toObject(User.class);
                             holder.setDetail(model, b);
+
+                            //Nếu user đánh giá rồi thì không cho đánh giá nữa
+                            if (b.getId().equals(mAuth.getUid())) CommentBox.setVisibility(View.GONE);
+
                         }
                     }
                 });
@@ -297,14 +309,13 @@ public class DetailsActivity extends AppCompatActivity {
         //check user đăng nhập hay chưa
         btnUploadComment = (Button) findViewById(R.id.detail_comment_current_user_btn_upload);
         btnGoToLogin = (Button) findViewById(R.id.detail_btn_GotoLogin);
-        CommentBox = (LinearLayout) findViewById(R.id.detail_comment_current_user_box);
         current_user_avatar = (ImageView) findViewById(R.id.detail_comment_current_user_avatar);
         current_user_comment = (EditText) findViewById(R.id.detail_comment_current_user_comment);
         current_user_rate_1 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_1);
-        current_user_rate_1 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_2);
-        current_user_rate_1 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_3);
-        current_user_rate_1 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_4);
-        current_user_rate_1 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_5);
+        current_user_rate_2 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_2);
+        current_user_rate_3 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_3);
+        current_user_rate_4 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_4);
+        current_user_rate_5 = (RadioButton) findViewById(R.id.detail_comment_current_user_rate_5);
         current_user_comment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -319,6 +330,8 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
+
+        //chưa đăng nhập thì không cho đánh giá
         if (mAuth.getCurrentUser() == null){
             CommentBox.setVisibility(View.GONE);
             btnGoToLogin.setOnClickListener(new View.OnClickListener() {
@@ -330,6 +343,8 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //đăng nhập rồi
         else {
             btnGoToLogin.setVisibility(View.GONE);
 
@@ -344,7 +359,7 @@ public class DetailsActivity extends AppCompatActivity {
                         islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                             @Override
                             public void onSuccess(byte[] bytes) {
-                                // Data for "images/island.jpg" is returns, use this as needed
+                                //set avatar
                                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                                 current_user_avatar.setImageBitmap(bitmap);
                             }
@@ -352,14 +367,44 @@ public class DetailsActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception exception) {
                                 // Handle any errors
-                                System.out.println("Fail");
+                                System.out.println("Fail to load avatar user");
                             }
                         });
+
+                    }
+                }
+            });
+
+            btnUploadComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (checkValidInput() == true){
+                        int rate;
+                        if (current_user_rate_1.isChecked()) rate = 1;
+                        else if (current_user_rate_2.isChecked()) rate = 2;
+                        else if (current_user_rate_3.isChecked()) rate = 3;
+                        else if (current_user_rate_4.isChecked()) rate = 4;
+                        else rate = 5;
+                        Rating userRating = new Rating(mAuth.getUid(), tourID, current_user_comment.getText().toString(), rate);
+                        Rating.addRating(userRating);
+                        Tour.alterRating(tourID, rate);
                     }
                 }
             });
 
         }
+    }
+
+    boolean checkValidInput(){
+        if (current_user_comment.getText().toString().equals("")){
+            Toast.makeText(DetailsActivity.this, "Vui lòng nhập ý kiến đánh giá của bạn", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else if (!current_user_rate_1.isChecked() && !current_user_rate_2.isChecked() && !current_user_rate_3.isChecked() && !current_user_rate_4.isChecked() && !current_user_rate_5.isChecked()){
+            Toast.makeText(DetailsActivity.this, "Vui lòng chọn đánh giá của bạn", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     String formatTourName(String name){

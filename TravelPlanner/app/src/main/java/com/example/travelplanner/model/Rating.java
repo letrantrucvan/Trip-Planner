@@ -1,6 +1,8 @@
 package com.example.travelplanner.model;
 
-public class Comment {
+import com.google.firebase.firestore.FirebaseFirestore;
+
+public class Rating {
     private String user_id;
     private String tour_id;
     private String comment;
@@ -31,5 +33,18 @@ public class Comment {
         this.rate = rate;
     }
 
+    static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    Rating(){};
+    public Rating(String user_id, String tour_id, String comment, Integer rate) {
+        this.user_id = user_id;
+        this.tour_id = tour_id;
+        this.comment = comment;
+        this.rate = rate;
+    }
+
+    public static void addRating(Rating newRating){
+        db.collection("Rating").add(newRating);
+    }
 
 }
