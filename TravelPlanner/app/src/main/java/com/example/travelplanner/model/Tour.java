@@ -108,10 +108,16 @@ public class Tour {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     Tour tour = documentSnapshot.toObject(Tour.class);
-                    Integer newRatingNumber = tour.getRating_number() + 1;
-                    Double newRatingAvg = ((tour.getRating_avg()*tour.getRating_number()) + (float) rate) / newRatingNumber;
-                    tour.setRating_number(newRatingNumber);
-                    tour.setRating_avg(newRatingAvg);
+                    if (tour.getRating_number() == 0){
+                        tour.setRating_number(1);
+                        tour.setRating_avg(rate*1.0);
+                    }
+                    else {
+                        Integer newRatingNumber = tour.getRating_number() + 1;
+                        Double newRatingAvg = ((tour.getRating_avg()*tour.getRating_number()) + (float) rate) / newRatingNumber;
+                        tour.setRating_number(newRatingNumber);
+                        tour.setRating_avg(newRatingAvg);
+                    }
                     Tour.editRating(tour);
                 }
             }

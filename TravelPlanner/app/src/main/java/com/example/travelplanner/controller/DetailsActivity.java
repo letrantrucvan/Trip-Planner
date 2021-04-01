@@ -73,6 +73,9 @@ public class DetailsActivity extends AppCompatActivity {
     private RadioButton current_user_rate_5;
     private Button btnUploadComment;
 
+    private ImageView iconSaved;
+    private ImageView iconUnSaved;
+
     private LinearLayout CommentBox;
 
     private FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -112,6 +115,8 @@ public class DetailsActivity extends AppCompatActivity {
         mResultCommentTour = (RecyclerView) findViewById(R.id.recycleviewCommentDetail);
         mResultCommentTour.setLayoutManager(new LinearLayoutManager(this));
 
+        iconSaved = (ImageView) findViewById(R.id.detail_icon_not_saved_tour);
+        iconUnSaved = (ImageView) findViewById(R.id.detail_icon_saved_tour);
 
         CommentBox = (LinearLayout) findViewById(R.id.detail_comment_current_user_box);
 
@@ -186,6 +191,29 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        iconSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAuth.getCurrentUser() == null){
+                    Toast.makeText(DetailsActivity.this, "Bạn vui lòng đăng nhập để lưu Tour", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                User.saveTour(mAuth.getUid(), tourID);
+                iconSaved.setVisibility(View.GONE);
+                iconUnSaved.setVisibility(View.VISIBLE);
+                Toast.makeText(DetailsActivity.this, "Đã lưu Tour", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        iconUnSaved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User.unsaveTour(mAuth.getUid(), tourID);
+                iconSaved.setVisibility(View.VISIBLE);
+                iconUnSaved.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void loadUI() {
@@ -197,14 +225,18 @@ public class DetailsActivity extends AppCompatActivity {
                     Tour tour = documentSnapshot.toObject(Tour.class);
 
                     //nếu chủ tour là user thì không cho đánh giá
-                    if (tour.getAuthor_id().equals(mAuth.getUid())) CommentBox.setVisibility(View.GONE);
+                    if (tour.getAuthor_id().equals(mAuth.getUid())) {
+                        CommentBox.setVisibility(View.GONE);
+                        iconSaved.setVisibility(View.GONE);
+                        iconUnSaved.setVisibility(View.GONE);
+                    }
 
                     //get thông tin tour
                     tourName.setText(formatTourName(tour.getName()));
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
                     tourPublishDay.setText("Đăng ngày " + tour.getPublish_day());
-                    tourRating.setText(formatTourRating(tour.getRating_avg().toString()));
+                    tourRating.setText(formatTourRating(tour.getRating_avg()));
 
                     //get avatar
                     StorageReference islandRef = storage.getReference().child(tour.getCover());
@@ -331,9 +363,10 @@ public class DetailsActivity extends AppCompatActivity {
         });
 
 
-        //chưa đăng nhập thì không cho đánh giá
+        //chưa đăng nhập thì ẩn nút đánh giá và không cho lưu
         if (mAuth.getCurrentUser() == null){
             CommentBox.setVisibility(View.GONE);
+            iconUnSaved.setVisibility(View.GONE);
             btnGoToLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -353,6 +386,15 @@ public class DetailsActivity extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()){
                         User user = documentSnapshot.toObject(User.class);
+
+                        //set icon save or unsave tour
+                        if (user.getSaved_tour() == null || !user.getSaved_tour().contains(tourID)){
+                            iconUnSaved.setVisibility(View.GONE);
+                        }
+                        else {
+                            iconSaved.setVisibility(View.GONE);
+                        }
+
                         //get avatar
                         StorageReference islandRef = storage.getReference().child(user.getLink_ava_user());
                         final long ONE_MEGABYTE = 1024 * 1024;
@@ -414,7 +456,11 @@ public class DetailsActivity extends AppCompatActivity {
         }
         return name;
     }
-    String formatTourRating(String rating){
+    String formatTourRating(Double rate){
+        if (rate == null){
+            return  "Chưa có";
+        }
+        String rating = rate.toString();
         if (rating.charAt(rating.length()-1) == '0'){
             return rating.substring(0, 1);
         }

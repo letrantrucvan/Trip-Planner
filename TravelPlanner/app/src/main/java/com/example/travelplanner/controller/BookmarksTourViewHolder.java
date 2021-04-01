@@ -49,6 +49,7 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
                 // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 cover.setImageBitmap(bitmap);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

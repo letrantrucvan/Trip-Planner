@@ -40,11 +40,18 @@
                 android:textSize="20sp"/>
 
             <ImageView
-                android:id="@+id/imageView11"
+                android:id="@+id/detail_icon_not_saved_tour"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_outline_bookmark_border_24"
+                android:foregroundGravity="right"/>
+            <ImageView
+                android:id="@+id/detail_icon_saved_tour"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_baseline_bookmark_24"
                 android:foregroundGravity="right"/>
         </LinearLayout>
 
