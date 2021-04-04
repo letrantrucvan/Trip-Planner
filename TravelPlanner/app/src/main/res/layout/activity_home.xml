@@ -9,9 +9,11 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.example.travelplanner.fragment.HomeFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:navGraph="@navigation/my_navi"
+        app:defaultNavHost="true"
 
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"

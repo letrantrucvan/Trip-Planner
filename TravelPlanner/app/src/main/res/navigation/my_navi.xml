@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/my_navi"
-    app:startDestination="@id/discoverFragment">
+    app:startDestination="@id/homeFragment"
+    >
 
     <fragment
         android:id="@+id/discoverFragment"
@@ -22,7 +23,8 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_create_tour"
-            app:destination="@id/create_tour" />
+            app:destination="@id/create_tour"
+            app:enterAnim="@anim/from_bottom" />
     </fragment>
     <fragment
         android:id="@+id/bookmarkFragment"
@@ -38,5 +40,14 @@
         android:id="@+id/create_tour"
         android:name="com.example.travelplanner.create_tour"
         android:label="fragment_create_tour"
-        tools:layout="@layout/fragment_create_tour" />
+        tools:layout="@layout/fragment_create_tour" >
+        <action
+            android:id="@+id/action_create_tour_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTourFragment"
+        android:name="com.example.travelplanner.editTourFragment"
+        android:label="fragment_edit_tour"
+        tools:layout="@layout/fragment_edit_tour" />
 </navigation>

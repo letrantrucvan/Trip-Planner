@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,6 +110,16 @@ public class create_tour extends Fragment {
 
         getUserID();
         storage = FirebaseStorage.getInstance();
+
+        ImageView close = (ImageView) create_tour.findViewById(R.id.close);
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(create_tour).navigate(R.id.action_create_tour_to_homeFragment);
+            }
+        });
+
 
 
         //Get info to create
