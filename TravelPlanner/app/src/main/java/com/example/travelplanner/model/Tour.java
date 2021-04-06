@@ -1,11 +1,23 @@
 package com.example.travelplanner.model;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Tour {
     private String tour_id;
@@ -17,13 +29,20 @@ public class Tour {
     private String publish_day;
     private Integer rating_number;
     private Double rating_avg;
-
+    private List<String> waypoints;
     private boolean archived_mode;
     private boolean isActive;
-
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Tour(){}
+
+    public Tour(String name, String author_id, String des, String publish_day) {
+        this.name = name;
+        this.author_id = author_id;
+        this.des = des;
+        this.publish_day = publish_day;
+
+    }
 
 
     //get
@@ -36,6 +55,7 @@ public class Tour {
     public String getAuthor_id() {
         return author_id;
     }
+    @Exclude
     public String getAuthor_name() {
         return author_name;
     }
@@ -59,6 +79,9 @@ public class Tour {
     }
     public boolean isActive() {
         return isActive;
+    }
+    public List<String> getWaypoints() {
+        return waypoints;
     }
 
     //set
@@ -99,6 +122,9 @@ public class Tour {
     public void setActive(boolean active) {
         isActive = active;
     }
+    public void setWaypoints(List<String> waypoints) {
+        this.waypoints = waypoints;
+    }
 
     static public void getHighlightedTour(){}
     static public void getNearByTour(){}
@@ -126,6 +152,37 @@ public class Tour {
     public static void editRating(Tour tour){
         db.collection("Tour").document(tour.getTour_id()).update("rating_number", tour.getRating_number());
         db.collection("Tour").document(tour.getTour_id()).update("rating_avg", tour.getRating_avg());
+    }
+
+    public static String addTour(Tour tour){
+        DocumentReference newTourReference = db.collection("Tour").document();
+        String tourID = newTourReference.getId();
+        tour.setId(tourID);
+        tour.setCover("Tour/" + tourID);
+        tour.setRating_number(0);
+        newTourReference.set(tour);
+        return tourID;
+    }
+
+    public static void uploadCover(String tourID, Bitmap cover){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Tour/" + tourID);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        cover.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            }
+
+        });
     }
 
     @Override

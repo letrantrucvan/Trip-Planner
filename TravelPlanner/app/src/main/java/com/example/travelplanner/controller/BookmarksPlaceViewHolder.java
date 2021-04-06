@@ -30,7 +30,7 @@ public class BookmarksPlaceViewHolder extends RecyclerView.ViewHolder{
         ImageView cover = (ImageView) mView.findViewById(R.id.bookmarkPlaceAvatar);
         TextView name  = (TextView) mView.findViewById(R.id.bookmarkPlaceName);
 
-        name.setText(formatPlaceName(model.getName()));
+        name.setText(model.getName());
 
         StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -48,14 +48,6 @@ public class BookmarksPlaceViewHolder extends RecyclerView.ViewHolder{
                 System.out.println("Fail");
             }
         });
-    }
-
-    String formatPlaceName(String name){
-        if (name.length() > 18){
-            name = name.substring(0, 16);
-            name += "...";
-        }
-        return name;
     }
 
 }

@@ -175,10 +175,18 @@ public class UserInfoFragment extends Fragment {
                         //Mở máy chụp hình
                         //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         //startActivityForResult(intent, REQUEST_CODE_IMAGE);
+
+                        //mở drive
                         Intent i = new Intent();
                         i.setType("image/*");
                         i.setAction(Intent.ACTION_GET_CONTENT);
                         startActivityForResult(i, REQUEST_CODE_IMAGE);
+
+
+                        //mở album
+                        //Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        //startActivityForResult(intent, REQUEST_CODE_IMAGE);
+
                     }
                 });
             }
@@ -192,33 +200,14 @@ public class UserInfoFragment extends Fragment {
                 edtName.setEnabled(false);
                 imgvAvatar.setOnClickListener(null);
 
-                //upload Aavatar moi len storage/
-                // Get the data from an ImageView as bytes
-                StorageReference storageRef = storage.getReference().child("Avatar/" + mAuth.getCurrentUser().getUid());
-                imgvAvatar.setDrawingCacheEnabled(true);
-                imgvAvatar.buildDrawingCache();
-                Bitmap bitmap = ((BitmapDrawable) imgvAvatar.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                byte[] data = baos.toByteArray();
-
-                UploadTask uploadTask = storageRef.putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    }
-
-                });
-
                 //saveInfo vo database user
                 User.editInfo(mAuth.getUid(), edtName.getText().toString());
 
+                //upload Aavatar moi len storage/
+                imgvAvatar.setDrawingCacheEnabled(true);
+                imgvAvatar.buildDrawingCache();
+                Bitmap bitmap = ((BitmapDrawable) imgvAvatar.getDrawable()).getBitmap();
+                User.uploadAvatar(mAuth.getCurrentUser().getUid(), bitmap);
             }
         });
         return userInfo;
@@ -228,8 +217,6 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data!=null){
-            //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            //imgvAvatar.setImageBitmap(bitmap);
             Picasso.with(getContext()).load(data.getData()).into(imgvAvatar);
         }
         super.onActivityResult(requestCode, resultCode, data);

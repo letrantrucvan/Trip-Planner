@@ -61,13 +61,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
 
 
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView"
-                    android:layout_width="353dp"
+                    android:layout_width="match_parent"
                     android:layout_height="353dp"
                     android:layout_marginTop="24dp"
                     android:layout_centerHorizontal="true"
@@ -75,8 +76,8 @@
 
                     <ImageView
                         android:id="@+id/imageView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/discover" />
@@ -103,19 +104,6 @@
                     android:layout_below="@id/cardView"
                     app:cardBackgroundColor="@color/notSoDark"
                     app:cardCornerRadius="20dp">
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="204dp"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="42dp"
-                        android:fontFamily="sans-serif"
-                        android:text="China"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="203dp"
@@ -128,6 +116,18 @@
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:typeface="normal" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="204dp"
+                        android:layout_height="27dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="42dp"
+                        android:fontFamily="sans-serif"
+                        android:text="China"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/textView6"
@@ -145,7 +145,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView3"
-                    android:layout_width="353dp"
+                    android:layout_width="match_parent"
                     android:layout_height="353dp"
                     android:layout_marginTop="32dp"
                     android:layout_centerHorizontal="true"
@@ -226,7 +226,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/spring"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginBottom="-70dp"
                     android:text="Chuyến đi mùa xuân"
                     android:textColor="@color/white"
@@ -235,8 +234,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/spring"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="80dp"
@@ -254,7 +251,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/fyp"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginBottom="-40dp"
                     android:text="Dành cho bạn"
                     android:textColor="@color/white"
@@ -263,8 +259,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/fyp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="50dp"
@@ -281,7 +275,6 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginBottom="-40dp"
                     android:layout_above="@+id/island"
                     android:textColor="@color/white"
@@ -291,8 +284,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/island"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="50dp"
@@ -305,7 +296,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/budget"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginBottom="-40dp"
                     android:text="Chuyến đi rẻ tiền"
                     android:textColor="@color/white"
@@ -314,8 +304,6 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/budget"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="50dp"

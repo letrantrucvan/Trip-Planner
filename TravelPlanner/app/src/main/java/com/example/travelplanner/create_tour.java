@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,8 +57,6 @@ public class create_tour extends Fragment {
     private TextView des;
     private ImageView cover_pic;
     private Button finish;
-    private String user_id;
-    private String Tour_id;
 
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
@@ -107,8 +106,6 @@ public class create_tour extends Fragment {
         FrameLayout create_tour = (FrameLayout) inflater.inflate(R.layout.fragment_create_tour, container, false);
 
         mAuth = FirebaseAuth.getInstance();
-
-        getUserID();
         storage = FirebaseStorage.getInstance();
 
         ImageView close = (ImageView) create_tour.findViewById(R.id.close);
@@ -146,64 +143,23 @@ public class create_tour extends Fragment {
         finish.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Tour_id = "";
-                String pattern = "dd-MM-yyyy";
-                String dateInString =new SimpleDateFormat(pattern).format(new Date());
+                String pattern = "dd/MM/yyyy";
+                String dateInString = new SimpleDateFormat(pattern).format(new Date());
+                String tourName = trip_name.getText().toString();
+                String tourDescription = des.getText().toString();
+                Tour newTour = new Tour(tourName, mAuth.getUid(), tourDescription, dateInString);
+                String tourID = Tour.addTour(newTour);
 
-                Map<String, Object> data = new HashMap<>();
-                data.put("author_id", user_id);
-                data.put("name", trip_name.getText().toString());
-                data.put("des", des.getText().toString());
-                data.put("publish_day", dateInString);
-                data.put("upvote_number", 0);
-
-                db.collection("Tour")
-                        .add(data)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Tour_id = documentReference.getId();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                System.out.println("failed");
-                            }
-                        });
-
-                data.put("cover", "Tour/"+Tour_id);
-                data.put("Tour_id", Tour_id);
-                db.collection("Tour").document(Tour_id)
-                        .set(data, SetOptions.merge());
-
-
-
-                StorageReference storageRef = storage.getReference().child("Tour/" + Tour_id);
+                //up avatar vô Storage
                 cover_pic.setDrawingCacheEnabled(true);
                 cover_pic.buildDrawingCache();
                 Bitmap bitmap = ((BitmapDrawable) cover_pic.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                byte[] dataz = baos.toByteArray();
+                Tour.uploadCover(tourID, bitmap);
 
-                UploadTask uploadTask = storageRef.putBytes(dataz);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    }
-
-                });
+                //chuyển về fragment home
+                Navigation.findNavController(create_tour).navigate(R.id.action_create_tour_to_homeFragment);
             }
         });
-
-
 
         return create_tour;
     }
@@ -211,22 +167,8 @@ public class create_tour extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data!=null){
-            //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            //imgvAvatar.setImageBitmap(bitmap);
             Picasso.with(getContext()).load(data.getData()).into(cover_pic);
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void getUserID(){
-        db.collection("User").document(mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    User user = documentSnapshot.toObject(User.class);
-                    user_id = user.getId();
-                }
-            }
-        });
     }
 }

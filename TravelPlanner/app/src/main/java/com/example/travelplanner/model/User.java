@@ -1,5 +1,6 @@
 package com.example.travelplanner.model;
 
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Toast;
 
@@ -8,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.travelplanner.controller.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,9 +18,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.sql.Array;
 import java.util.ArrayList;
@@ -113,26 +119,33 @@ public class User implements Serializable {
         db.collection("User").document(userID).update("link_ava_user", "Avatar/" + userID);
     }
 
-    public static void saveTour(String userID, String tourID){
-        db.collection("User").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    public static void uploadAvatar(String userID, Bitmap avatar){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Avatar/" + userID);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        avatar.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    User b = documentSnapshot.toObject(User.class);
-                    List<String> tourList = b.getSaved_tour();
-                    if (tourList == null){
-                        tourList = Arrays.asList(tourID);
-                    }
-                    else {
-                        tourList.add(tourID);
-                    }
-                    db.collection("User").document(userID).update("saved_tour", tourList);
-                }
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
             }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            }
+
         });
     }
 
+    public static void saveTour(String userID, String tourID){
+        db.collection("User").document(userID).update("saved_tour", FieldValue.arrayUnion(tourID));
+    }
+
     public static void unsaveTour(String userID, String tourID){
+        //db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
         db.collection("User").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -140,26 +153,15 @@ public class User implements Serializable {
                     User b = documentSnapshot.toObject(User.class);
                     List<String> tourList = b.getSaved_tour();
                     if (tourList.size() == 1){
-                        tourList = null;
+                        db.collection("User").document(userID).update("saved_tour", null);
                     }
                     else {
-                        tourList.remove(tourID);
+                        db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
                     }
-                    db.collection("User").document(userID).update("saved_tour", tourList);
+
                 }
             }
         });
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", fullname='" + fullname + '\'' +
-                ", email='" + email + '\'' +
-                ", link_ava_user='" + link_ava_user + '\'' +
-                ", active=" + active +
-                ", saved_tour=" + saved_tour +
-                '}';
-    }
 }

@@ -147,7 +147,7 @@ public class SearchResult extends AppCompatActivity {
         adapter = new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
                 @Override
                 public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
-                    holder.setDetail(model.getCover(), model.getName(), model.getDes());
+                    holder.setDetail(model);
                 }
 
                 @Override

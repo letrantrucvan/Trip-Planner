@@ -11,7 +11,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         android:orientation="vertical">
 
 
@@ -49,7 +48,7 @@
                 android:enabled="false"
                 android:inputType="textPersonName"
                 android:gravity="center"
-                android:background="@color/black"
+                android:background="@color/transparent"
                 android:textColor="@color/white"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
@@ -62,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@color/black"
+                android:background="@color/transparent"
                 android:textColor="@color/orange"
                 android:textStyle="bold"
                 android:textSize="14dp"
@@ -88,7 +87,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
+                android:background="@color/transparent"
                 android:textColor="@color/white"
                 android:layout_marginTop="40dp"
                 android:textStyle="bold"
@@ -99,7 +98,7 @@
                 android:id="@+id/userinformation_edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
+                android:background="@color/transparent"
                 android:textColor="@color/grey"
                 android:layout_marginTop="10dp"
                 android:textStyle="bold|italic"
