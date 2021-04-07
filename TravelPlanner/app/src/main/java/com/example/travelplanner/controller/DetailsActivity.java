@@ -26,16 +26,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.adapter.DestinationAdapter;
+import com.example.travelplanner.adapter.WaypointAdapter;
 import com.example.travelplanner.fragment.FragmentMaps;
 import com.example.travelplanner.fragment.FragmentTwo;
 import com.example.travelplanner.fragment.TabFragmentAdapter;
+import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Rating;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -46,8 +51,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeMap;
+
 public class DetailsActivity extends AppCompatActivity {
 
+    private static final String TAG = "Thu DetailsActivity";
     private Button readMore;
     private TextView tourDescription;
     private TextView tourDescriptionFull;
@@ -60,7 +70,7 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView tourPublishDay;
     private TextView tourRating;
 
-    private RecyclerView mResultCommentTour;
+    private RecyclerView mResultCommentTour, waypointRecyclerView;
     private FirestoreRecyclerAdapter adapterTourComment;
 
     private Button btnGoToLogin;
@@ -89,7 +99,9 @@ public class DetailsActivity extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private int indicatorWidth;
-
+    //Waypoints
+    public static ArrayList<MyPlace> waypoints = new ArrayList<>();
+    public static Tour cur_Tour;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +129,10 @@ public class DetailsActivity extends AppCompatActivity {
 
         iconSaved = (ImageView) findViewById(R.id.detail_icon_not_saved_tour);
         iconUnSaved = (ImageView) findViewById(R.id.detail_icon_saved_tour);
+
+        waypointRecyclerView = findViewById(R.id.waypoints);
+        waypointRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
 
         CommentBox = (LinearLayout) findViewById(R.id.detail_comment_current_user_box);
 
@@ -223,7 +239,7 @@ public class DetailsActivity extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     Tour tour = documentSnapshot.toObject(Tour.class);
-
+                    cur_Tour = tour;
                     //nếu chủ tour là user thì không cho đánh giá
                     if (tour.getAuthor_id().equals(mAuth.getUid())) {
                         CommentBox.setVisibility(View.GONE);
@@ -232,11 +248,48 @@ public class DetailsActivity extends AppCompatActivity {
                     }
 
                     //get thông tin tour
+                    waypoints.clear();
                     tourName.setText(formatTourName(tour.getName()));
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
                     tourPublishDay.setText("Đăng ngày " + tour.getPublish_day());
+
                     tourRating.setText(formatTourRating(tour.getRating_avg()));
+
+                    ArrayList<String> waypointIDs = tour.getWaypoints();
+
+                    TreeMap<Integer, MyPlace> map = new TreeMap<Integer, MyPlace>();
+                    for(int i = 0; i< waypointIDs.size(); i++)
+                    {
+                        int finalI = i;
+                        db.collection("Place").document(waypointIDs.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        map.put(finalI, document.toObject(MyPlace.class));
+
+                                    } else {
+                                        Log.d(TAG, "No such document");
+                                    }
+                                    if ( map.size() == waypointIDs.size())
+                                    {
+                                        Log.i(TAG, map.toString());
+                                        for (Integer key : map.keySet()) {
+                                            waypoints.add( map.get(key));
+                                            System.out.println(key + " - " + map.get(key));
+                                        }
+                                        WaypointAdapter destinationAdapter = new WaypointAdapter(DetailsActivity.this, waypoints);
+                                        waypointRecyclerView.setAdapter(destinationAdapter);
+                                    }
+                                } else {
+                                    Log.d(TAG, "get failed with ", task.getException());
+                                }
+                            }
+                        });
+                    }
+
 
                     //get avatar
                     StorageReference islandRef = storage.getReference().child(tour.getCover());

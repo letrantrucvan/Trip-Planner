@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+
+        android:layout_width="match_parent"
+        android:layout_height="535dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/custom_blur" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <eightbitlab.com.blurview.BlurView
+                android:layout_marginVertical="70dp"
+                android:layout_marginHorizontal="20dp"
+
+                android:layout_gravity="center"
+                android:id="@+id/blurName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:blurOverlayColor="#00D1D1D1">
+
+                <!--Any child View here, TabLayout for example. This View will NOT be blurred -->
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:gravity="center"
+                android:background="@android:color/transparent"
+                android:text="Tên địa điểm"
+                android:textColor="#fff"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+            </eightbitlab.com.blurview.BlurView>
+
+
+
+            <eightbitlab.com.blurview.BlurView
+                android:layout_marginHorizontal="13dp"
+                android:layout_marginTop="50dp"
+                android:layout_gravity="center"
+                android:id="@+id/blurDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:blurOverlayColor="#8AD5D5D5">
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <LinearLayout
+
+                        android:id="@+id/row_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+
+                            android:id="@+id/label_address"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_location_on_24" />
+
+                        <TextView
+                            android:id="@+id/val_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/row_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+                            android:id="@+id/label_phone"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_perm_phone_msg_24" />
+
+                        <TextView
+                            android:id="@+id/val_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:linksClickable="true" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/row_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+                            android:id="@+id/label_price"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_monetization_on_24" />
+
+                        <TextView
+                            android:id="@+id/val_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/row_rating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+                            android:id="@+id/label_rating"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_rate_review_24" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <RatingBar
+                                android:id="@+id/val_rating"
+                                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:isIndicator="true"
+                                android:numStars="5"
+                                android:stepSize="0.1" />
+
+                            <TextView
+                                android:id="@+id/total_rating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:gravity="center|center_vertical"
+                                android:textSize="9sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/row_ggPage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp">
+
+                        <ImageView
+                            android:id="@+id/label_ggPage"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_link_24" />
+
+                        <TextView
+                            android:id="@+id/val_ggPage"
+                            android:maxLines="2"
+                            android:ellipsize = "end"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/row_webpage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+
+                        android:layout_marginBottom="40dp">
+
+                        <ImageView
+                            android:id="@+id/label_webpage"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/ic_baseline_link_24" />
+
+                        <TextView
+                            android:maxLines="2"
+                            android:ellipsize = "end"
+                            android:id="@+id/val_webpage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </eightbitlab.com.blurview.BlurView>
+
+            <eightbitlab.com.blurview.BlurView
+                android:layout_marginHorizontal="8dp"
+                android:layout_gravity="center"
+                android:id="@+id/blurPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:blurOverlayColor="#B0C1C1C1">
+                <LinearLayout
+                    android:id="@+id/place_photos_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:text="Hình ảnh"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/place_photos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
+            </eightbitlab.com.blurview.BlurView>
+            <eightbitlab.com.blurview.BlurView
+                android:layout_marginHorizontal="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/blurMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:blurOverlayColor="#B0C1C1C1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:padding="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="#fff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="Bản đồ"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+
+                <fragment xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/mapPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp"
+                    class="com.example.travelplanner.fragment.MapFragment"
+                    tools:context=".PlaceDetailActivity" />
+
+
+            </LinearLayout>
+            </eightbitlab.com.blurview.BlurView>
+
+            <eightbitlab.com.blurview.BlurView
+                android:layout_gravity="center"
+                android:id="@+id/blurReview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_marginBottom="50dp"
+                app:blurOverlayColor="#B0C1C1C1">
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/review_zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:textColor="#fff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="10dp"
+                    android:text="Đánh giá"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/img_review"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="40dp"
+                        android:gravity="center_horizontal"
+                        android:src="@mipmap/ic_launcher"
+                        android:textAlignment="center" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/name_review"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:text="Tên người dùng"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="0dp"
+                            android:orientation="vertical"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp">
+
+                            <RatingBar
+                                android:id="@+id/rating_review"
+                                style="@style/Widget.AppCompat.RatingBar.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:isIndicator="true"
+                                android:numStars="5"
+                                android:progressTint="#FFE57F"
+                                android:stepSize="0.1" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/time_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="5dp"
+                            android:text="time"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/text_review"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="0dp"
+                            android:layout_marginBottom="20dp"
+                            android:paddingBottom="30dp"
+                            android:maxLines="5"
+                            android:ellipsize = "end"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <TextView
+                    android:textColor="#fff"
+                    android:id="@+id/show_all_reviews"
+                    android:paddingVertical="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Xem tất cả đánh giá"
+                    android:background="#979F9F9F"
+                    android:gravity="center"
+                    android:textSize="19sp"/>
+            </LinearLayout>
+            </eightbitlab.com.blurview.BlurView>
+
+            <eightbitlab.com.blurview.BlurView
+                android:layout_gravity="center"
+                android:id="@+id/blurNearby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                app:blurOverlayColor="#B0C1C1C1">
+
+
+            <LinearLayout
+                android:id="@+id/destinationParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:textColor="#fff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginVertical="10dp"
+                    android:text="Địa điểm gần đây"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/nearby_destinations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+            </eightbitlab.com.blurview.BlurView>
+
+            <eightbitlab.com.blurview.BlurView
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:id="@+id/blurTrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:blurOverlayColor="#B0C1C1C1">
+                <LinearLayout
+                    android:id="@+id/activitiesParent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="#fff"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:text="Chuyến đi liên quan"
+                        android:textSize="26sp"
+                        android:textStyle="bold"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/relative_tour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginVertical="20dp"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+
+            </eightbitlab.com.blurview.BlurView>
+        </LinearLayout>
+
+    </ScrollView>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/addButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_baseline_playlist_add_24"
+    android:layout_alignParentEnd="true"
+    android:layout_alignParentBottom="true"
+    android:layout_margin="36dp"
+    android:background="@android:color/transparent"/>
+</RelativeLayout>

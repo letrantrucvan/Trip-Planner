@@ -104,9 +104,7 @@ public class FragmentMaps extends Fragment  {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
             }
         });
-
         return rootView;
     }
-
 
 }

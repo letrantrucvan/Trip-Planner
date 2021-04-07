@@ -183,36 +183,29 @@
                     android:layout_gravity="center"/>
 
                 <LinearLayout
-                    android:id="@+id/ct2"
+                    android:id="@+id/destinationParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    >
 
                     <TextView
-                        android:id="@+id/textView12"
-                        android:layout_width="wrap_content"
+                        android:textColor="#fff"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
-                        android:text="Địa điểm"
-                        android:textColor="@color/white"
-                        android:textSize="20dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginVertical="10dp"
+                        android:text="Điểm đến"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
 
-                    <!--recycleview-->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="280dp"
-                        android:layout_height="150dp"
-                        android:layout_marginRight="10dp"
-                        app:cardCornerRadius="20dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/img1"/>
-                    </androidx.cardview.widget.CardView>
-                    <!-- recycleview-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/waypoints"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="5dp"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal" />
 
                 </LinearLayout>
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerOrder">
+        <item>Mặc định</item>
+        <item>Cao nhất</item>
+        <item>Thấp nhất</item>
+        <item>Mới nhất</item>
+        <item>Cũ nhất</item>
+    </string-array>
+</resources>

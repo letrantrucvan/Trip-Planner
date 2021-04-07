@@ -1,13 +1,27 @@
 package com.example.travelplanner.model;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.example.travelplanner.R;
+import com.example.travelplanner.adapter.ListAdapterTripPopUp;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Tour {
+    static final String TAG = "Thu Tour";
     private String tour_id;
     private String name;
     private String author_id;
@@ -17,9 +31,10 @@ public class Tour {
     private String publish_day;
     private Integer rating_number;
     private Double rating_avg;
-
     private boolean archived_mode;
     private boolean isActive;
+
+    public ArrayList<String> waypoints = new ArrayList<>();
 
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -60,6 +75,7 @@ public class Tour {
     public boolean isActive() {
         return isActive;
     }
+    public ArrayList<String> getWaypoints() {return waypoints;}
 
     //set
     public void setId(String id) {
@@ -128,6 +144,44 @@ public class Tour {
         db.collection("Tour").document(tour.getTour_id()).update("rating_avg", tour.getRating_avg());
     }
 
+    public void addWaypoint(String PlaceID){
+        db.collection("Tour").document(getTour_id())
+                .update("waypoints", FieldValue.arrayUnion(PlaceID));
+    }
+    public void deleteWaypoint(String PlaceID){
+
+        db.collection("Tour").document(getTour_id())
+                .update("waypoints", FieldValue.arrayRemove(PlaceID));
+    }
+
+    public static ArrayList<Tour> getRelativeTour(String placeID)
+    {
+        ArrayList<Tour> tours = new ArrayList<>();
+        final Boolean[] done = {false};
+        Log.i(TAG, "getRelativeTour");
+        db.collection("Tour").whereArrayContains("waypoints", placeID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.i(TAG, "onComplete");
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Tour tour = document.toObject(Tour.class);
+//                                Log.d(TAG, "tour: "+ tour.toString());
+                                tour.setId(document.getId());
+                                tours.add(tour);
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                        done[0] = true;
+                    }
+                });
+        while(!done[0]){}
+        return tours;
+    }
     @Override
     public String toString() {
         return "Tour{" +

@@ -1,32 +1,25 @@
 package com.example.travelplanner.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.widget.Adapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
-import com.example.travelplanner.controller.ToursViewHolder;
+import com.example.travelplanner.controller.SearchActivity;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -60,7 +53,7 @@ public class DiscoverFragment extends Fragment {
     private RecyclerView islandTour;
     private RecyclerView fypTour;
     private RecyclerView budgetTour;
-
+    private ImageView search_ic;
     public DiscoverFragment() {
         // Required empty public constructor
     }
@@ -111,6 +104,13 @@ public class DiscoverFragment extends Fragment {
         budgetTour = (RecyclerView) v.findViewById(R.id.budget);
         budgetTour.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
+        search_ic = v.findViewById(R.id.search_ic);
+        search_ic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchActivity.class));
+            }
+        });
         Query searchQuery  = db.collection("Tour");
 
         //Bind data
