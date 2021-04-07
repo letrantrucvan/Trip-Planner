@@ -31,8 +31,8 @@ public class HomeActivity extends AppCompatActivity {
 
     static final String TAG ="Thu HomeActivity";
     static public String cur_location;
-    static public Double cur_lat;
-    static public Double cur_lng;
+    static public Double cur_lat = 0.0;
+    static public Double cur_lng = 0.0;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;

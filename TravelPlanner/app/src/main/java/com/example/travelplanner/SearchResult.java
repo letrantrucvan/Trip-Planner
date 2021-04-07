@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class SearchResult extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference mTour;
     private FirestoreRecyclerAdapter adapter;
+    Intent intent = getIntent();
    // private DatabaseReference mTour;
 
     @Override
@@ -83,7 +85,7 @@ public class SearchResult extends AppCompatActivity {
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToFireStore("This book is fantasty");
+                addToFireStore("Đà Lạt");
                 String searchText = mSearchField.getText().toString();
                 firestoreUserSearch(searchText);
             }
@@ -166,4 +168,8 @@ public class SearchResult extends AppCompatActivity {
         adapter.startListening();
         mResultList.setAdapter(adapter);
         }
+
+//        private void updateTourName(){
+//            db.collection("Tour").document("7fcmQHk9DmOTEgzD4WL1").update("rating_number", );
+//        }
     }

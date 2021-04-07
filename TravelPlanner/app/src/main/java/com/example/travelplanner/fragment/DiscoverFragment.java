@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.SearchResult;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
 import com.example.travelplanner.controller.SearchActivity;
 import com.example.travelplanner.controller.DetailsActivity;
@@ -58,6 +59,7 @@ public class DiscoverFragment extends Fragment {
     private RecyclerView fypTour;
     private RecyclerView budgetTour;
     private ImageView search_ic;
+
     public DiscoverFragment() {
         // Required empty public constructor
     }
@@ -98,6 +100,17 @@ public class DiscoverFragment extends Fragment {
         mytour = (RecyclerView) v.findViewById(R.id.spring);
         mytour.setHasFixedSize(true);
         mytour.setLayoutManager(layoutManager);
+
+//        searchBtn = (ImageView) v.findViewById(R.id.searchBtn);
+//        searchBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(getActivity(), SearchResult.class);
+////                String documentId = getSnapshots().getSnapshot(position).getId();
+////                i.putExtra("Key", documentId);
+//                startActivity(i);
+//            }
+//        });
 
         islandTour = (RecyclerView) v.findViewById(R.id.island);
         islandTour.setLayoutManager(new LinearLayoutManager(getContext()));
