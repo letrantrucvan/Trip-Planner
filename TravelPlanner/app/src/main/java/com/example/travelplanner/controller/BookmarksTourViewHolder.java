@@ -2,6 +2,7 @@ package com.example.travelplanner.controller;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.telephony.CellSignalStrength;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +34,14 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
         ImageView cover = (ImageView) mView.findViewById(R.id.bookmarkAvatar);
         TextView name  = (TextView) mView.findViewById(R.id.bookmarkTourName);
         TextView author = (TextView) mView.findViewById(R.id.bookmarkAuthor);
-        //TextView publish_day = (TextView) mView.findViewById(R.id.bookmarkPublishDay);
-        //TextView upvote = (TextView) mView.findViewById(R.id.bookmarkLikeNumber);
-
-        name.setText(formatTourName(model.getName()));
+        TextView waypoint = (TextView) mView.findViewById(R.id.bookmarkWayPoint);
+        name.setText(model.getName());
         author.setText("Đăng bởi " + model.getAuthor_name());
-        //publish_day.setText(model.getPublish_day());
-        //upvote.setText(model.getUpvote_number().toString());
+
+        if (model.getWaypoints() == null){
+            waypoint.setText("0 địa điểm");
+        }
+        else waypoint.setText(model.getWaypoints().size() + " địa điểm");
 
         StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
         final long ONE_MEGABYTE = 1024 * 1024;
@@ -60,15 +62,6 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
         });
 
     }
-
-    String formatTourName(String name){
-        if (name.length() > 40){
-            name = name.substring(0, 37);
-            name += "...";
-        }
-        return name;
-    }
-
 }
 
 

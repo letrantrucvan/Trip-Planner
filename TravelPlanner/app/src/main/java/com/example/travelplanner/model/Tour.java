@@ -15,10 +15,26 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import android.graphics.Bitmap;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Date;
+import java.util.List;
 
 public class Tour {
     static final String TAG = "Thu Tour";
@@ -40,6 +56,14 @@ public class Tour {
 
     public Tour(){}
 
+    public Tour(String name, String author_id, String des, String publish_day) {
+        this.name = name;
+        this.author_id = author_id;
+        this.des = des;
+        this.publish_day = publish_day;
+
+    }
+
 
     //get
     public String getTour_id() {
@@ -51,6 +75,7 @@ public class Tour {
     public String getAuthor_id() {
         return author_id;
     }
+    @Exclude
     public String getAuthor_name() {
         return author_name;
     }
@@ -182,6 +207,37 @@ public class Tour {
         while(!done[0]){}
         return tours;
     }
+    public static String addTour(Tour tour){
+        DocumentReference newTourReference = db.collection("Tour").document();
+        String tourID = newTourReference.getId();
+        tour.setId(tourID);
+        tour.setCover("Tour/" + tourID);
+        tour.setRating_number(0);
+        newTourReference.set(tour);
+        return tourID;
+    }
+
+    public static void uploadCover(String tourID, Bitmap cover){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Tour/" + tourID);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        cover.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            }
+
+        });
+    }
+
     @Override
     public String toString() {
         return "Tour{" +

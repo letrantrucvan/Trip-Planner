@@ -39,6 +39,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="\@username"
                 android:textSize="16dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"/>
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
                 android:layout_gravity="end">
 
                 <TextView
@@ -54,6 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
+                    android:text="5"
                     android:textSize="16dp"
                     android:textColor="@color/orange"/>
 
@@ -77,6 +80,7 @@
             android:id="@+id/detail_comment_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="comment comment comment"
             android:layout_marginRight="35dp"
             android:textColor="@color/light_grey"/>
     </LinearLayout>

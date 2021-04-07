@@ -41,6 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tên chuyến đi"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textStyle="bold"
                     android:textSize="16dp"
                     android:textColor="@color/white"
@@ -58,6 +60,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Đăng bởi tên người tạo"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="@color/grey"
                     android:textStyle="italic"/>
 

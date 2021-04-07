@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
 
+import com.example.travelplanner.model.Tour;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,16 +28,18 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
 
             mView = itemView;
         }
-
-        public void setDetail(String cover_link, String name_tour,String des_tour){
+        public void setDetail(Tour model){
             ImageView cover = (ImageView) mView.findViewById(R.id.cover);
             TextView name  = (TextView) mView.findViewById(R.id.name);
-            TextView des = (TextView) mView.findViewById(R.id.des);
+            TextView numberPlace = (TextView) mView.findViewById(R.id.numberPlace);
+            name.setText(model.getName());
 
-            name.setText(formatTourName(name_tour));
-            //des.setText(des_tour);
+            if (model.getWaypoints() == null){
+                numberPlace.setText("0 địa điểm");
+            }
+            else numberPlace.setText(model.getWaypoints().size() + " địa điểm");
 
-            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(cover_link);
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
             final long ONE_MEGABYTE = 1024 * 1024;
             imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
@@ -53,13 +56,6 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
                 }
             });
 
-        }
-        String formatTourName(String name){
-            if (name.length() >= 45){
-                name = name.substring(0, 42);
-                name += "...";
-            }
-            return name;
         }
     }
 

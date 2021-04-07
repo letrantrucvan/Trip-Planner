@@ -152,9 +152,7 @@ public class HomeFragment extends Fragment {
         adapter = new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
             @Override
             public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
-
-
-                holder.setDetail(model.getCover(), model.getName(), model.getDes());
+                holder.setDetail(model);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         Intent i = new Intent(getActivity(), DetailsActivity.class);

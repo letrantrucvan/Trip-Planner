@@ -20,11 +20,15 @@ import android.widget.TextView;
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
 import com.example.travelplanner.controller.SearchActivity;
+import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
+import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -154,7 +158,25 @@ public class DiscoverFragment extends Fragment {
         adapter_vertical= new FirestoreRecyclerAdapter<Tour, BookmarksTourViewHolder>(response) {
             @Override
             public void onBindViewHolder(BookmarksTourViewHolder holder, int position, Tour model) {
-                holder.setDetail(model);
+                db.collection("User").document(model.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    //chỗ code ngu nè
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            User b = documentSnapshot.toObject(User.class);
+                            model.setAuthor_name(b.getFullname());
+                            holder.setDetail(model);
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View view) {
+                                    Intent i = new Intent(getActivity(), DetailsActivity.class);
+                                    String documentId = getSnapshots().getSnapshot(position).getId();
+                                    i.putExtra("Key", documentId);
+                                    startActivity(i);
+                                }
+                            });
+                        }
+                    }
+                });
             }
 
             @Override
@@ -197,7 +219,15 @@ public class DiscoverFragment extends Fragment {
         return new FirestoreRecyclerAdapter<Tour, ViewHolder>(response) {
             @Override
             public void onBindViewHolder(ViewHolder holder, int position, Tour model) {
-                holder.setDetail(model.getCover(), model.getName());
+                holder.setDetail(model);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+                        Intent i = new Intent(getActivity(), DetailsActivity.class);
+                        String documentId = getSnapshots().getSnapshot(position).getId();
+                        i.putExtra("Key", documentId);
+                        startActivity(i);
+                    }
+                });
             }
 
             @Override
@@ -224,13 +254,18 @@ public class DiscoverFragment extends Fragment {
             mView = itemView;
         }
 
-        public void setDetail(String cover_link, String name_tour){
+        public void setDetail(Tour model){
             ImageView cover = (ImageView) mView.findViewById(R.id.logo);
             TextView name  = (TextView) mView.findViewById(R.id.trip_name);
+            TextView waypoints  = (TextView) mView.findViewById(R.id.trip_waypoints);
 
-            name.setText(formatTourName(name_tour));
+            name.setText(model.getName());
+            if (model.getWaypoints() == null){
+                waypoints.setText("0 địa điểm");
+            }
+            else waypoints.setText(model.getWaypoints().size() + " địa điểm");
 
-            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(cover_link);
+            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
             final long ONE_MEGABYTE = 1024 * 1024;
             imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
@@ -246,18 +281,7 @@ public class DiscoverFragment extends Fragment {
                     System.out.println(exception.getMessage());
                 }
             });
-
-
-
         }
-        String formatTourName(String name){
-            if (name.length() > 15){
-                name = name.substring(0, 14);
-                name += "...";
-            }
-            return name;
-        }
-
     }
 
 }
