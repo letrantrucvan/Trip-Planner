@@ -100,14 +100,14 @@ public class ListAdapterTripPopUp extends RecyclerView.Adapter<ListAdapterTripPo
             public void onClick(View v) {
 
                 tour.addWaypoint(PlaceDetailFragment.cur_placeID);
-                    MyPlace.addPlace(PlaceDetailFragment.cur_placeID, new MyPlace(PlaceDetailFragment.cur_placeID,
-                            PlaceDetailFragment.cur_name,
-                            PlaceDetailFragment.cur_vicinity,
-                            PlaceDetailFragment.image_reference,
-                            Double.parseDouble(PlaceDetailFragment.cur_latitude),
-                            Double.parseDouble(PlaceDetailFragment.cur_longitude)));
-                    Log.i(TAG, tours.get(position).getTour_id() +"   "+PlaceDetailFragment.cur_placeID);
-                    Toast.makeText(context, "Thêm điểm đến vào chuyến đi thành công <3", Toast.LENGTH_SHORT).show();
+                new MyPlace(PlaceDetailFragment.cur_placeID,
+                        PlaceDetailFragment.cur_name,
+                        PlaceDetailFragment.cur_vicinity,
+                        PlaceDetailFragment.image_reference,
+                        Double.parseDouble(PlaceDetailFragment.cur_latitude),
+                        Double.parseDouble(PlaceDetailFragment.cur_longitude)).addPlace();
+                Log.i(TAG, tours.get(position).getTour_id() +"   "+PlaceDetailFragment.cur_placeID);
+                Toast.makeText(context, "Thêm điểm đến vào chuyến đi thành công <3", Toast.LENGTH_SHORT).show();
             }
         });
     }

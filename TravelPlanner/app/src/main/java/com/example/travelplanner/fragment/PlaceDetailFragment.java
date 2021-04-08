@@ -608,51 +608,56 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
        // origin_fromAuto.replace(" ","+");
         //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin_fromAuto+"&destination=" + PlaceDetailFragment.cur_latitude +","+ PlaceDetailFragment.cur_longitude
           //      +"&key="+getResources().getString(R.string.google_maps_key);
-        String url = URLRequest.getDirectionRequest(HomeActivity.cur_lat.toString(), HomeActivity.cur_lng.toString(), PlaceDetailFragment.cur_latitude , PlaceDetailFragment.cur_longitude);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
+        try {
+            String url = URLRequest.getDirectionRequest(HomeActivity.cur_lat.toString(), HomeActivity.cur_lng.toString(), PlaceDetailFragment.cur_latitude, PlaceDetailFragment.cur_longitude);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
 
-                        try {
-                            Log.d(TAG, response.toString());
+                            try {
+                                Log.d(TAG, response.toString());
 
-                            JSONArray jsonArray = response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
-                            LatLng ori = new LatLng(jsonArray.getJSONObject(0).getJSONObject("start_location").getDouble("lat"),
-                                    jsonArray.getJSONObject(0).getJSONObject("start_location").getDouble("lng"));
-                            map.addMarker(new MarkerOptions().position(ori).title("Vị trí của bạn")).showInfoWindow();
+                                JSONArray jsonArray = response.getJSONArray("routes").getJSONObject(0).getJSONArray("legs");
+                                LatLng ori = new LatLng(jsonArray.getJSONObject(0).getJSONObject("start_location").getDouble("lat"),
+                                        jsonArray.getJSONObject(0).getJSONObject("start_location").getDouble("lng"));
+                                map.addMarker(new MarkerOptions().position(ori).title("Vị trí của bạn")).showInfoWindow();
 
-                            CameraPosition mCameraPosition = new CameraPosition.Builder().target(ori).zoom(13).build();
-                            map.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
+                                CameraPosition mCameraPosition = new CameraPosition.Builder().target(ori).zoom(13).build();
+                                map.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
 
-                            // display direction!
-                            String[] poly_path = getFullPath(jsonArray.getJSONObject(0).getJSONArray("steps"));
-                            int path_len = poly_path.length;
-                            for(int i=0;i<path_len;i++){
-                                PolylineOptions mPolylineOptions = new PolylineOptions();
-                                mPolylineOptions.color(Color.BLUE);
-                                mPolylineOptions.width(10);
-                                mPolylineOptions.addAll(PolyUtil.decode(poly_path[i]));
+                                // display direction!
+                                String[] poly_path = getFullPath(jsonArray.getJSONObject(0).getJSONArray("steps"));
+                                int path_len = poly_path.length;
+                                for (int i = 0; i < path_len; i++) {
+                                    PolylineOptions mPolylineOptions = new PolylineOptions();
+                                    mPolylineOptions.color(Color.BLUE);
+                                    mPolylineOptions.width(10);
+                                    mPolylineOptions.addAll(PolyUtil.decode(poly_path[i]));
 
-                                path_list.add(map.addPolyline(mPolylineOptions));
+                                    path_list.add(map.addPolyline(mPolylineOptions));
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Toast.makeText(getActivity(), "Không thể chỉ đường từ vị trí của bạn", Toast.LENGTH_SHORT).show();
                             }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getActivity(), "Không thể chỉ đường từ vị trí của bạn", Toast.LENGTH_SHORT).show();
                         }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e(TAG, error.toString());
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, error.toString());
+                    Toast.makeText(getActivity(), "Không thể hiện thị chỉ đường từ vị trí của bạn", Toast.LENGTH_SHORT).show();
+                }
+            });
 
-                Toast.makeText(getActivity(), "Không thể hiện thị chỉ đường từ vị trí của bạn", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mrequestQueue.add(jsonObjectRequest);
+            mrequestQueue.add(jsonObjectRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), "Không thể chỉ đường từ vị trí của bạn", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private String[] getFullPath(JSONArray jsonArr){

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.Serializable;
 
@@ -117,10 +118,10 @@ public class MyPlace implements Serializable{
         return rating;
     }
 
-    static public void addPlace(String PlaceID, MyPlace place)
+    public void addPlace()
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Log.i("Thu MyPlace ", ""+place.latitude +" " +place.longtitude);
-        db.collection("Place").document(PlaceID).set(place);
+        Log.i("Thu MyPlace ", ""+latitude +" " +longtitude);
+        db.collection("Place").document(place_id).set(this, SetOptions.merge());
     }
 }

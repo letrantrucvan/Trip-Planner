@@ -31,6 +31,7 @@ import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -42,6 +43,8 @@ import com.google.firebase.firestore.Query;
  */
 public class HomeFragment extends Fragment {
     Context context ;
+    public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

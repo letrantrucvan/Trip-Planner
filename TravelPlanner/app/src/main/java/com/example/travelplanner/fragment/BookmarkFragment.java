@@ -17,10 +17,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.adapter.SavedPlacesAdapter;
 import com.example.travelplanner.controller.BookmarksPlaceViewHolder;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
 import com.example.travelplanner.controller.DetailsActivity;
 import com.example.travelplanner.controller.LoginActivity;
+import com.example.travelplanner.controller.SearchPlaceTable;
+import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -102,7 +105,8 @@ public class BookmarkFragment extends Fragment {
         mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mResultPlaceList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
-        mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+       // mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mResultPlaceList.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //check user đăng nhập hay chưa
         bookmarkGotoLogin = (LinearLayout) BookmarkFragmentView.findViewById(R.id.bookmarkGotoLogin);
@@ -229,36 +233,20 @@ public class BookmarkFragment extends Fragment {
                 if (documentSnapshot.exists()) {
                     User a = documentSnapshot.toObject(User.class);
 
-                    if (a.getSaved_tour() == null) return;
+                    if (a.getSaved_places().size() == 0) return;
 
 
-                    Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour());
-                    //Bind data
-                    FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
-                            .setQuery(searchQuery, Tour.class)
-                            .build();
+                        Query searchQuery = db.collection("Place").whereIn("place_id", a.getSaved_places());
+                        //Bind data
+                        FirestoreRecyclerOptions<MyPlace> response = new FirestoreRecyclerOptions.Builder<MyPlace>()
+                                .setQuery(searchQuery, MyPlace.class)
+                                .build();
 
-                    adapterPlace = new FirestoreRecyclerAdapter<Tour, BookmarksPlaceViewHolder>(response) {
-                        @Override
-                        public void onBindViewHolder(BookmarksPlaceViewHolder holder, int position, Tour model) {
-                            holder.setDetail(model);
-                        }
+                        SavedPlacesAdapter savedPlacesAdapter = new SavedPlacesAdapter(getActivity(), response);
+                        savedPlacesAdapter.notifyDataSetChanged();
+                        savedPlacesAdapter.startListening();
+                        mResultPlaceList.setAdapter(savedPlacesAdapter);
 
-                        @Override
-                        public BookmarksPlaceViewHolder onCreateViewHolder(ViewGroup group, int i) {
-                            View mView = LayoutInflater.from(group.getContext())
-                                    .inflate(R.layout.recycle_view_place_bookmark, group, false);
-                            return new BookmarksPlaceViewHolder(mView);
-                        }
-
-                        @Override
-                        public void onError(FirebaseFirestoreException e) {
-                            Log.e("error", e.getMessage());
-                        }
-                    };
-                    adapterPlace.notifyDataSetChanged();
-                    adapterPlace.startListening();
-                    mResultPlaceList.setAdapter(adapterPlace);
                 }
             }
         });

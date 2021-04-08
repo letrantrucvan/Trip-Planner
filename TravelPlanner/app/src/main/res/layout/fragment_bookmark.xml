@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".fragment.BookmarkFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -120,7 +122,7 @@
             android:id="@+id/scrollViewPlaceBookmark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp">
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleviewPlaceBookmark"

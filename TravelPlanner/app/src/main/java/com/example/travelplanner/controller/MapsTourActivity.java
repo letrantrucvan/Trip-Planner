@@ -3,10 +3,13 @@ package com.example.travelplanner.controller;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
@@ -48,7 +51,6 @@ import org.json.JSONObject;
 
 public class MapsTourActivity extends AppCompatActivity implements
         OnMapReadyCallback,
-        GoogleMap.OnMapLongClickListener,
         GoogleMap.OnInfoWindowCloseListener,
         GoogleMap.OnMarkerClickListener
 {
@@ -61,6 +63,7 @@ public class MapsTourActivity extends AppCompatActivity implements
     private GoogleMap mMap;
     private ArrayList<Marker> markers;
     private RequestQueue requestQueue;
+    private Switch switchCompat;
     private ArrayList<Polyline> path_list = new ArrayList<>();
 
 
@@ -74,6 +77,7 @@ public class MapsTourActivity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
  //       getSupportActionBar().hide();
         viewPager = findViewById(R.id.viewpager);
+        switchCompat = findViewById(R.id.showDirection);
 
 
     }
@@ -82,7 +86,6 @@ public class MapsTourActivity extends AppCompatActivity implements
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
 
-        mMap.setOnMapLongClickListener(this);
         mMap.setOnMarkerClickListener(this);
         mMap.setOnInfoWindowCloseListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-33.8696, 151.2094), 15));
@@ -114,30 +117,18 @@ public class MapsTourActivity extends AppCompatActivity implements
                 }
             }
         });
-    }
+        switchCompat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = ((Switch)v).isChecked();
+                if(checked) showDirection();
+                else hideDirection();
+            }
+        });
 
-    @Override
-    public void onMapLongClick(LatLng latLng) {
-//        Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-//        Bitmap bmp = Bitmap.createBitmap(80, 80, conf);
-//        Canvas canvas1 = new Canvas(bmp);
-//        Paint color = new Paint();
-//        color.setTextSize(20);
-//
-//        color.setColor(Color.BLACK);
-//        canvas1.drawCircle(0,0,10,color);
-//        canvas1.drawText("User Name!",10,10, color);
-//
-//        mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng( latLng.latitude,latLng.longitude))
-//                .snippet("OK")
-//                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
-//                .title("Thu's home"));
-
-        addIcon(markers.size(), latLng, "Tên địa điểm");
-        showDirection();
 
     }
+
 
     private void addIcon(int number, LatLng position, String PlaceName) {
         IconGenerator iconFactory = new IconGenerator(this);
@@ -187,8 +178,6 @@ public class MapsTourActivity extends AppCompatActivity implements
         }
         else
             Log.i(TAG, "NULL");
-
-
 
         requestQueue = Volley.newRequestQueue(this);
         //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin_fromAuto+"&destination=" + PlaceDetailFragment.cur_latitude +","+ PlaceDetailFragment.cur_longitude+ "&mode=" + mode_fromSpinner.toLowerCase()
@@ -247,6 +236,13 @@ public class MapsTourActivity extends AppCompatActivity implements
         requestQueue.add(jsonObjectRequest);
     }
 
+    private void hideDirection()
+    {
+        for (Polyline polyline: path_list)
+        {
+            polyline.setVisible(false);
+        }
+    }
     private ArrayList<String> getFullPath(JSONArray jsonArr){
         int len = jsonArr.length();
         ArrayList<String> lines = new ArrayList<>();

@@ -19,7 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.travelplanner.adapter.SearchResultAdapter;
+import com.example.travelplanner.adapter.SearchPlaceResultAdapter;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.URLRequest;
 
@@ -56,7 +56,7 @@ public class SearchPlaceTable extends AppCompatActivity {
     private ViewGroup progressView;
 
     private RecyclerView recyclerView;
-    private SearchResultAdapter re_adapter;
+    private SearchPlaceResultAdapter re_adapter;
 
     private ImageButton next_btn;
     private ImageButton prev_btn;
@@ -83,7 +83,7 @@ public class SearchPlaceTable extends AppCompatActivity {
 
         requestQueue = Volley.newRequestQueue(this);
 
-       String url = URLRequest.getTextSearchRequest(keyword);
+        String url = URLRequest.getTextSearchRequest(keyword);
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
@@ -154,7 +154,7 @@ public class SearchPlaceTable extends AppCompatActivity {
                             // recycler
                             Log.i(TAG, arrayList.toString());
              //               Log.i(TAG, arrayList.get(0).getPlace_id());
-                            re_adapter = new SearchResultAdapter(SearchPlaceTable.this, arrayList);
+                            re_adapter = new SearchPlaceResultAdapter(SearchPlaceTable.this, arrayList);
                             recyclerView.setLayoutManager(new LinearLayoutManager(SearchPlaceTable.this));
                             recyclerView.setAdapter(re_adapter);
 
@@ -194,7 +194,7 @@ public class SearchPlaceTable extends AppCompatActivity {
 
             });
 
-        requestQueue.add(jsonObjectRequest);
+            requestQueue.add(jsonObjectRequest);
 
             recyclerView = findViewById(R.id.recyclerView);
 
@@ -218,7 +218,7 @@ public class SearchPlaceTable extends AppCompatActivity {
                     buttonHandler();
 
                     // recycler
-                    re_adapter = new SearchResultAdapter(SearchPlaceTable.this, myPlaceBook.get(curPage));
+                    re_adapter = new SearchPlaceResultAdapter(SearchPlaceTable.this, myPlaceBook.get(curPage));
                     recyclerView.setLayoutManager(new LinearLayoutManager(SearchPlaceTable.this));
                     recyclerView.setAdapter(re_adapter);
 
@@ -231,7 +231,7 @@ public class SearchPlaceTable extends AppCompatActivity {
                     buttonHandler();
 
                     if (curPage <= myPlaceBook.size() - 1) {
-                        re_adapter = new SearchResultAdapter(SearchPlaceTable.this, myPlaceBook.get(curPage));
+                        re_adapter = new SearchPlaceResultAdapter(SearchPlaceTable.this, myPlaceBook.get(curPage));
                         recyclerView.setLayoutManager(new LinearLayoutManager(SearchPlaceTable.this));
                         recyclerView.setAdapter(re_adapter);
 
@@ -286,7 +286,7 @@ public class SearchPlaceTable extends AppCompatActivity {
                         }
 
                         myPlaceBook.add(tempList);
-                        re_adapter = new SearchResultAdapter(SearchPlaceTable.this, myPlaceBook.get(curPage));
+                        re_adapter = new SearchPlaceResultAdapter(SearchPlaceTable.this, myPlaceBook.get(curPage));
                         recyclerView.setLayoutManager(new LinearLayoutManager(SearchPlaceTable.this));
                         recyclerView.setAdapter(re_adapter);
 

@@ -30,6 +30,7 @@ import com.example.travelplanner.adapter.DestinationAdapter;
 import com.example.travelplanner.adapter.WaypointAdapter;
 import com.example.travelplanner.fragment.FragmentMaps;
 import com.example.travelplanner.fragment.FragmentTwo;
+import com.example.travelplanner.fragment.MapTourFragment;
 import com.example.travelplanner.fragment.TabFragmentAdapter;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Rating;
@@ -146,7 +147,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         //Set up the view pager and fragments
         TabFragmentAdapter adapter = new TabFragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(FragmentMaps.newInstance(), "Lộ trình");
+        adapter.addFragment(MapTourFragment.newInstance(), "Lộ trình");
         adapter.addFragment(FragmentTwo.newInstance(), "Địa điểm");
         mViewPager.setAdapter(adapter);
         mTabs.setupWithViewPager(mViewPager);
