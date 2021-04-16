@@ -173,14 +173,14 @@ public class UserInfoFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //Mở máy chụp hình
-                        //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //startActivityForResult(intent, REQUEST_CODE_IMAGE);
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, REQUEST_CODE_IMAGE);
 
                         //mở drive
-                        Intent i = new Intent();
-                        i.setType("image/*");
-                        i.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(i, REQUEST_CODE_IMAGE);
+//                        Intent i = new Intent();
+//                        i.setType("image/*");
+//                        i.setAction(Intent.ACTION_GET_CONTENT);
+//                        startActivityForResult(i, REQUEST_CODE_IMAGE);
 
 
                         //mở album

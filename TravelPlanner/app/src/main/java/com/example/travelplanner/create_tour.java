@@ -148,6 +148,7 @@ public class create_tour extends Fragment {
                 String tourName = trip_name.getText().toString();
                 String tourDescription = des.getText().toString();
                 Tour newTour = new Tour(tourName, mAuth.getUid(), tourDescription, dateInString);
+                System.out.println("00000000000000000000000000000000"+newTour.getSearch_keywords());
                 String tourID = Tour.addTour(newTour);
 
                 //up avatar vô Storage

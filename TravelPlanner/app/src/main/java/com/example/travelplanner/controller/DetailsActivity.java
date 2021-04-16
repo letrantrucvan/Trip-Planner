@@ -3,6 +3,7 @@ package com.example.travelplanner.controller;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -26,9 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.adapter.DestinationAdapter;
 import com.example.travelplanner.adapter.WaypointAdapter;
-import com.example.travelplanner.fragment.FragmentMaps;
+import com.example.travelplanner.fragment.BottomSheetFragment;
 import com.example.travelplanner.fragment.FragmentTwo;
 import com.example.travelplanner.fragment.MapTourFragment;
 import com.example.travelplanner.fragment.TabFragmentAdapter;
@@ -46,6 +46,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -53,12 +54,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.TreeMap;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements Runnable{
 
-    private static final String TAG = "Thu DetailsActivity";
+    private static final String TAG = "DetailsActivity";
     private Button readMore;
     private TextView tourDescription;
     private TextView tourDescriptionFull;
@@ -70,10 +70,10 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView tourAuthorImg;
     private TextView tourPublishDay;
     private TextView tourRating;
-
+    private int count;
     private RecyclerView mResultCommentTour, waypointRecyclerView;
     private FirestoreRecyclerAdapter adapterTourComment;
-
+    private TextView tourViews;
     private Button btnGoToLogin;
     private ImageView current_user_avatar;
     private EditText current_user_comment;
@@ -83,16 +83,14 @@ public class DetailsActivity extends AppCompatActivity {
     private RadioButton current_user_rate_4;
     private RadioButton current_user_rate_5;
     private Button btnUploadComment;
-
     private ImageView iconSaved;
-    private ImageView iconUnSaved;
-
     private LinearLayout CommentBox;
-
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String tourID;
+    private ImageView btnMore;
+    private Fragment moreFragment;
 
     //tablayout
     private  TabLayout mTabs;
@@ -119,6 +117,7 @@ public class DetailsActivity extends AppCompatActivity {
         System.out.println(tourID);
 
         tourName = (TextView) findViewById(R.id.tour_name_txt);
+        tourViews = (TextView) findViewById(R.id.tour_views);
         tourCover = (ImageView) findViewById(R.id.cover_img);
         tourPublishDay = (TextView) findViewById(R.id.tourPublishDay);
         tourRating = (TextView) findViewById(R.id.tourRating);
@@ -129,7 +128,7 @@ public class DetailsActivity extends AppCompatActivity {
         mResultCommentTour.setLayoutManager(new LinearLayoutManager(this));
 
         iconSaved = (ImageView) findViewById(R.id.detail_icon_not_saved_tour);
-        iconUnSaved = (ImageView) findViewById(R.id.detail_icon_saved_tour);
+        btnMore = (ImageView) findViewById(R.id.detail_more);
 
         waypointRecyclerView = findViewById(R.id.waypoints);
         waypointRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -217,35 +216,37 @@ public class DetailsActivity extends AppCompatActivity {
                     return;
                 }
                 User.saveTour(mAuth.getUid(), tourID);
-                iconSaved.setVisibility(View.GONE);
-                iconUnSaved.setVisibility(View.VISIBLE);
+                iconSaved.setImageResource(R.drawable.ic_baseline_bookmark_24);
                 Toast.makeText(DetailsActivity.this, "Đã lưu Tour", Toast.LENGTH_SHORT).show();
             }
         });
 
-        iconUnSaved.setOnClickListener(new View.OnClickListener() {
+        iconSaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User.unsaveTour(mAuth.getUid(), tourID);
-                iconSaved.setVisibility(View.VISIBLE);
-                iconUnSaved.setVisibility(View.GONE);
+                iconSaved.setImageResource(R.drawable.ic_baseline_bookmark_border_24);
+//                iconSaved.setVisibility(View.VISIBLE);
+//                iconUnSaved.setVisibility(View.GONE);
             }
         });
+
     }
 
     private void loadUI() {
-
+        db.collection("Tour").document(tourID).update("views", FieldValue.increment(1.0));
         db.collection("Tour").document(tourID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
+
                     Tour tour = documentSnapshot.toObject(Tour.class);
                     cur_Tour = tour;
                     //nếu chủ tour là user thì không cho đánh giá
                     if (tour.getAuthor_id().equals(mAuth.getUid())) {
                         CommentBox.setVisibility(View.GONE);
                         iconSaved.setVisibility(View.GONE);
-                        iconUnSaved.setVisibility(View.GONE);
+                        //iconUnSaved.setVisibility(View.GONE);
                     }
 
                     //get thông tin tour
@@ -254,6 +255,7 @@ public class DetailsActivity extends AppCompatActivity {
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
                     tourPublishDay.setText("Đăng ngày " + tour.getPublish_day());
+                    tourViews.setText("Số lượt xem "+ tour.getViews());
 
                     tourRating.setText(formatTourRating(tour.getRating_avg()));
 
@@ -388,6 +390,15 @@ public class DetailsActivity extends AppCompatActivity {
         adapterTourComment.notifyDataSetChanged();
         adapterTourComment.startListening();
         mResultCommentTour.setAdapter(adapterTourComment);
+
+        btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BottomSheetFragment bottomSheetFragment = new BottomSheetFragment(tourID);
+               // BottomSheetFragment.newInstance(tourID);
+                bottomSheetFragment.show(getSupportFragmentManager(),TAG);
+            }
+        });
     }
 
     private void loadUIUser(){
@@ -419,7 +430,7 @@ public class DetailsActivity extends AppCompatActivity {
         //chưa đăng nhập thì ẩn nút đánh giá và không cho lưu
         if (mAuth.getCurrentUser() == null){
             CommentBox.setVisibility(View.GONE);
-            iconUnSaved.setVisibility(View.GONE);
+            //iconUnSaved.setVisibility(View.GONE);
             btnGoToLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -442,7 +453,7 @@ public class DetailsActivity extends AppCompatActivity {
 
                         //set icon save or unsave tour
                         if (user.getSaved_tour() == null || !user.getSaved_tour().contains(tourID)){
-                            iconUnSaved.setVisibility(View.GONE);
+                            //iconUnSaved.setVisibility(View.GONE);
                         }
                         else {
                             iconSaved.setVisibility(View.GONE);
@@ -521,5 +532,10 @@ public class DetailsActivity extends AppCompatActivity {
             return rating.substring(0, 3);
         }
         return rating;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

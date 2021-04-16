@@ -1,48 +1,35 @@
-package com.example.travelplanner.fragment;
+package com.example.travelplanner.controller;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Point;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.ScanActivity;
-import com.google.zxing.WriterException;
-
-
-import static android.content.Context.WINDOW_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NotiFragment#newInstance} factory method to
+ * Use the {@link LoadingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotiFragment extends Fragment {
+public class LoadingFragment extends Fragment {
+    private ImageView ic_loading;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button openCam;
-
-
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public NotiFragment() {
+    public LoadingFragment() {
         // Required empty public constructor
     }
 
@@ -52,11 +39,11 @@ public class NotiFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NotiFragment.
+     * @return A new instance of fragment LoadingFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NotiFragment newInstance(String param1, String param2) {
-        NotiFragment fragment = new NotiFragment();
+    public static LoadingFragment newInstance(String param1, String param2) {
+        LoadingFragment fragment = new LoadingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -71,24 +58,26 @@ public class NotiFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_loading, container, false);
+        ic_loading = (ImageView ) v.findViewById(R.id.iv_loading);
         // Inflate the layout for this fragment
-        FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
-        //Initial
-        openCam = (Button) v.findViewById(R.id.btnStartCam);
-        openCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent (getActivity(), ScanActivity.class);
-                startActivity(i);
-            }
-        });
-
         return v;
+    }
+    public void loadingAnim (){
+        ic_loading.setVisibility(View.VISIBLE);
+        AnimationDrawable frameAnimation = (AnimationDrawable)ic_loading.getDrawable();
+        frameAnimation.setCallback(ic_loading);
+        frameAnimation.setVisible(true, true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadingAnim();
     }
 }

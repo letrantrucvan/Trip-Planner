@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.travelplanner.Configure;
 import com.example.travelplanner.R;
 import com.example.travelplanner.SearchResult;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
@@ -33,8 +35,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,14 +56,26 @@ public class DiscoverFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RecyclerView mytour;
+    private RecyclerView popularTour;
     private FirestoreRecyclerAdapter adapter;
     private FirestoreRecyclerAdapter adapter_vertical;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private RecyclerView islandTour;
     private RecyclerView fypTour;
     private RecyclerView budgetTour;
     private ImageView search_ic;
+    private ImageView TOTW_img; //TOUR OF THE WEEK
+    private TextView TOTW_name;
+    private TextView TOTW_author;
+    private TextView TOTW_placeNum;
+    private ImageView TNWT_img; //THE NEWEST TOUR
+    private TextView TNWT_name;
+    private  TextView TNWT_author;
+    private TextView TNWT_placeNum;
+    private CardView cardview1, cardview2, cardview3, cardview4;
+    private String TOTW_id;
+    private String TNWT_id;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -97,20 +114,9 @@ public class DiscoverFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mytour = (RecyclerView) v.findViewById(R.id.spring);
-        mytour.setHasFixedSize(true);
-        mytour.setLayoutManager(layoutManager);
-
-//        searchBtn = (ImageView) v.findViewById(R.id.searchBtn);
-//        searchBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), SearchResult.class);
-////                String documentId = getSnapshots().getSnapshot(position).getId();
-////                i.putExtra("Key", documentId);
-//                startActivity(i);
-//            }
-//        });
+        popularTour = (RecyclerView) v.findViewById(R.id.popularTour);
+        popularTour.setHasFixedSize(true);
+        popularTour.setLayoutManager(layoutManager);
 
         islandTour = (RecyclerView) v.findViewById(R.id.island);
         islandTour.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -121,21 +127,144 @@ public class DiscoverFragment extends Fragment {
         budgetTour = (RecyclerView) v.findViewById(R.id.budget);
         budgetTour.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        search_ic = v.findViewById(R.id.search_ic);
+        search_ic = (ImageView) v.findViewById(R.id.search_ic);
         search_ic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SearchActivity.class));
+                Intent i = new Intent(getActivity(), SearchResult.class);
+//                String documentId = getSnapshots().getSnapshot(position).getId();
+//                i.putExtra("Key", documentId);
+                startActivity(i);
             }
         });
-        Query searchQuery  = db.collection("Tour");
+        TOTW_img = (ImageView) v.findViewById(R.id.tourOfTheWeek_img);
+        TOTW_name = (TextView) v.findViewById(R.id.tourOfTheWeek_name);
+        TOTW_author = (TextView) v.findViewById(R.id.tourOfTheWeek_author);
+        TOTW_placeNum = (TextView) v.findViewById(R.id.tourOfTheWeek_placeNum);
+
+        TNWT_img = (ImageView) v.findViewById(R.id.theNewestTour_img);
+        TNWT_name = (TextView) v.findViewById(R.id.theNewestTour_name);
+        TNWT_author = (TextView) v.findViewById(R.id.theNewestTour_author);
+        TNWT_placeNum = (TextView) v.findViewById(R.id.theNewestTour_placeNum);
+
+        cardview1 = (CardView) v.findViewById(R.id.cardView1);
+
+        cardview3 = (CardView) v.findViewById(R.id.cardView3);
+
+//
+//        search_ic = v.findViewById(R.id.search_ic);
+//        search_ic.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(getActivity(), SearchActivity.class));
+//            }
+//        });
+
+        Query weekTour  = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).limit(1); //Lượt tải nhiều nhất tuần
+        weekTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                queryDocumentSnapshots.forEach(doc -> {
+                    Tour tour = doc.toObject(Tour.class);
+                  //  System.out.println(tour.waypoints.size());
+                    TOTW_name.setText(String.valueOf(Configure.formatTourName(tour.getName())));
+                    db.collection("User").document(tour.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        //chỗ code ngu nè
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                User b = documentSnapshot.toObject(User.class);
+                                TOTW_author.setText(String.valueOf(b.getFullname()));
+                            }
+                        }
+                    });
+
+                    TOTW_placeNum.setText(String.valueOf(tour.waypoints.size())+ " địa điểm");
+                    TOTW_id = tour.getTour_id();
+                    StorageReference islandRef = storage.getReference().child(tour.getCover());
+                    final long ONE_MEGABYTE = 1024 * 1024;
+
+                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Data for "images/island.jpg" is returns, use this as needed
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            TOTW_img.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                            System.out.println("Fail");
+                        }
+                    });
+                });
+            }
+        });
+
+        cardview1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), DetailsActivity.class);
+                i.putExtra("Key", TOTW_id);
+                startActivity(i);
+            }
+        });
+
+        Query theNewestTour = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).limit(1); // Tour mới nhất
+        theNewestTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                queryDocumentSnapshots.forEach(doc -> {
+                    Tour tour = doc.toObject(Tour.class);
+                    //  System.out.println(tour.waypoints.size());
+                    TNWT_name.setText(String.valueOf(Configure.formatTourName(tour.getName())));
+                    db.collection("User").document(tour.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        //chỗ code ngu nè
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                User b = documentSnapshot.toObject(User.class);
+                                TNWT_author.setText(String.valueOf(b.getFullname()));
+                            }
+                        }
+                    });
+                    TNWT_placeNum.setText(String.valueOf(tour.waypoints.size())+ " địa điểm");
+                    TNWT_id = tour.getTour_id();
+                    StorageReference islandRef = storage.getReference().child(tour.getCover());
+                    final long ONE_MEGABYTE = 1024 * 1024;
+
+                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Data for "images/island.jpg" is returns, use this as needed
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            TNWT_img.setImageBitmap(bitmap);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                            System.out.println("Fail");
+                        }
+                    });
+                });
+            }
+        });
+        cardview3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), DetailsActivity.class);
+                i.putExtra("Key", TNWT_id);
+                startActivity(i);
+            }
+        });
+
+        Query PopularTour  = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).orderBy("rating_avg", Query.Direction.DESCENDING); //Rating avg cao nhất + lượt views nhiều nhất
 
         //Bind data
-        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
-                .setQuery(searchQuery, Tour.class)
-                .build();
 
-        // tạo addapter ngang
+        // tạo adapter ngang
 //        adapter = new FirestoreRecyclerAdapter<Tour, ViewHolder>(response) {
 //            @Override
 //            public void onBindViewHolder(ViewHolder holder, int position, Tour model) {
@@ -156,17 +285,19 @@ public class DiscoverFragment extends Fragment {
 //        };
         //--
 
-        adapter = horizonto(searchQuery);
-
+        adapter = horizonto(PopularTour);
         adapter.notifyDataSetChanged();
         adapter.startListening();
 
-
-        mytour.setAdapter(adapter);
+        popularTour.setAdapter(adapter);
         fypTour.setAdapter(adapter);
         budgetTour.setAdapter(adapter);
 
-
+        Query RecommendedTour  = db.collection("Tour"); // Số địa điểm trùng nhau nhiều nhất
+        Query searchQuery  = db.collection("Tour");
+        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                .setQuery(searchQuery, Tour.class)
+                .build();
         //adapter dọc
         adapter_vertical= new FirestoreRecyclerAdapter<Tour, BookmarksTourViewHolder>(response) {
             @Override
@@ -205,7 +336,6 @@ public class DiscoverFragment extends Fragment {
             }
         };
         //--
-
         adapter_vertical.notifyDataSetChanged();
         adapter_vertical.startListening();
         islandTour.setAdapter(adapter_vertical);

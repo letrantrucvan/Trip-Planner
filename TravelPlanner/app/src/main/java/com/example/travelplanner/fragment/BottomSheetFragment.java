@@ -1,49 +1,41 @@
 package com.example.travelplanner.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.travelplanner.QrCodeActivity;
 import com.example.travelplanner.R;
-import com.example.travelplanner.ScanActivity;
-import com.google.zxing.WriterException;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-
-import static android.content.Context.WINDOW_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link NotiFragment#newInstance} factory method to
+ * Use the {@link BottomSheetFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NotiFragment extends Fragment {
+public class BottomSheetFragment extends BottomSheetDialogFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    Button openCam;
-
+    private static final String ARG_PARAM1 = "key";
+    private static final String TAG = "Van BottomSheetDialog";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-    private String mParam2;
+    private TextView txtShareClick;
+    private String id;
 
-    public NotiFragment() {
-        // Required empty public constructor
+    public BottomSheetFragment(String tourid) {
+        this.id =  tourid;
     }
 
     /**
@@ -51,15 +43,13 @@ public class NotiFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotiFragment.
+     * @return A new instance of fragment BottomSheetFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NotiFragment newInstance(String param1, String param2) {
-        NotiFragment fragment = new NotiFragment();
+    public static BottomSheetFragment newInstance(String param1) {
+        BottomSheetFragment fragment = new BottomSheetFragment(param1);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,22 +59,24 @@ public class NotiFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
-        //Initial
-        openCam = (Button) v.findViewById(R.id.btnStartCam);
-        openCam.setOnClickListener(new View.OnClickListener() {
+        View v = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
+        txtShareClick = (TextView) v.findViewById(R.id.txtShare);
+
+        txtShareClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent (getActivity(), ScanActivity.class);
+                System.out.println("KEY" + id);
+                Intent i = new Intent (getActivity(),QrCodeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("key", id);
+                i.putExtras(bundle);
                 startActivity(i);
             }
         });

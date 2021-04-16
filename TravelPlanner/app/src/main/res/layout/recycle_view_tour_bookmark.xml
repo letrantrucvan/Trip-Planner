@@ -62,6 +62,7 @@
                     android:text="Đăng bởi tên người tạo"
                     android:maxLines="1"
                     android:ellipsize="end"
+                    android:textSize="14dp"
                     android:textColor="@color/grey"
                     android:textStyle="italic"/>
 

@@ -30,6 +30,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +50,9 @@ public class Tour {
     private Double rating_avg;
     private boolean archived_mode;
     private boolean isActive;
+    private ArrayList<String> search_keywords;
+    private int views = 0;
+    public static String currentTour;
 
     public ArrayList<String> waypoints = new ArrayList<>();
 
@@ -61,9 +65,9 @@ public class Tour {
         this.author_id = author_id;
         this.des = des;
         this.publish_day = publish_day;
+        this.search_keywords = generateKeyWords(name);
 
     }
-
 
     //get
     public String getTour_id() {
@@ -101,6 +105,7 @@ public class Tour {
         return isActive;
     }
     public ArrayList<String> getWaypoints() {return waypoints;}
+    public int getViews() { return views; }
 
     //set
     public void setId(String id) {
@@ -133,16 +138,22 @@ public class Tour {
     public void setTour_id(String tour_id) {
         this.tour_id = tour_id;
     }
-
     public void setArchived_mode(boolean archived_mode) {
         this.archived_mode = archived_mode;
     }
     public void setActive(boolean active) {
         isActive = active;
     }
+    public ArrayList<String> getSearch_keywords() {
+        return search_keywords;
+    }
+    public void setSearch_keywords(ArrayList<String> search_keywords) { this.search_keywords = search_keywords; }
+    public void setViews(int views) { this.views = views; }
 
     static public void getHighlightedTour(){}
     static public void getNearByTour(){}
+
+
 
     public static void alterRating(String tourID, Integer rate) {
         db.collection("Tour").document(tourID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -213,9 +224,13 @@ public class Tour {
         tour.setId(tourID);
         tour.setCover("Tour/" + tourID);
         tour.setRating_number(0);
+        tour.setViews(0);
+        tour.setPublish_day(java.time.LocalDate.now().toString());
         newTourReference.set(tour);
+        Tour.currentTour = tourID;
         return tourID;
     }
+
 
     public static void uploadCover(String tourID, Bitmap cover){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Tour/" + tourID);
@@ -237,6 +252,29 @@ public class Tour {
 
         });
     }
+    // FULL TEXT SEARCH : Split string => Find keywords
+
+    private ArrayList<String> generateKeyWords(String text) {
+        ArrayList<String> res = new ArrayList<String>();
+        text = text.toLowerCase();
+
+        String []words = text.split(" ");
+
+        for (String word : words) {
+            String appendStr = "";
+            //Printing the characters
+            for (char output : text.toCharArray()) {
+                appendStr += String.valueOf(output);
+                res.add(appendStr);
+            }
+            word = word + " ";
+            text = text.replace(word,"");
+        }
+        System.out.println(res);
+        return res;
+    }
+    ////////////////////////////////////////////////////////////
+
 
     @Override
     public String toString() {
@@ -248,10 +286,13 @@ public class Tour {
                 ", cover='" + cover + '\'' +
                 ", des='" + des + '\'' +
                 ", publish_day='" + publish_day + '\'' +
-                ", rating_number=" + rating_number.toString() +
-                ", rating_avg=" + rating_avg.toString() +
+                ", rating_number=" + rating_number +
+                ", rating_avg=" + rating_avg +
                 ", archived_mode=" + archived_mode +
                 ", isActive=" + isActive +
+                ", search_keywords=" + search_keywords +
+                ", views=" + views +
+                ", waypoints=" + waypoints +
                 '}';
     }
 }

@@ -34,6 +34,7 @@ import com.google.protobuf.Any;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -85,7 +86,6 @@ public class SearchResult extends AppCompatActivity {
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToFireStore("Đà Lạt");
                 String searchText = mSearchField.getText().toString();
                 firestoreUserSearch(searchText);
             }
@@ -106,41 +106,9 @@ public class SearchResult extends AppCompatActivity {
         //adapter.stopListening();
     }
 
-    // FULL TEXT SEARCH : Split string => Find keywords
-    public void addToFireStore(String text){
-        ArrayList<String> key_words = generateKeyWords(text);
-        System.out.println(key_words);
-        Map<String, ArrayList<String>> tourlist = new HashMap<String, ArrayList<String>>();
-
-        tourlist.put("search_keyword",key_words);
-
-        System.out.println(tourlist);
-    }
-
-    private ArrayList<String> generateKeyWords(String text) {
-        ArrayList<String> res = new ArrayList<String>();
-        text = text.toLowerCase();
-
-        String []words = text.split(" ");
-
-        for (String word : words) {
-            String appendStr = "";
-
-            //Printing the characters
-            for (char output : text.toCharArray()) {
-                appendStr += String.valueOf(output);
-                res.add(appendStr);
-            }
-            text = text.replace(word,"");
-        }
-        return res;
-    }
-    ////////////////////////////////////////////////////////////
-
     private void firestoreUserSearch(String text) {
-        //Query query =  db.collection("Tour");
-//        Query searchQuery  = db.collection("Tour").whereArrayContains("search_keywords",text);
-        Query searchQuery  = db.collection("Tour").orderBy("name").startAt(text).endAt(text+ '\uf8ff');
+        Query searchQuery  = db.collection("Tour").whereArrayContains("search_keywords",text);
+        //Query searchQuery  = db.collection("Tour").orderBy("name").startAt(text).endAt(text+ '\uf8ff');
         //Bind data
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)
