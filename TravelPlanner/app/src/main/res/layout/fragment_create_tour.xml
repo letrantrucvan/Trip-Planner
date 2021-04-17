@@ -64,13 +64,14 @@
                         android:id="@+id/tourName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/white"
+                        android:hint="Nhập tên chuyến đi"
+                        android:textColorHint="@color/grey"
                         android:background="@drawable/edit_text_white"
                         android:backgroundTint="@color/notSoDark"
                         android:layout_marginTop="10dp"
                         android:ems="10"
-                        android:inputType="textPersonName"
-                        android:text="Name" />
+                        android:inputType="textPersonName"/>
 
                 </LinearLayout>
 
@@ -90,8 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginBottom="10dp"
-                android:visibility="visible"
-                >
+                android:visibility="visible">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -141,12 +141,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/edit_text_white"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/white"
                         android:backgroundTint="@color/notSoDark"
                         android:layout_marginTop="10dp"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text="mô tả" />
+                        android:hint="Nhập mô tả"
+                        android:textColorHint="@color/grey"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/finish_button"
@@ -155,7 +156,10 @@
                         android:layout_marginTop="15dp"
                         android:layout_gravity="right"
                         android:background="@drawable/bg_round"
-                        android:text="Tiếp tục"
+                        android:text="tiếp tục"
+                        android:textStyle="bold"
+                        android:textSize="18dp"
+                        android:textColor="@color/white"
                         app:backgroundTint="@color/primaryColor" />
                 </LinearLayout>
 

@@ -157,23 +157,23 @@ public class User implements Serializable {
     }
 
     public static void unsaveTour(String userID, String tourID){
-        //db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
-        db.collection("User").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    User b = documentSnapshot.toObject(User.class);
-                    List<String> tourList = b.getSaved_tour();
-                    if (tourList.size() == 1){
-                        db.collection("User").document(userID).update("saved_tour", null);
-                    }
-                    else {
-                        db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
-                    }
-
-                }
-            }
-        });
+        db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
+//        db.collection("User").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.exists()) {
+//                    User b = documentSnapshot.toObject(User.class);
+//                    List<String> tourList = b.getSaved_tour();
+//                    if (tourList.size() == 1){
+//                        db.collection("User").document(userID).update("saved_tour", null);
+//                    }
+//                    else {
+//                        db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
+//                    }
+//
+//                }
+//            }
+//        });
     }
 
     public static void savePlace(String userID, String placeID){

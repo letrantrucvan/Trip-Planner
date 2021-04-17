@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.travelplanner.fragment.BottomChooseCamera;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,6 +52,7 @@ public class create_tour extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String TAG = "Create Tour";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private TextView trip_name;
@@ -130,13 +132,8 @@ public class create_tour extends Fragment {
         cover_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Mở máy chụp hình
-                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //startActivityForResult(intent, REQUEST_CODE_IMAGE);
-                Intent i = new Intent();
-                i.setType("image/*");
-                i.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(i, REQUEST_CODE_IMAGE);
+                BottomChooseCamera ChooseCamera = new BottomChooseCamera(mAuth.getUid(), cover_pic);
+                ChooseCamera.show(getActivity().getSupportFragmentManager(),TAG);
             }
         });
 

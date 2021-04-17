@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.travelplanner.Configure;
@@ -77,6 +78,10 @@ public class DiscoverFragment extends Fragment {
     private String TOTW_id;
     private String TNWT_id;
 
+    private LinearLayout progress1;
+    private LinearLayout progress2;
+    private TextView tourofweek;
+    private TextView latesttour;
     public DiscoverFragment() {
         // Required empty public constructor
     }
@@ -113,6 +118,14 @@ public class DiscoverFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_discover, container, false);
+        progress1 = (LinearLayout) v.findViewById(R.id.discover_progress1);
+        progress2 = (LinearLayout) v.findViewById(R.id.discover_progress2);
+        progress1.setVisibility(View.VISIBLE);
+        progress2.setVisibility(View.VISIBLE);
+        tourofweek = (TextView) v.findViewById(R.id.textView4);
+        latesttour = (TextView) v.findViewById(R.id.textView7);
+        tourofweek.setVisibility(View.GONE);
+        latesttour.setVisibility(View.GONE);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         popularTour = (RecyclerView) v.findViewById(R.id.popularTour);
         popularTour.setHasFixedSize(true);
@@ -131,12 +144,11 @@ public class DiscoverFragment extends Fragment {
         search_ic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), SearchResult.class);
-//                String documentId = getSnapshots().getSnapshot(position).getId();
-//                i.putExtra("Key", documentId);
-                startActivity(i);
+                startActivity(new Intent(getActivity(), SearchResult.class));
+                //startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
+
         TOTW_img = (ImageView) v.findViewById(R.id.tourOfTheWeek_img);
         TOTW_name = (TextView) v.findViewById(R.id.tourOfTheWeek_name);
         TOTW_author = (TextView) v.findViewById(R.id.tourOfTheWeek_author);
@@ -148,17 +160,7 @@ public class DiscoverFragment extends Fragment {
         TNWT_placeNum = (TextView) v.findViewById(R.id.theNewestTour_placeNum);
 
         cardview1 = (CardView) v.findViewById(R.id.cardView1);
-
         cardview3 = (CardView) v.findViewById(R.id.cardView3);
-
-//
-//        search_ic = v.findViewById(R.id.search_ic);
-//        search_ic.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getActivity(), SearchActivity.class));
-//            }
-//        });
 
         Query weekTour  = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).limit(1); //Lượt tải nhiều nhất tuần
         weekTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -167,14 +169,15 @@ public class DiscoverFragment extends Fragment {
                 queryDocumentSnapshots.forEach(doc -> {
                     Tour tour = doc.toObject(Tour.class);
                   //  System.out.println(tour.waypoints.size());
-                    TOTW_name.setText(String.valueOf(Configure.formatTourName(tour.getName())));
+                    //TOTW_name.setText(String.valueOf(Configure.formatTourName(tour.getName())));
+                    TOTW_name.setText(String.valueOf(tour.getName()));
                     db.collection("User").document(tour.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         //chỗ code ngu nè
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if (documentSnapshot.exists()) {
                                 User b = documentSnapshot.toObject(User.class);
-                                TOTW_author.setText(String.valueOf(b.getFullname()));
+                                TOTW_author.setText("Đăng bởi " + String.valueOf(b.getFullname()));
                             }
                         }
                     });
@@ -190,6 +193,8 @@ public class DiscoverFragment extends Fragment {
                             // Data for "images/island.jpg" is returns, use this as needed
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             TOTW_img.setImageBitmap(bitmap);
+                            progress1.setVisibility(View.GONE);
+                            tourofweek.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -218,14 +223,15 @@ public class DiscoverFragment extends Fragment {
                 queryDocumentSnapshots.forEach(doc -> {
                     Tour tour = doc.toObject(Tour.class);
                     //  System.out.println(tour.waypoints.size());
-                    TNWT_name.setText(String.valueOf(Configure.formatTourName(tour.getName())));
+                    //TNWT_name.setText(String.valueOf(Configure.formatTourName(tour.getName())));
+                    TNWT_name.setText(String.valueOf(tour.getName()));
                     db.collection("User").document(tour.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         //chỗ code ngu nè
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                             if (documentSnapshot.exists()) {
                                 User b = documentSnapshot.toObject(User.class);
-                                TNWT_author.setText(String.valueOf(b.getFullname()));
+                                TNWT_author.setText("Đăng bởi " +String.valueOf(b.getFullname()));
                             }
                         }
                     });
@@ -240,6 +246,8 @@ public class DiscoverFragment extends Fragment {
                             // Data for "images/island.jpg" is returns, use this as needed
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             TNWT_img.setImageBitmap(bitmap);
+                            progress2.setVisibility(View.GONE);
+                            latesttour.setVisibility(View.VISIBLE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -359,9 +367,9 @@ public class DiscoverFragment extends Fragment {
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(search, Tour.class)
                 .build();
-        return new FirestoreRecyclerAdapter<Tour, ViewHolder>(response) {
+        return new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
             @Override
-            public void onBindViewHolder(ViewHolder holder, int position, Tour model) {
+            public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
                 holder.setDetail(model);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
@@ -374,10 +382,10 @@ public class DiscoverFragment extends Fragment {
             }
 
             @Override
-            public ViewHolder onCreateViewHolder(ViewGroup group, int i) {
+            public ToursViewHolder onCreateViewHolder(ViewGroup group, int i) {
                 View mView = LayoutInflater.from(group.getContext())
                         .inflate(R.layout.small_trip, group, false);
-                return new ViewHolder(mView);
+                return new ToursViewHolder(mView);
             }
 
             @Override
@@ -387,44 +395,5 @@ public class DiscoverFragment extends Fragment {
         };
     }
 
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        View mView;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setDetail(Tour model){
-            ImageView cover = (ImageView) mView.findViewById(R.id.logo);
-            TextView name  = (TextView) mView.findViewById(R.id.trip_name);
-            TextView waypoints  = (TextView) mView.findViewById(R.id.trip_waypoints);
-
-            name.setText(model.getName());
-            if (model.getWaypoints() == null){
-                waypoints.setText("0 địa điểm");
-            }
-            else waypoints.setText(model.getWaypoints().size() + " địa điểm");
-
-            StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
-            final long ONE_MEGABYTE = 1024 * 1024;
-            imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                @Override
-                public void onSuccess(byte[] bytes) {
-                    // Data for "images/island.jpg" is returns, use this as needed
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    cover.setImageBitmap(bitmap);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                    System.out.println(exception.getMessage());
-                }
-            });
-        }
-    }
 
 }

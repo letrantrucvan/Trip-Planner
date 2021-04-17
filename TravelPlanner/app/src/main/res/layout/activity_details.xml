@@ -4,16 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".controller.DetailsActivity"
     android:background="@color/black">
 
 
     <LinearLayout
+        android:id="@+id/layoutDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,15 +49,23 @@
                 android:id="@+id/detail_icon_not_saved_tour"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginRight="9dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_outline_bookmark_border_24"
+                android:foregroundGravity="right"/>
+
+            <ImageView
+                android:id="@+id/detail_icon_saved_tour"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/ic_baseline_bookmark_24"
                 android:foregroundGravity="right"/>
 
             <ImageView
                 android:id="@+id/detail_more"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/ic_baseline_more"
                 android:foregroundGravity="right"/>
@@ -201,8 +212,7 @@
                     android:id="@+id/destinationParent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
+                    android:orientation="vertical">
 
                     <TextView
                         android:textColor="#fff"
@@ -211,7 +221,7 @@
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginVertical="10dp"
                         android:text="Hành trình"
-                        android:textSize="26sp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -219,7 +229,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="5dp"
-                        android:layout_marginVertical="10dp"
                         android:orientation="horizontal" />
 
                 </LinearLayout>
@@ -237,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="80dp"
                         android:layout_marginLeft="80dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:background="@color/notSoDark"
                         android:clipToPadding="false">
@@ -279,10 +288,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="20dp"
                         android:text="Đánh giá"
                         android:textColor="@color/white"
-                        android:textSize="20dp"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <!--Khung Comment-->
@@ -449,6 +458,20 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressDetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="20pt"
+            android:layout_height="20pt"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_bg"/>
     </LinearLayout>
 </LinearLayout>
 

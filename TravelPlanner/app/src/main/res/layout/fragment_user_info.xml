@@ -7,12 +7,9 @@
     android:background="@color/black"
     tools:context=".fragment.UserInfoFragment">
 
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/userInfoNormal"
@@ -20,7 +17,10 @@
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="40dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="40dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
             android:background="@color/black">
 
 
@@ -29,7 +29,21 @@
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
                 app:cardCornerRadius="75dp"
-                app:cardBackgroundColor="@color/orange">
+                android:backgroundTint="@color/black">
+
+                <LinearLayout
+                    android:id="@+id/userinformation_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="visible">
+                    <ProgressBar
+                        android:layout_width="15pt"
+                        android:layout_height="15pt"
+                        android:indeterminate="true"
+                        android:indeterminateDrawable="@drawable/progress_bg"/>
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/userinformation_imgvAvatar"
@@ -37,7 +51,26 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/test_avatar"
                     android:layout_gravity="center"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/userinformation_chooseType"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="-25dp"
+                android:layout_marginLeft="50dp"
+                android:backgroundTint="@color/light_grey"
+                app:cardCornerRadius="15dp"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_camera_alt_24"/>
             </androidx.cardview.widget.CardView>
 
             <EditText
@@ -118,49 +151,50 @@
                 android:text="Đăng xuất tài khoản" />
 
         </LinearLayout>
-    </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
-        android:id="@+id/userInfoGotoLogin"
+    android:id="@+id/userInfoGotoLogin"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:visibility="gone">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:backgroundTint="@color/black"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_sentiment_dissatisfied_24"
+            app:tint="@color/notSoDark"/>
+    </androidx.cardview.widget.CardView>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="gone">
+        android:text="Bạn cần đăng nhập để xem nội dung này"
+        android:textSize="14dp"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/white" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:backgroundTint="@color/black"
-            android:layout_marginBottom="20dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_baseline_sentiment_dissatisfied_24"
-                app:tint="@color/notSoDark"/>
-        </androidx.cardview.widget.CardView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bạn cần đăng nhập để xem nội dung này"
-            android:textSize="14dp"
-            android:layout_marginBottom="15dp"
-            android:textColor="@color/white" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/userInfoBtnGotoLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_round"
-            android:backgroundTint="@color/orange"
-            android:layout_marginTop="20dp"
-            android:text="Đăng nhập"
-            android:textSize="16dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"/>
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/userInfoBtnGotoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_round"
+        android:backgroundTint="@color/orange"
+        android:layout_marginTop="20dp"
+        android:text="Đăng nhập"
+        android:textSize="16dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"/>
+</LinearLayout>
 
 </FrameLayout>

@@ -5,17 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#000000"
+    android:paddingTop="60dp"
     tools:context=".SearchResult">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
-        android:gravity="center"
-        android:text="Đà Lạt"
-        android:textColor="#ffffff"
-        android:textSize="22sp" />
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:gravity="center"-->
+<!--        android:text=""-->
+<!--        android:textColor="#ffffff"-->
+<!--        android:textSize="22sp" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,19 +34,70 @@
             android:inputType="textPersonName"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
-            android:hint="Tìm kiếm chuyến đi..."
+            android:hint="Tìm kiếm địa điểm, chuyến đi..."
             android:textColorHint="@color/light_grey"
             android:textColor="#ffffff"
+            android:backgroundTint="@color/orange"
             android:textSize="15sp" />
 
 
         <ImageButton
             android:id="@+id/search_icon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:background="@drawable/ic_baseline_search" />
 
     </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/radio0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/radio_button"
+            android:button="@android:color/transparent"
+            android:checked="true"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:text="Địa điểm"
+            android:textColor="@color/radio_flat_text_selector" />
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/radio_button"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:text="Chuyến đi"
+            android:textColor="@color/radio_flat_text_selector" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/keyword_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="2dp"
+        android:text="Vui lòng nhập từ khóa tim kiếm"
+        android:textColor="#FF0000"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_item"

@@ -10,13 +10,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="30dp">
+        android:paddingTop="60dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/view2"
             android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:layout_height="45dp"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -24,25 +24,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif"
             android:text="Khám phá"
             android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/search_ic"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/ic_search"
+            android:background="@drawable/ic_baseline_search"
             tools:ignore="VectorDrawableCompat" />
 
         <ScrollView
-            android:padding="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
@@ -64,19 +63,37 @@
                     android:layout_centerHorizontal="true"
                     app:cardCornerRadius="20dp">
 
+
                     <ImageView
                         android:id="@+id/tourOfTheWeek_img"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/discover" />
+                        app:srcCompat="@drawable/discover"
+                        android:visibility="visible"/>
+
+                    <LinearLayout
+                        android:id="@+id/discover_progress1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/black"
+                        android:visibility="gone">
+                        <ProgressBar
+                            android:layout_width="15pt"
+                            android:layout_height="15pt"
+                            android:indeterminate="true"
+                            android:indeterminateDrawable="@drawable/progress_bg"/>
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="213dp"
-                        android:layout_height="103dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:text="CHUYẾN ĐI CỦA TUẦN"
                         android:textColor="@color/white"
                         android:textSize="30sp"
@@ -94,41 +111,50 @@
                     android:layout_below="@id/cardView1"
                     app:cardBackgroundColor="@color/notSoDark"
                     app:cardCornerRadius="20dp">
-                    <TextView
-                        android:id="@+id/tourOfTheWeek_name"
-                        android:layout_width="203dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Hong Kong"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:typeface="normal" />
 
-                    <TextView
-                        android:id="@+id/tourOfTheWeek_author"
-                        android:layout_width="204dp"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="42dp"
-                        android:fontFamily="sans-serif"
-                        android:text="China"
-                        android:textColor="@color/light_grey"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/tourOfTheWeek_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="10dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="Hong Kosad asd asd asd aasd asd as das ass as dad s  asd asd dss ng"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
 
-                    <TextView
-                        android:id="@+id/tourOfTheWeek_placeNum"
-                        android:layout_width="202dp"
-                        android:layout_height="60dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="60dp"
-                        android:fontFamily="sans-serif"
-                        android:text="5 địa điểm"
-                        android:textColor="@color/light_grey"
-                        android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/tourOfTheWeek_placeNum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="5 địa điểm"
+                            android:textColor="@color/white"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tourOfTheWeek_author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="China"
+                            android:textColor="@color/grey"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
 
@@ -150,11 +176,27 @@
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/tokyo" />
 
+                    <LinearLayout
+                        android:id="@+id/discover_progress2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:background="@color/black"
+                        android:visibility="gone">
+                        <ProgressBar
+                            android:layout_width="15pt"
+                            android:layout_height="15pt"
+                            android:indeterminate="true"
+                            android:indeterminateDrawable="@drawable/progress_bg"/>
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="213dp"
-                        android:layout_height="103dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:text="CHUYẾN ĐI MỚI NHẤT"
                         android:textColor="@color/white"
                         android:textSize="30sp"
@@ -173,41 +215,49 @@
                     app:cardBackgroundColor="@color/notSoDark"
                     app:cardCornerRadius="20dp">
 
-                    <TextView
-                        android:id="@+id/theNewestTour_author"
-                        android:layout_width="204dp"
-                        android:layout_height="27dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="42dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Japan"
-                        android:textColor="@color/light_grey"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/theNewestTour_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginBottom="10dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="Hong Kong"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:typeface="normal" />
+                        <TextView
+                            android:id="@+id/theNewestTour_placeNum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:text="5 địa điểm"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"/>
 
-                    <TextView
-                        android:id="@+id/theNewestTour_name"
-                        android:layout_width="203dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif"
-                        android:text="Tokyo"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:typeface="normal" />
+                        <TextView
+                            android:id="@+id/theNewestTour_author"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:text="China"
+                            android:textColor="@color/grey"
+                            android:textSize="14sp"
+                            android:textStyle="italic"  />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/theNewestTour_placeNum"
-                        android:layout_width="202dp"
-                        android:layout_height="60dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginTop="60dp"
-                        android:fontFamily="sans-serif"
-                        android:text="3 waypoints"
-                        android:textColor="@color/light_grey"
-                        android:textSize="12sp" />
                 </androidx.cardview.widget.CardView>
 
 

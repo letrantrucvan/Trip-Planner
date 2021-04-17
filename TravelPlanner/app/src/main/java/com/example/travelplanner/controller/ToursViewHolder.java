@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,11 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
             ImageView cover = (ImageView) mView.findViewById(R.id.cover);
             TextView name  = (TextView) mView.findViewById(R.id.name);
             TextView numberPlace = (TextView) mView.findViewById(R.id.numberPlace);
+            LinearLayout progress = (LinearLayout) mView.findViewById(R.id.progress);
             name.setText(model.getName());
+
+            cover.setVisibility(View.GONE);
+            progress.setVisibility(View.VISIBLE);
 
             if (model.getWaypoints() == null){
                 numberPlace.setText("0 địa điểm");
@@ -47,6 +52,8 @@ public class ToursViewHolder extends RecyclerView.ViewHolder{
                     // Data for "images/island.jpg" is returns, use this as needed
                     Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     cover.setImageBitmap(bitmap);
+                    cover.setVisibility(View.VISIBLE);
+                    progress.setVisibility(View.GONE);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

@@ -58,7 +58,10 @@ import java.util.TreeMap;
 
 public class DetailsActivity extends AppCompatActivity implements Runnable{
 
+
     private static final String TAG = "DetailsActivity";
+    private LinearLayout layoutDetails;
+    private LinearLayout progressDetails;
     private Button readMore;
     private TextView tourDescription;
     private TextView tourDescriptionFull;
@@ -84,6 +87,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
     private RadioButton current_user_rate_5;
     private Button btnUploadComment;
     private ImageView iconSaved;
+    private ImageView iconUnSaved;
     private LinearLayout CommentBox;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth mAuth;
@@ -105,6 +109,11 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
+        progressDetails = (LinearLayout) findViewById(R.id.progressDetails);
+        layoutDetails.setVisibility(View.GONE);
+        progressDetails.setVisibility(View.VISIBLE);
 
         isOpenDescription = false;
         readMore = (Button) findViewById(R.id.detail_btnReadMore);
@@ -128,6 +137,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
         mResultCommentTour.setLayoutManager(new LinearLayoutManager(this));
 
         iconSaved = (ImageView) findViewById(R.id.detail_icon_not_saved_tour);
+        iconUnSaved = (ImageView) findViewById(R.id.detail_icon_saved_tour);
         btnMore = (ImageView) findViewById(R.id.detail_more);
 
         waypointRecyclerView = findViewById(R.id.waypoints);
@@ -216,18 +226,18 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                     return;
                 }
                 User.saveTour(mAuth.getUid(), tourID);
-                iconSaved.setImageResource(R.drawable.ic_baseline_bookmark_24);
+                iconSaved.setVisibility(View.GONE);
+                iconUnSaved.setVisibility(View.VISIBLE);
                 Toast.makeText(DetailsActivity.this, "Đã lưu Tour", Toast.LENGTH_SHORT).show();
             }
         });
 
-        iconSaved.setOnClickListener(new View.OnClickListener() {
+        iconUnSaved.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 User.unsaveTour(mAuth.getUid(), tourID);
-                iconSaved.setImageResource(R.drawable.ic_baseline_bookmark_border_24);
-//                iconSaved.setVisibility(View.VISIBLE);
-//                iconUnSaved.setVisibility(View.GONE);
+                iconSaved.setVisibility(View.VISIBLE);
+                iconUnSaved.setVisibility(View.GONE);
             }
         });
 
@@ -246,12 +256,12 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                     if (tour.getAuthor_id().equals(mAuth.getUid())) {
                         CommentBox.setVisibility(View.GONE);
                         iconSaved.setVisibility(View.GONE);
-                        //iconUnSaved.setVisibility(View.GONE);
+                        iconUnSaved.setVisibility(View.GONE);
                     }
 
                     //get thông tin tour
                     waypoints.clear();
-                    tourName.setText(formatTourName(tour.getName()));
+                    tourName.setText(tour.getName());
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
                     tourPublishDay.setText("Đăng ngày " + tour.getPublish_day());
@@ -304,6 +314,8 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                             // Data for "images/island.jpg" is returns, use this as needed
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             tourCover.setImageBitmap(bitmap);
+                            layoutDetails.setVisibility(View.VISIBLE);
+                            progressDetails.setVisibility(View.GONE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -430,7 +442,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
         //chưa đăng nhập thì ẩn nút đánh giá và không cho lưu
         if (mAuth.getCurrentUser() == null){
             CommentBox.setVisibility(View.GONE);
-            //iconUnSaved.setVisibility(View.GONE);
+            iconUnSaved.setVisibility(View.GONE);
             btnGoToLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -453,7 +465,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
                         //set icon save or unsave tour
                         if (user.getSaved_tour() == null || !user.getSaved_tour().contains(tourID)){
-                            //iconUnSaved.setVisibility(View.GONE);
+                            iconUnSaved.setVisibility(View.GONE);
                         }
                         else {
                             iconSaved.setVisibility(View.GONE);
@@ -513,13 +525,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
         return true;
     }
 
-    String formatTourName(String name){
-        if (name.length() > 30){
-            name = name.substring(0, 27);
-            name += "...";
-        }
-        return name;
-    }
+
     String formatTourRating(Double rate){
         if (rate == null){
             return  "Chưa có";

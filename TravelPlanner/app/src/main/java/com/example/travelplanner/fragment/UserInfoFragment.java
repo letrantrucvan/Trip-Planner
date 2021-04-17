@@ -6,8 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
+
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -49,9 +52,11 @@ import static android.app.Activity.RESULT_OK;
  */
 public class UserInfoFragment extends Fragment {
 
+    private static final String TAG = "UserInfoFragment";
     private LinearLayout userInfoGotoLogin;
+    private LinearLayout userinformation_progress;
     private Button userInfoBtnGotoLogin;
-
+    private CardView changeAvatar;
     private LinearLayout userInfoNormal;
     private TextView edtEmail;
     private EditText edtName;
@@ -119,6 +124,8 @@ public class UserInfoFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
+        userinformation_progress = (LinearLayout) userInfo.findViewById(R.id.userinformation_progress);
+
         //check user đăng nhập hay chưa
         userInfoGotoLogin = (LinearLayout) userInfo.findViewById(R.id.userInfoGotoLogin);
         userInfoNormal = (LinearLayout) userInfo.findViewById(R.id.userInfoNormal);
@@ -138,6 +145,8 @@ public class UserInfoFragment extends Fragment {
         }
 
         //user đã đăng nhập thì thực hiện
+        changeAvatar = (CardView) userInfo.findViewById(R.id.userinformation_chooseType);
+        changeAvatar.setVisibility(View.GONE);
         edtEmail = (TextView) userInfo.findViewById(R.id.userinformation_edtEmail);
         edtName = (EditText) userInfo.findViewById(R.id.userinformation_edtName);
         imgvAvatar = (ImageView) userInfo.findViewById(R.id.userinformation_imgvAvatar);
@@ -167,26 +176,14 @@ public class UserInfoFragment extends Fragment {
             public void onClick(View v) {
                 edtEditInfo.setVisibility(View.GONE);
                 btnSaveInfo.setVisibility(View.VISIBLE);
+                changeAvatar.setVisibility(View.VISIBLE);
                 edtName.setEnabled(true);
                 edtName.requestFocus();
-                imgvAvatar.setOnClickListener(new View.OnClickListener() {
+                changeAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //Mở máy chụp hình
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, REQUEST_CODE_IMAGE);
-
-                        //mở drive
-//                        Intent i = new Intent();
-//                        i.setType("image/*");
-//                        i.setAction(Intent.ACTION_GET_CONTENT);
-//                        startActivityForResult(i, REQUEST_CODE_IMAGE);
-
-
-                        //mở album
-                        //Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        //startActivityForResult(intent, REQUEST_CODE_IMAGE);
-
+                        BottomChooseCamera ChooseCamera = new BottomChooseCamera(mAuth.getUid(), imgvAvatar);
+                        ChooseCamera.show(getActivity().getSupportFragmentManager(),TAG);
                     }
                 });
             }
@@ -197,8 +194,8 @@ public class UserInfoFragment extends Fragment {
             public void onClick(View v) {
                 edtEditInfo.setVisibility(View.VISIBLE);
                 btnSaveInfo.setVisibility(View.GONE);
+                changeAvatar.setVisibility(View.GONE);
                 edtName.setEnabled(false);
-                imgvAvatar.setOnClickListener(null);
 
                 //saveInfo vo database user
                 User.editInfo(mAuth.getUid(), edtName.getText().toString());
@@ -212,16 +209,6 @@ public class UserInfoFragment extends Fragment {
         });
         return userInfo;
     }
-
-    //hàm này lấy hình sau khi chụp ảnh ra gắn lên avatar
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data!=null){
-            Picasso.with(getContext()).load(data.getData()).into(imgvAvatar);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
 
     private void getUserInformation(){
         db.collection("User").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -243,6 +230,8 @@ public class UserInfoFragment extends Fragment {
                             // Data for "images/island.jpg" is returns, use this as needed
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             imgvAvatar.setImageBitmap(bitmap);
+                            imgvAvatar.setVisibility(View.VISIBLE);
+                            userinformation_progress.setVisibility(View.GONE);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

@@ -29,8 +29,14 @@
         <activity android:name=".controller.SignupActivity" />
         <activity android:name=".controller.LoginActivity" />
         <activity android:name=".controller.MainActivity" />
-        <activity android:name=".SearchResult" />
-        <activity android:name=".testGallery" />
+
+        <activity android:name=".SearchResult" >
+
+        </activity>
+
+        <activity android:name=".testGallery">
+        </activity>
+
         <activity android:name=".controller.SearchPlaceTable" />
         <activity android:name=".controller.PlaceDetailActivity" />
         <activity android:name=".controller.SearchActivity" />

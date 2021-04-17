@@ -173,7 +173,7 @@ public class BookmarkFragment extends Fragment {
                 if (documentSnapshot.exists()) {
                     User a = documentSnapshot.toObject(User.class);
 
-                    if (a.getSaved_tour() == null) return;
+                    if (a.getSaved_tour() == null || a.getSaved_tour().size() == 0) return;
 
                     Query searchQuery  = db.collection("Tour").whereIn("tour_id", a.getSaved_tour());
                     //Bind data
@@ -233,7 +233,7 @@ public class BookmarkFragment extends Fragment {
                 if (documentSnapshot.exists()) {
                     User a = documentSnapshot.toObject(User.class);
 
-                    if (a.getSaved_places().size() == 0) return;
+                    if (a.getSaved_places() == null || a.getSaved_places().size() == 0) return;
 
 
                         Query searchQuery = db.collection("Place").whereIn("place_id", a.getSaved_places());

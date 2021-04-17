@@ -107,6 +107,7 @@ public class Tour {
     public ArrayList<String> getWaypoints() {return waypoints;}
     public int getViews() { return views; }
 
+
     //set
     public void setId(String id) {
         this.tour_id = id;
@@ -149,6 +150,10 @@ public class Tour {
     }
     public void setSearch_keywords(ArrayList<String> search_keywords) { this.search_keywords = search_keywords; }
     public void setViews(int views) { this.views = views; }
+
+    public void setWaypoints(ArrayList<String> waypoints) {
+        this.waypoints = waypoints;
+    }
 
     static public void getHighlightedTour(){}
     static public void getNearByTour(){}

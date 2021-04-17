@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,12 +32,16 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
 
 
     public void setDetail(Tour model){
+        LinearLayout progress = (LinearLayout) mView.findViewById(R.id.bookmarkProgress);
         ImageView cover = (ImageView) mView.findViewById(R.id.bookmarkAvatar);
         TextView name  = (TextView) mView.findViewById(R.id.bookmarkTourName);
         TextView author = (TextView) mView.findViewById(R.id.bookmarkAuthor);
         TextView waypoint = (TextView) mView.findViewById(R.id.bookmarkWayPoint);
         name.setText(model.getName());
         author.setText("Đăng bởi " + model.getAuthor_name());
+
+        cover.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
 
         if (model.getWaypoints() == null){
             waypoint.setText("0 địa điểm");
@@ -51,6 +56,8 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
                 // Data for "images/island.jpg" is returns, use this as needed
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 cover.setImageBitmap(bitmap);
+                cover.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.GONE);
 
             }
         }).addOnFailureListener(new OnFailureListener() {

@@ -17,13 +17,31 @@
             android:background="@color/notSoDark"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/bookmarkAvatar"
-                android:layout_width="130dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="120dp"
-                android:src="@drawable/test_avatar"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"/>
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/bookmarkProgress"
+                    android:layout_width="130dp"
+                    android:layout_height="120dp"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:visibility="gone">
+                    <ProgressBar
+                        android:layout_width="15pt"
+                        android:layout_height="15pt"
+                        android:indeterminate="true"
+                        android:indeterminateDrawable="@drawable/progress_bg"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/bookmarkAvatar"
+                    android:layout_width="130dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

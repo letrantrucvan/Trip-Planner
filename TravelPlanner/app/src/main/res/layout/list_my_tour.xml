@@ -20,6 +20,19 @@
         app:cardCornerRadius="20dp"
         android:src="@color/notSoDark" >
 
+        <LinearLayout
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="visible">
+            <ProgressBar
+                android:layout_width="20pt"
+                android:layout_height="20pt"
+                android:indeterminate="true"
+                android:indeterminateDrawable="@drawable/progress_bg"/>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/cover"
