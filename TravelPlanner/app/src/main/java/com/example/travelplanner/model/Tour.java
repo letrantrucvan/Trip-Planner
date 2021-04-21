@@ -66,7 +66,7 @@ public class Tour {
         this.des = des;
         this.publish_day = publish_day;
         this.search_keywords = generateKeyWords(name);
-
+        this.isActive = false;
     }
 
     //get

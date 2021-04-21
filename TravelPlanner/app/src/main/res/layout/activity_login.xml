@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".controller.LoginActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+
+    >
 
     
     <LinearLayout
@@ -100,10 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/bg_round"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="14sp"/>
+                android:background="@drawable/bg_round"/>
 
 
             <Button
