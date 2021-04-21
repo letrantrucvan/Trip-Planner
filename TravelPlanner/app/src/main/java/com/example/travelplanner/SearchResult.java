@@ -2,6 +2,7 @@ package com.example.travelplanner;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,6 +62,7 @@ public class SearchResult extends AppCompatActivity {
     private RadioButton btn_search_place;
     private RadioButton btn_search_tour;
 
+    private CardView openQRCam;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference mTour;
@@ -90,6 +92,15 @@ public class SearchResult extends AppCompatActivity {
 
         firestoreUserSearch("");
         mResultList.setVisibility(View.GONE);
+
+        openQRCam = (CardView) findViewById(R.id.btnStartQRCam);
+        openQRCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent (SearchResult.this, ScanActivity.class);
+                startActivity(i);
+            }
+        });
 
         btn_search_place.setOnClickListener(new View.OnClickListener() {
             @Override

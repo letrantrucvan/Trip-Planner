@@ -165,6 +165,16 @@ public class HomeFragment extends Fragment {
                         startActivity(i);
                     }
                 });
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+//                        Intent i = new Intent(getActivity(), editTour.class);
+//                        String documentId = getSnapshots().getSnapshot(position).getId();
+//                        i.putExtra("Key", documentId);
+//                        startActivity(i);
+                        return false;
+                    }
+                });
             }
 
             @Override

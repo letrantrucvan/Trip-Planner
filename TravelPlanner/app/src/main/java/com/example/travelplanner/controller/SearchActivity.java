@@ -15,8 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.ScanActivity;
 
 public class SearchActivity extends AppCompatActivity {
     private static final String TAG = "Thu SearchActivity";
@@ -73,6 +75,8 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+
 
     }
 }

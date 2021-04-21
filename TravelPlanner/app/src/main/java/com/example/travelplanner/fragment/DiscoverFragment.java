@@ -19,11 +19,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.travelplanner.Configure;
 import com.example.travelplanner.R;
 import com.example.travelplanner.SearchResult;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
-import com.example.travelplanner.controller.SearchActivity;
 import com.example.travelplanner.controller.DetailsActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
@@ -39,8 +37,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -270,28 +266,6 @@ public class DiscoverFragment extends Fragment {
 
         Query PopularTour  = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).orderBy("rating_avg", Query.Direction.DESCENDING); //Rating avg cao nhất + lượt views nhiều nhất
 
-        //Bind data
-
-        // tạo adapter ngang
-//        adapter = new FirestoreRecyclerAdapter<Tour, ViewHolder>(response) {
-//            @Override
-//            public void onBindViewHolder(ViewHolder holder, int position, Tour model) {
-//                holder.setDetail(model.getCover(), model.getName());
-//            }
-//
-//            @Override
-//            public ViewHolder onCreateViewHolder(ViewGroup group, int i) {
-//                View mView = LayoutInflater.from(group.getContext())
-//                        .inflate(R.layout.small_trip, group, false);
-//                return new ViewHolder(mView);
-//            }
-//
-//            @Override
-//            public void onError(FirebaseFirestoreException e) {
-//                Log.e("error", e.getMessage());
-//            }
-//        };
-        //--
 
         adapter = horizonto(PopularTour);
         adapter.notifyDataSetChanged();
@@ -306,6 +280,7 @@ public class DiscoverFragment extends Fragment {
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)
                 .build();
+
         //adapter dọc
         adapter_vertical= new FirestoreRecyclerAdapter<Tour, BookmarksTourViewHolder>(response) {
             @Override

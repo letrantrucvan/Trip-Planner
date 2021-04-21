@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.SearchResult;
 import com.example.travelplanner.adapter.WaypointAdapter;
 import com.example.travelplanner.fragment.BottomSheetFragment;
 import com.example.travelplanner.fragment.FragmentTwo;
@@ -74,7 +75,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
     private TextView tourPublishDay;
     private TextView tourRating;
     private int count;
-    private RecyclerView mResultCommentTour, waypointRecyclerView;
+    private RecyclerView mResultCommentTour, waypointRecyclerView, detail_sameAuthorTour;
     private FirestoreRecyclerAdapter adapterTourComment;
     private TextView tourViews;
     private Button btnGoToLogin;
@@ -95,6 +96,8 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
     private String tourID;
     private ImageView btnMore;
     private Fragment moreFragment;
+
+    private FirestoreRecyclerAdapter adapterSameAuthorTour;
 
     //tablayout
     private  TabLayout mTabs;
@@ -145,6 +148,9 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
 
         CommentBox = (LinearLayout) findViewById(R.id.detail_comment_current_user_box);
+
+        detail_sameAuthorTour = (RecyclerView) findViewById(R.id.detail_sameAuthorTour);
+        detail_sameAuthorTour.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -199,6 +205,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
         loadUI();
         loadUIUser(); //check user đăng nhập hay chưa
         loadRatingComment();
+        //loadSameAuthorTour();
 
         readMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,6 +259,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
                     Tour tour = documentSnapshot.toObject(Tour.class);
                     cur_Tour = tour;
+                    loadSameAuthorTour(tour.getAuthor_id());
                     //nếu chủ tour là user thì không cho đánh giá
                     if (tour.getAuthor_id().equals(mAuth.getUid())) {
                         CommentBox.setVisibility(View.GONE);
@@ -511,6 +519,53 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
             });
 
         }
+    }
+
+    void loadSameAuthorTour(String author_id){
+        Query searchQuery  = db.collection("Tour").whereEqualTo("author_id", author_id);
+        //Bind data
+        FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
+                .setQuery(searchQuery, Tour.class)
+                .build();
+
+        adapterSameAuthorTour = new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
+            @Override
+            public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
+                holder.setDetail(model);
+                if (model.getTour_id().equals(tourID)){
+                    holder.itemView.setVisibility(View.GONE);
+                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                    return;
+                }
+                else {
+                    holder.setDetail(model);
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Intent intent = getIntent();
+                            String documentId = getSnapshots().getSnapshot(position).getId();
+                            intent.putExtra("Key", documentId);
+                            finish();
+                            startActivity(intent);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public ToursViewHolder onCreateViewHolder(ViewGroup group, int i) {
+                View mView = LayoutInflater.from(group.getContext())
+                        .inflate(R.layout.small_trip, group, false);
+                return new ToursViewHolder(mView);
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                Log.e("error", e.getMessage());
+            }
+        };
+        adapterSameAuthorTour.notifyDataSetChanged();
+        adapterSameAuthorTour.startListening();
+        detail_sameAuthorTour.setAdapter(adapterSameAuthorTour);
     }
 
     boolean checkValidInput(){

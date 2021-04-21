@@ -419,9 +419,6 @@
 
                             </LinearLayout>
 
-
-
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -439,7 +436,6 @@
                     </androidx.cardview.widget.CardView>
                     <!-- recycleview-->
 
-
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/detail_btn_GotoLogin"
                         android:layout_width="wrap_content"
@@ -453,7 +449,23 @@
                         android:background="@drawable/bg_round"
                         android:layout_gravity="center"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="Chuyến đi cùng tác giả"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/detail_sameAuthorTour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:nestedScrollingEnabled="false">
+                    </androidx.recyclerview.widget.RecyclerView>
 
                 </LinearLayout>
             </LinearLayout>
