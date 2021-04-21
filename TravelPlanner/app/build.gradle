@@ -45,6 +45,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.3'
     implementation 'androidx.navigation:navigation-ui:2.3.3'
 
+    //facebook authentication
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+
 
     //Firebase Storage
     implementation 'com.google.firebase:firebase-storage:19.2.1'

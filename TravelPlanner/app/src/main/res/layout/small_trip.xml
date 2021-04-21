@@ -61,6 +61,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:text="Tokyo"
+                    app:autoSizeTextType="uniform"
                     android:textColor="@color/white"
                     android:textSize="14dp"
                     android:textStyle="bold" />
@@ -69,6 +70,7 @@
                     android:id="@+id/numberPlace"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:autoSizeTextType="uniform"
                     android:text="7 địa điểm"
                     android:textColor="@color/light_grey"
                     android:textSize="12dp" />
