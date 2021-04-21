@@ -15,7 +15,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TravelPlanner">
+        android:theme="@style/Theme.TravelPlanner"
+        >
 
         <activity android:name=".ScanActivity" />
         <activity android:name=".controller.DetailsActivity" />
@@ -51,6 +52,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
+
     </application>
 
 </manifest>

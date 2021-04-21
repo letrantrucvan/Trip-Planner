@@ -26,6 +26,8 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.internal.WebDialog;
+import com.facebook.login.LoginBehavior;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -88,31 +90,36 @@ public class LoginActivity extends AppCompatActivity {
         edtPassword = (EditText) findViewById(R.id.login_edtPassword);
         edtForgot = (TextView) findViewById(R.id.login_edtForgot);
 
-        btnSignup.setText(Html.fromHtml("<i>Don't have an account?</i> <font size=\"18sp\"><b>SIGN UP</b></font>"));
+        btnSignup.setText(Html.fromHtml("<font size=\"18sp\"><b>SIGN UP</b></font>"));
         edtForgot.setText(Html.fromHtml("<i><u>Forgot your password?</u></i>"));
 
         mAuth = FirebaseAuth.getInstance();
         ref = FirebaseDatabase.getInstance().getReference().child("User");
         FacebookSdk.sdkInitialize(getApplicationContext());
-        facbook_login = (LoginButton) findViewById(R.id.login_button);
-        mCbm = CallbackManager.Factory.create();
-        
-        facbook_login.setReadPermissions("email", "public_profile");
 
+        mCbm = CallbackManager.Factory.create();
+        facbook_login = (LoginButton) findViewById(R.id.login_button);
+        facbook_login.setReadPermissions("email", "public_profile");
         facbook_login.registerCallback(mCbm, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "onSuccess" + loginResult);
+
+                System.out.println("Facebook onSuccess");
                 handleFacebookToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
+
+                System.out.println("Facebook onCancel");
                 Log.d(TAG, "onCancel");
             }
 
             @Override
             public void onError(FacebookException error) {
+
+                System.out.println("Facebook onError");
                 Log.d(TAG, "onError" + error);
             }
         });
@@ -169,6 +176,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mCbm.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -184,9 +192,6 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Google Sign In failed.",
                         Toast.LENGTH_SHORT).show();
             }
-        }
-        else {
-            mCbm.onActivityResult(requestCode, resultCode, data);
         }
     }
 
@@ -338,6 +343,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "handleFacebookToken" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
         mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -348,6 +354,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(i);
                 }else {
+                    Log.d(TAG, "sign with credential: Failed" + task.getException());
                     Toast.makeText(LoginActivity.this, "Sign in fail.",
                             Toast.LENGTH_SHORT).show();
                 }

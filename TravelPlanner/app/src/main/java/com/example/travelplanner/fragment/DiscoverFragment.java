@@ -53,19 +53,28 @@ public class DiscoverFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private RecyclerView popularTour;
+
     private FirestoreRecyclerAdapter adapter;
+    private FirestoreRecyclerAdapter adapter_fyp;
+    private FirestoreRecyclerAdapter adapter_budget;
+
+
     private FirestoreRecyclerAdapter adapter_vertical;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+
+    private RecyclerView popularTour;
     private RecyclerView islandTour;
     private RecyclerView fypTour;
     private RecyclerView budgetTour;
+
     private ImageView search_ic;
+
     private ImageView TOTW_img; //TOUR OF THE WEEK
     private TextView TOTW_name;
     private TextView TOTW_author;
     private TextView TOTW_placeNum;
+
     private ImageView TNWT_img; //THE NEWEST TOUR
     private TextView TNWT_name;
     private  TextView TNWT_author;
@@ -212,7 +221,7 @@ public class DiscoverFragment extends Fragment {
             }
         });
 
-        Query theNewestTour = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).limit(1); // Tour mới nhất
+        Query theNewestTour = db.collection("Tour").orderBy("rating_avg", Query.Direction.DESCENDING).limit(1); // Tour mới nhất
         theNewestTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -265,18 +274,28 @@ public class DiscoverFragment extends Fragment {
         });
 
         Query PopularTour  = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).orderBy("rating_avg", Query.Direction.DESCENDING); //Rating avg cao nhất + lượt views nhiều nhất
+        Query fyp = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING);
+        Query budget = db.collection("Tour").orderBy("rating_avg", Query.Direction.DESCENDING);
 
 
         adapter = horizonto(PopularTour);
         adapter.notifyDataSetChanged();
         adapter.startListening();
 
+        adapter_fyp = horizonto(fyp);
+        adapter_fyp.notifyDataSetChanged();
+        adapter_fyp.startListening();
+
+        adapter_budget = horizonto(budget);
+        adapter_budget.notifyDataSetChanged();
+        adapter_budget.startListening();
+
         popularTour.setAdapter(adapter);
-        fypTour.setAdapter(adapter);
-        budgetTour.setAdapter(adapter);
+        fypTour.setAdapter(adapter_fyp);
+        budgetTour.setAdapter(adapter_budget);
 
         Query RecommendedTour  = db.collection("Tour"); // Số địa điểm trùng nhau nhiều nhất
-        Query searchQuery  = db.collection("Tour");
+        Query searchQuery  = db.collection("Tour").limit(5);
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)
                 .build();
