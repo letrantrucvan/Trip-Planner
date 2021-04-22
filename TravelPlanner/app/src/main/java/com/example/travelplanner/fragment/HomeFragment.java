@@ -99,6 +99,8 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
+
+
         mytour = (RecyclerView) v.findViewById(R.id.my_tour);
         mytour.setHasFixedSize(true);
         mytour.setLayoutManager(layoutManager);

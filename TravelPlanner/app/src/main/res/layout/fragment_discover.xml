@@ -126,7 +126,7 @@
                             android:layout_marginBottom="10dp"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:text="Hong Kosad asd asd asd aasd asd as das ass as dad s  asd asd dss ng"
+                            android:text="Hong Kong"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold"

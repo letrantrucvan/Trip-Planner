@@ -9,21 +9,25 @@
 
     >
 
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center|top"
         android:orientation="vertical"
         >
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:outlineProvider="none">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="250dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_wave"/>
+                android:src="@drawable/ic_wave"
+                android:background="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -42,6 +46,7 @@
             android:gravity="center|top"
             android:orientation="vertical"
             android:padding="40dp">
+
             <EditText
                 android:id="@+id/login_edtEmail"
                 android:layout_width="match_parent"
@@ -52,8 +57,7 @@
                 android:background="@drawable/edit_text_white"
                 android:ems="10"
                 android:hint="Email"
-                android:inputType="textPersonName"
-                />
+                android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/login_edtPassword"
@@ -87,6 +91,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:backgroundTint="@color/orange" />
+
             <TextView
                 android:id="@+id/login_edtForgot"
                 android:layout_width="match_parent"
@@ -95,14 +100,14 @@
                 android:gravity="center"
                 android:text="Forgot your password?"
                 android:textColor="@color/black"
-                android:textStyle="italic"/>
+                android:textStyle="italic" />
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/bg_round"/>
+                android:background="@drawable/bg_round" />
 
 
             <Button
@@ -111,12 +116,12 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bg_round"
+                android:drawableLeft="@drawable/ic_logo_google"
                 android:text="LOG IN WITH GOOGLE"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
                 android:textSize="14sp"
-                app:backgroundTint="@color/white"
-                android:drawableLeft="@drawable/ic_logo_google"/>
+                app:backgroundTint="@color/white" />
         </LinearLayout>
 
 

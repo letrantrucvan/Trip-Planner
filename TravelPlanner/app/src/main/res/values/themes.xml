@@ -24,6 +24,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.TravelPlanner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.TravelPlanner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
