@@ -7,10 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,13 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.adapter.ListAdapterTripPopUp;
-import com.example.travelplanner.controller.PlaceDetailActivity;
-import com.example.travelplanner.model.MyPlace;
+import com.example.travelplanner.adapter.ListTripPopUpAdapter;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.URLRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,7 +34,6 @@ import eightbitlab.com.blurview.RenderScriptBlur;
 
 public class TripPopUpFragment extends Fragment {
     private static final String TAG = "Thu TripPopUpFragment";
-
     private RecyclerView list_tour_popup;
     private ArrayList<Tour> tours;
     private BlurView blurView;
@@ -47,7 +42,7 @@ public class TripPopUpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i(TAG,"onCreateView");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final View view = inflater.inflate(R.layout.list_tour_popup, container, false);
         list_tour_popup = view.findViewById(R.id.list_tour_popup);
         tours = new ArrayList<>();
@@ -76,6 +71,7 @@ public class TripPopUpFragment extends Fragment {
         });
 
         db.collection("Tour")
+                .whereEqualTo("author_id", mAuth.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -89,7 +85,7 @@ public class TripPopUpFragment extends Fragment {
                                 tours.add(tour);
                             }
 
-                            ListAdapterTripPopUp adapter = new ListAdapterTripPopUp(
+                            ListTripPopUpAdapter adapter = new ListTripPopUpAdapter(
                                     getActivity().getApplicationContext(), tours
                             );
                             list_tour_popup.setAdapter(adapter);

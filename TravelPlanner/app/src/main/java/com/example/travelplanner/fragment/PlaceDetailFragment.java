@@ -42,6 +42,7 @@ import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Reviews;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.URLRequest;
+import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,7 +53,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.maps.android.PolyUtil;
@@ -73,10 +76,14 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     private static final String TAG = "Thu PlaceDetailFragment";
     double width, height;
     GoogleMap map;
+    static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     private RequestQueue requestQueue;
 
 
     private TextView name;
+    private ImageView save;
+    private ImageView unSave;
     private ImageView place_photo;
     private TextView val_address;
     private TextView val_phone;
@@ -174,7 +181,8 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
         blurReview = view.findViewById(R.id.blurReview);
         blurTrip = view.findViewById(R.id.blurTrip);
         addButton = view.findViewById(R.id.addButton);
-
+        save = view.findViewById(R.id.save);
+        unSave = view.findViewById(R.id.unSave);
         recyclerDestination = view.findViewById(R.id.nearby_destinations);
         recyclerDestination.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -215,6 +223,53 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
                 }
             });
         }
+        db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    User b = documentSnapshot.toObject(User.class);
+                    ArrayList<String> saved_places = b.getSaved_places();
+                    if (saved_places.contains(cur_placeID))
+                    {
+                        unSave.setVisibility(View.VISIBLE);
+                        save.setVisibility(View.GONE);
+                        Log.i(TAG, "contain "+ cur_placeID);
+
+                    }
+                    else
+                    {
+                        unSave.setVisibility(View.GONE);
+                        save.setVisibility(View.VISIBLE);
+                        Log.i(TAG, "not contain "+ cur_placeID);
+
+                    }
+                }
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (HomeFragment.mAuth.getCurrentUser() == null){
+                    Toast.makeText(getContext(), "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                User.savePlace(HomeFragment.mAuth.getUid(), cur_placeID);
+                Toast.makeText(getContext(), "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
+                unSave.setVisibility(View.VISIBLE);
+                save.setVisibility(View.GONE);
+                //notifyDataSetChanged();
+            }
+        });
+        unSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User.unsavePlace(HomeFragment.mAuth.getUid(), cur_placeID);
+                Toast.makeText(getContext(), "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
+                unSave.setVisibility(View.GONE);
+                save.setVisibility(View.VISIBLE);
+                //notifyDataSetChanged();
+            }
+        });
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -29,6 +29,11 @@ public class URLRequest {
     static public String getTextSearchRequest(String keyword) {
         return TextSearch + "query=" + keyword + "&language=vi" + "&key=" + API_key;
     }
+    static public String getTextSearchRequest(String keyword, String category) {
+        category = category.toLowerCase();
+        category.replace(' ','_');
+        return TextSearch + "query=" + keyword + "&type=" + category+ "&language=vi" + "&key=" + API_key;
+    }
 
     static public String getTextSearchRequestPageToken(String next_p) {
         return TextSearch + "pagetoken=" + next_p + "&key=" + API_key;

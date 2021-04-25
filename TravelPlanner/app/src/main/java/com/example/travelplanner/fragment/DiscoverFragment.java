@@ -20,9 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.SearchResult;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
 import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.SearchActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
@@ -149,7 +149,7 @@ public class DiscoverFragment extends Fragment {
         search_ic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), SearchResult.class));
+                startActivity(new Intent(getActivity(), SearchActivity.class));
                 //startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });

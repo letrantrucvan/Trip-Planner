@@ -4,8 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.travelplanner.R;
-import com.example.travelplanner.adapter.ListAdapterTripPopUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -17,25 +15,14 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import android.graphics.Bitmap;
 
-import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Exclude;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Date;
-import java.util.List;
 
 public class Tour {
     static final String TAG = "Thu Tour";

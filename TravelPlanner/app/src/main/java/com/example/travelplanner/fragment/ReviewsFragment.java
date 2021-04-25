@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
-import com.example.travelplanner.adapter.ListAdapterReview;
+import com.example.travelplanner.adapter.ListReviewAdapter;
 import com.example.travelplanner.model.Reviews;
 import com.example.travelplanner.model.URLRequest;
 import com.squareup.picasso.Picasso;
@@ -155,7 +155,7 @@ public class ReviewsFragment extends Fragment {
         }
 
         // Fill up the list
-        ListAdapterReview adapter = new ListAdapterReview(
+        ListReviewAdapter adapter = new ListReviewAdapter(
                 getActivity().getApplicationContext(), R.layout.reviews_fragment, reOrder_list
         );
         review_list.setAdapter(adapter);

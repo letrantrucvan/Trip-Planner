@@ -31,10 +31,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_ADDRESS;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_IMG;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_NAME;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_PLACEID_DETAIL;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_ADDRESS;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_IMG;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_NAME;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_PLACEID_DETAIL;
 
 public class SavedPlacesAdapter extends
         FirestoreRecyclerAdapter<MyPlace, SavedPlacesAdapter.MyViewHolder> {

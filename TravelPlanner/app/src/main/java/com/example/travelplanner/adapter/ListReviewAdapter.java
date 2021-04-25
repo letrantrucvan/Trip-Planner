@@ -20,13 +20,13 @@ import java.util.ArrayList;
 import com.example.travelplanner.R;
 
 
-public class ListAdapterReview extends ArrayAdapter<Reviews> {
+public class ListReviewAdapter extends ArrayAdapter<Reviews> {
 
     ArrayList<Reviews> reviews;
     Context context;
     int resource;
 
-    public ListAdapterReview(@NonNull Context context, int resource, @NonNull ArrayList<Reviews> reviews) {
+    public ListReviewAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Reviews> reviews) {
         super(context, resource, reviews);
         this.reviews = reviews;
         this.context = context;

@@ -1,7 +1,6 @@
 package com.example.travelplanner.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -9,42 +8,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.PlaceDetailActivity;
 import com.example.travelplanner.fragment.PlaceDetailFragment;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
-import com.example.travelplanner.model.URLRequest;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_ADDRESS;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_IMG;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_NAME;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_PLACEID_DETAIL;
-
-public class ListAdapterTripPopUp extends RecyclerView.Adapter<ListAdapterTripPopUp.ViewHolder>{
+public class ListTripPopUpAdapter extends RecyclerView.Adapter<ListTripPopUpAdapter.ViewHolder>{
 
     private static final String TAG = "Thu ListAdapterTripPopUp";
 
     ArrayList<Tour> tours;
     Context context;
 
-    public ListAdapterTripPopUp(@NonNull Context context, @NonNull ArrayList<Tour> tours) {
+    public ListTripPopUpAdapter(@NonNull Context context, @NonNull ArrayList<Tour> tours) {
         Log.i(TAG,"ListAdapterTripPopUp" + tours.size());
 
         this.tours = tours;

@@ -16,21 +16,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.LoginActivity;
 import com.example.travelplanner.controller.PlaceDetailActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.URLRequest;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_ADDRESS;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_IMG;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_NAME;
-import static com.example.travelplanner.controller.SearchPlaceTable.EXTRA_TEXT_PLACEID_DETAIL;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_ADDRESS;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_IMG;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_NAME;
+import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA_TEXT_PLACEID_DETAIL;
 
 public class WaypointAdapter extends RecyclerView.Adapter<WaypointAdapter.ViewHolder>{
 
     private static final String TAG = "Thu WaypointAdapter";
+
+    private FirebaseAuth mAuth;
 
     ArrayList<MyPlace> myPlaces;
     Context context;
@@ -40,8 +44,8 @@ public class WaypointAdapter extends RecyclerView.Adapter<WaypointAdapter.ViewHo
         Log.i(TAG, myPlaces.toString());
         this.context = context;
         this.myPlaces = myPlaces;
+        mAuth = FirebaseAuth.getInstance();
     }
-
 
     @NonNull
     @Override
@@ -96,18 +100,9 @@ public class WaypointAdapter extends RecyclerView.Adapter<WaypointAdapter.ViewHo
             @Override
             public boolean onLongClick(View v) {
                 Log.i(TAG,"onLongClick");
-
-                holder.delete.setVisibility(View.VISIBLE);
+                if(DetailsActivity.cur_Tour.getAuthor_id().equals(mAuth.getUid()))
+                    holder.delete.setVisibility(View.VISIBLE);
                 return true;
-            }
-        });
-        holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.i(TAG,"onFocusChange");
-
-                if(!hasFocus) holder.delete.setVisibility(View.GONE);
-
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {

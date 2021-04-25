@@ -22,7 +22,6 @@ import com.example.travelplanner.controller.BookmarksPlaceViewHolder;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
 import com.example.travelplanner.controller.DetailsActivity;
 import com.example.travelplanner.controller.LoginActivity;
-import com.example.travelplanner.controller.SearchPlaceTable;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;

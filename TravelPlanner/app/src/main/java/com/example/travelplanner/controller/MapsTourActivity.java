@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.android.volley.Request;
@@ -19,7 +19,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.travelplanner.adapter.PlaceOverViewAdapter;
-import com.example.travelplanner.fragment.PlaceDetailFragment;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.URLRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,19 +27,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.example.travelplanner.R;
 
@@ -56,14 +51,13 @@ public class MapsTourActivity extends AppCompatActivity implements
 {
 
     private final static String TAG ="Thu MapsTourActivity";
-    private final String serverKey = "AIzaSyBkOL6u8dicZ2nZHOmkr1faQU9KbkzDhR4";
-    private LatLng origin = new LatLng(37.7849569, -122.4068855);
-    private LatLng destination = new LatLng(37.7814432, -122.4460177);
     private ViewPager2 viewPager;
     private GoogleMap mMap;
     private ArrayList<Marker> markers;
     private RequestQueue requestQueue;
     private Switch switchCompat;
+    private TextView duration;
+    private TextView distance;
     private ArrayList<Polyline> path_list = new ArrayList<>();
 
 
@@ -71,15 +65,15 @@ public class MapsTourActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map_fragment1);
+        setContentView(R.layout.map_tour_fragment);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
  //       getSupportActionBar().hide();
         viewPager = findViewById(R.id.viewpager);
         switchCompat = findViewById(R.id.showDirection);
-
-
+        distance =  findViewById(R.id.distance);
+        duration =  findViewById(R.id.duration);
     }
 
     @Override
@@ -203,13 +197,27 @@ public class MapsTourActivity extends AppCompatActivity implements
                             // display direction!
                             ArrayList<String> poly_path = new ArrayList<>();
 
+                            double iDuration = 0;
+                            double iDistance = 0;
                            // ArrayList<String> poly_path = getFullPath(jsonArray.getJSONObject(0).getJSONArray("steps"));
                             for(int i = 0; i< jsonArray.length();i++)
                             {
+                                iDuration += Integer.parseInt(jsonArray.getJSONObject(i).getJSONObject("duration").getString("value")); //meters
+                                iDistance += Integer.parseInt(jsonArray.getJSONObject(i).getJSONObject("distance").getString("value")); //seconds
                                 poly_path.addAll(getFullPath(jsonArray.getJSONObject(i).getJSONArray("steps")));
                             }
+                            Log.i(TAG, "duration: "+ duration);
+                            Log.i(TAG, "distance: "+ distance);
+                            if(iDuration < 3600)
+                                duration.setText("Thời gian di chuyển: "+ (int)(iDuration/60) +" phút");
+                            else duration.setText("Thời gian di chuyển: "+ (int)(iDuration/3600) + " giờ "+ (int)((iDuration%3600)/60) + " phút");
+                            if(iDistance < 1000)
+                                distance.setText("Tổng quãng đường di chuyển: "+ iDistance+ " m");
+                            else
+                                distance.setText("Tổng quãng đường di chuyển: "+ iDistance/1000+ " km");
+
                             int path_len = poly_path.size();
-                            for(int i=0;i<path_len;i++){
+                            for(int i=0;i<path_len ;i++){
                                 PolylineOptions mPolylineOptions = new PolylineOptions();
                                 mPolylineOptions.color(Color.BLUE);
                                 mPolylineOptions.width(9);

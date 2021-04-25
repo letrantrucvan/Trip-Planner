@@ -9,19 +9,60 @@
     android:clickable="true"
     android:focusable="true"
     tools:context=".controller.SearchActivity">
-
-
-    <androidx.appcompat.widget.SearchView
-        app:queryBackground="@color/gray"
-        android:layout_marginTop="40dp"
-        app:queryHint="Tìm kiếm địa điểm, chuyến đi"
-        android:id="@+id/keyword_input"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="5dp"/>
+    <LinearLayout
+        android:id="@+id/search_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:searchIcon="@drawable/ic_baseline_search"
-        app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btnStartQRCam"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="@color/black">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_qr_code_scanner_24"/>
+        </androidx.cardview.widget.CardView>
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingStart="10dp"
+            android:paddingBottom="10dp"
+            android:hint="Tìm kiếm địa điểm, chuyến đi..."
+            android:textColorHint="@color/light_grey"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/orange"
+            android:textSize="15sp" />
+
+
+        <ImageButton
+            android:id="@+id/search_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_baseline_search" />
+
+    </LinearLayout>
+
 
     <RadioGroup
         android:id="@+id/radio_group"
@@ -36,7 +77,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/keyword_warning">
+        app:layout_constraintTop_toBottomOf="@id/search_group">
 
 
         <RadioButton
@@ -66,20 +107,28 @@
 
     </RadioGroup>
 
-
-    <TextView
-
-        android:id="@+id/keyword_warning"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list_item"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp" />
+    <FrameLayout
+        android:id="@+id/search_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="130dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/filter"
+        app:fabSize="mini"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Vui long nhập từ khóa tim kiếm"
-        android:textColor="#FF0000"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="2dp"
-        app:layout_constraintTop_toBottomOf="@+id/keyword_input"
-        android:layout_marginLeft="8dp" />
-
-
+        android:layout_marginBottom="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="4dp"
+        android:src="@drawable/ic_baseline_filter_alt_24"
+        android:background="@android:color/transparent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

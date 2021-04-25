@@ -1,6 +1,7 @@
 package com.example.travelplanner.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -68,6 +69,7 @@ public class MapTourFragment extends Fragment {
 
     CustomMapView mapView;
     private GoogleMap mMap;
+    protected Activity mActivity; //risk of causing memory leaks, check later
 
     public static MapTourFragment newInstance() {
         Log.i(TAG, "MapTourFragment");
@@ -148,5 +150,17 @@ public class MapTourFragment extends Fragment {
         marker.setTag(number);
         CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(12).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity= (Activity) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity= null;
     }
 }

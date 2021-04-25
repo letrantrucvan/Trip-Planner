@@ -9,6 +9,7 @@ import android.view.Display;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.travelplanner.R;
 import com.example.travelplanner.fragment.PlaceDetailFragment;
+import com.example.travelplanner.fragment.SearchPlaceResultFragment;
 
 
 public class PlaceDetailActivity extends AppCompatActivity {
@@ -30,10 +31,10 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        selected_placeId = intent.getStringExtra(SearchPlaceTable.EXTRA_TEXT_PLACEID_DETAIL);
-        selected_name = intent.getStringExtra(SearchPlaceTable.EXTRA_TEXT_NAME);
-        selected_img = intent.getStringExtra(SearchPlaceTable.EXTRA_TEXT_IMG);
-        selected_address = intent.getStringExtra(SearchPlaceTable.EXTRA_TEXT_ADDRESS);
+        selected_placeId = intent.getStringExtra(SearchPlaceResultFragment.EXTRA_TEXT_PLACEID_DETAIL);
+        selected_name = intent.getStringExtra(SearchPlaceResultFragment.EXTRA_TEXT_NAME);
+        selected_img = intent.getStringExtra(SearchPlaceResultFragment.EXTRA_TEXT_IMG);
+        selected_address = intent.getStringExtra(SearchPlaceResultFragment.EXTRA_TEXT_ADDRESS);
         Log.i("Thu id: ", selected_placeId);
 
         Display display = getWindowManager().getDefaultDisplay();

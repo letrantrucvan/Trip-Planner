@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.SearchResult;
 import com.example.travelplanner.adapter.WaypointAdapter;
 import com.example.travelplanner.fragment.BottomSheetFragment;
 import com.example.travelplanner.fragment.FragmentTwo;
@@ -50,6 +49,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -60,7 +60,7 @@ import java.util.TreeMap;
 public class DetailsActivity extends AppCompatActivity implements Runnable{
 
 
-    private static final String TAG = "DetailsActivity";
+    private static final String TAG = "Thu DetailsActivity";
     private LinearLayout layoutDetails;
     private LinearLayout progressDetails;
     private Button readMore;
@@ -93,6 +93,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ListenerRegistration registration;
     private String tourID;
     private ImageView btnMore;
     private Fragment moreFragment;
@@ -106,11 +107,13 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
     private int indicatorWidth;
     //Waypoints
-    public static ArrayList<MyPlace> waypoints = new ArrayList<>();
+    public static ArrayList<MyPlace> waypoints;
     public static Tour cur_Tour;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG,"onCreate");
         setContentView(R.layout.activity_details);
 
         layoutDetails = (LinearLayout) findViewById(R.id.layoutDetails);
@@ -143,6 +146,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
         iconUnSaved = (ImageView) findViewById(R.id.detail_icon_saved_tour);
         btnMore = (ImageView) findViewById(R.id.detail_more);
 
+        waypoints= new ArrayList<>();
         waypointRecyclerView = findViewById(R.id.waypoints);
         waypointRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -250,13 +254,33 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
     }
 
+    @Override
+    protected void onStop() {
+        Log.i(TAG,"onStop");
+        if(registration!= null) registration.remove();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG,"onDestroy");
+        if(registration!= null) registration.remove();
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG,"onResume");
+        super.onResume();
+    }
+
     private void loadUI() {
         db.collection("Tour").document(tourID).update("views", FieldValue.increment(1.0));
-        db.collection("Tour").document(tourID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        registration = db.collection("Tour").document(tourID).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
-
+                    Log.i(TAG, "onEvent");
                     Tour tour = documentSnapshot.toObject(Tour.class);
                     cur_Tour = tour;
                     loadSameAuthorTour(tour.getAuthor_id());
@@ -269,6 +293,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
                     //get thông tin tour
                     waypoints.clear();
+                    Log.i(TAG, "clear");
                     tourName.setText(tour.getName());
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
@@ -283,6 +308,8 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                     for(int i = 0; i< waypointIDs.size(); i++)
                     {
                         int finalI = i;
+                        Log.i(TAG,"Loop "+ i+ " in "+waypointIDs.size());
+
                         db.collection("Place").document(waypointIDs.get(i)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -296,11 +323,16 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                                     }
                                     if ( map.size() == waypointIDs.size())
                                     {
+                                        Log.i(TAG,"WAYPONTS size "+ waypoints.size());
+                                        Log.i(TAG,"WAYPONTS "+ waypoints);
                                         Log.i(TAG, map.toString());
                                         for (Integer key : map.keySet()) {
                                             waypoints.add( map.get(key));
                                             System.out.println(key + " - " + map.get(key));
                                         }
+                                        Log.i(TAG,"WAYPONTS after size "+ waypoints.size());
+                                        Log.i(TAG,"WAYPONTS after "+ waypoints);
+                                        Log.i(TAG, map.toString());
                                         WaypointAdapter destinationAdapter = new WaypointAdapter(DetailsActivity.this, waypoints);
                                         waypointRecyclerView.setAdapter(destinationAdapter);
                                     }
