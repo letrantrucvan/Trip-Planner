@@ -274,8 +274,8 @@ public class DiscoverFragment extends Fragment {
         });
 
         Query PopularTour  = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).orderBy("rating_avg", Query.Direction.DESCENDING); //Rating avg cao nhất + lượt views nhiều nhất
-        Query fyp = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING);
-        Query budget = db.collection("Tour").orderBy("rating_avg", Query.Direction.DESCENDING);
+        Query fyp = db.collection("Tour").orderBy("views", Query.Direction.ASCENDING);
+        Query budget = db.collection("Tour").orderBy("rating_avg", Query.Direction.ASCENDING);
 
 
         adapter = horizonto(PopularTour);

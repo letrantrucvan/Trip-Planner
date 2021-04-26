@@ -26,8 +26,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.travelplanner.Create_new_tour;
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.EditTourActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -111,7 +113,9 @@ public class HomeFragment extends Fragment {
         create_new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_create_tour);
+                Intent i = new Intent(getActivity(), Create_new_tour.class);
+                startActivity(i);
+
             }
         });
 
@@ -170,10 +174,10 @@ public class HomeFragment extends Fragment {
                 holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-//                        Intent i = new Intent(getActivity(), editTour.class);
-//                        String documentId = getSnapshots().getSnapshot(position).getId();
-//                        i.putExtra("Key", documentId);
-//                        startActivity(i);
+                        Intent i = new Intent(getActivity(), EditTourActivity.class);
+                        String documentId = getSnapshots().getSnapshot(position).getId();
+                        i.putExtra("Key", documentId);
+                        startActivity(i);
                         return false;
                     }
                 });
