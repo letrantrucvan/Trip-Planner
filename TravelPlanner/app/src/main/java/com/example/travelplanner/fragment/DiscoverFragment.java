@@ -37,6 +37,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -189,25 +190,11 @@ public class DiscoverFragment extends Fragment {
 
                     TOTW_placeNum.setText(String.valueOf(tour.waypoints.size())+ " địa điểm");
                     TOTW_id = tour.getTour_id();
-                    StorageReference islandRef = storage.getReference().child(tour.getCover());
-                    final long ONE_MEGABYTE = 1024 * 1024;
 
-                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            TOTW_img.setImageBitmap(bitmap);
-                            progress1.setVisibility(View.GONE);
-                            tourofweek.setVisibility(View.VISIBLE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            System.out.println("Fail");
-                        }
-                    });
+                    //get avatar
+                    Picasso.with(getContext()).load(tour.getCover()).into(TOTW_img);
+                    progress1.setVisibility(View.GONE);
+                    tourofweek.setVisibility(View.VISIBLE);
                 });
             }
         });
@@ -242,25 +229,11 @@ public class DiscoverFragment extends Fragment {
                     });
                     TNWT_placeNum.setText(String.valueOf(tour.waypoints.size())+ " địa điểm");
                     TNWT_id = tour.getTour_id();
-                    StorageReference islandRef = storage.getReference().child(tour.getCover());
-                    final long ONE_MEGABYTE = 1024 * 1024;
 
-                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            TNWT_img.setImageBitmap(bitmap);
-                            progress2.setVisibility(View.GONE);
-                            latesttour.setVisibility(View.VISIBLE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            System.out.println("Fail");
-                        }
-                    });
+                    //get avatar
+                    Picasso.with(getContext()).load(tour.getCover()).into(TNWT_img);
+                    progress2.setVisibility(View.GONE);
+                    latesttour.setVisibility(View.VISIBLE);
                 });
             }
         });

@@ -1,6 +1,7 @@
 package com.example.travelplanner.model;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.travelplanner.controller.LoginActivity;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -54,7 +56,7 @@ public class User implements Serializable {
         this.id = id;
         this.email = email;
         this.fullname = name;
-        this.link_ava_user = "Avatar/avatar.png";
+        this.link_ava_user = "https://firebasestorage.googleapis.com/v0/b/travel-planner-ed66f.appspot.com/o/Avatar%2Favatar.png?alt=media&token=d598b64a-67cb-4c5a-9af1-c974a708dd61";
         this.active = true;
     }
     public User (String id, String fullname, String email, String link_ava_user, boolean active){
@@ -126,29 +128,46 @@ public class User implements Serializable {
                     }
                 });
     }
-    public static void editInfo(String userID, String newname){
+    public static void editInfo(String userID, String newname, String newlinkava){
         db.collection("User").document(userID).update("fullname", newname);
-        db.collection("User").document(userID).update("link_ava_user", "Avatar/" + userID);
+        db.collection("User").document(userID).update("link_ava_user", newlinkava);
     }
 
-    public static void uploadAvatar(String userID, Bitmap avatar){
+    public static void uploadAvatar(String userID, String newname, Bitmap avatar){
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("Avatar/" + userID);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         avatar.compress(Bitmap.CompressFormat.JPEG, 60, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = storageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-            }
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return storageRef.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            String avalink = task.getResult().toString();
+                            System.out.println("newLink: " + avalink);
+                            User.editInfo(userID, newname, avalink);
+                        }
+                    }
+                });
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
         });
     }
 
@@ -158,22 +177,6 @@ public class User implements Serializable {
 
     public static void unsaveTour(String userID, String tourID){
         db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
-//        db.collection("User").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if (documentSnapshot.exists()) {
-//                    User b = documentSnapshot.toObject(User.class);
-//                    List<String> tourList = b.getSaved_tour();
-//                    if (tourList.size() == 1){
-//                        db.collection("User").document(userID).update("saved_tour", null);
-//                    }
-//                    else {
-//                        db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
-//                    }
-//
-//                }
-//            }
-//        });
     }
 
     public static void savePlace(String userID, String placeID){

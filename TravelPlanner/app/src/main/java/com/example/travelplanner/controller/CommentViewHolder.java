@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class CommentViewHolder extends RecyclerView.ViewHolder {
     View mView;
@@ -35,22 +36,9 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         rating.setText(modelRating.getRate().toString());
         comment.setText(modelRating.getComment());
 
-        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(modelUser.getLink_ava_user());
-        final long ONE_MEGABYTE = 1024 * 1024;
-        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                user_avatar.setImageBitmap(bitmap);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                System.out.println("Fail");
-            }
-        });
+        //get avatar
+        Picasso.with(mView.getContext()).load(modelUser.getLink_ava_user()).into(user_avatar);
+
 
     }
 }

@@ -132,22 +132,26 @@ public class RelativeTourAdapter extends FirestoreRecyclerAdapter<Tour, Relative
         holder.cardView.setLayoutParams(layoutParams2);
 
         holder.headerText.setText(tour.getName());
-        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(tour.getCover());
-        final long ONE_MEGABYTE = 1024 * 1024;
-        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Log.i("Thu Photo",  tour.getCover());
-                holder.headerImage.setImageBitmap(bitmap);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+
+        //get avatar
+        Picasso.with(context).load(tour.getCover()).into(holder.headerImage);
+
+//        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(tour.getCover());
+//        final long ONE_MEGABYTE = 1024 * 1024;
+//        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//                // Data for "images/island.jpg" is returns, use this as needed
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+//                Log.i("Thu Photo",  tour.getCover());
+//                holder.headerImage.setImageBitmap(bitmap);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle any errors
+//            }
+//        });
         holder.headerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

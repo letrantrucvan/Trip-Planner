@@ -40,7 +40,8 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/discover"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true"
+            android:visibility="gone"/>
 
     </androidx.cardview.widget.CardView>
 

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +54,12 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class DetailsActivity extends AppCompatActivity implements Runnable{
+public class DetailsActivity extends AppCompatActivity{
 
 
     private static final String TAG = "Thu DetailsActivity";
@@ -111,6 +113,55 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
     public static Tour cur_Tour;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //Tab layout
+        //Assign view reference
+        mTabs = findViewById(R.id.tab);
+        mIndicator = findViewById(R.id.indicator);
+        mViewPager = findViewById(R.id.viewPager);
+
+        //Set up the view pager and fragments
+        TabFragmentAdapter adapter = new TabFragmentAdapter(getSupportFragmentManager());
+        adapter.addFragment(MapTourFragment.newInstance(), "Lộ trình");
+        adapter.addFragment(FragmentTwo.newInstance(), "Địa điểm");
+        mViewPager.setAdapter(adapter);
+        mTabs.setupWithViewPager(mViewPager);
+
+        //Determine indicator width at runtime
+        mTabs.post(new Runnable() {
+            @Override
+            public void run() {
+                indicatorWidth = mTabs.getWidth() / mTabs.getTabCount();
+                System.out.println("hihii" + mIndicator.getWidth());
+                //Assign new width
+                FrameLayout.LayoutParams indicatorParams = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
+                indicatorParams.width = indicatorWidth;
+                mIndicator.setLayoutParams(indicatorParams);
+            }
+        });
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            @Override
+            public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)mIndicator.getLayoutParams();
+                //Multiply positionOffset with indicatorWidth to get translation
+                float translationOffset =  (positionOffset+i) * indicatorWidth ;
+                params.leftMargin = (int) translationOffset;
+                mIndicator.setLayoutParams(params);
+            }
+            @Override
+            public void onPageSelected(int i) {
+            }
+            @Override
+            public void onPageScrollStateChanged(int i) {
+            }
+        });
+        //Kết thúc set up Tab layout
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG,"onCreate");
@@ -158,50 +209,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
         mAuth = FirebaseAuth.getInstance();
 
-        //Tab layout
-        //Assign view reference
-        mTabs = findViewById(R.id.tab);
-        mIndicator = findViewById(R.id.indicator);
-        mViewPager = findViewById(R.id.viewPager);
 
-        //Set up the view pager and fragments
-        TabFragmentAdapter adapter = new TabFragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(MapTourFragment.newInstance(), "Lộ trình");
-        adapter.addFragment(FragmentTwo.newInstance(), "Địa điểm");
-        mViewPager.setAdapter(adapter);
-        mTabs.setupWithViewPager(mViewPager);
-
-        //Determine indicator width at runtime
-        mTabs.post(new Runnable() {
-            @Override
-            public void run() {
-                indicatorWidth = mTabs.getWidth() / mTabs.getTabCount();
-
-                //Assign new width
-                FrameLayout.LayoutParams indicatorParams = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
-                indicatorParams.width = indicatorWidth;
-                mIndicator.setLayoutParams(indicatorParams);
-            }
-        });
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageScrolled(int i, float positionOffset, int positionOffsetPx) {
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)mIndicator.getLayoutParams();
-                //Multiply positionOffset with indicatorWidth to get translation
-                float translationOffset =  (positionOffset+i) * indicatorWidth ;
-                params.leftMargin = (int) translationOffset;
-                mIndicator.setLayoutParams(params);
-            }
-            @Override
-            public void onPageSelected(int i) {
-            }
-            @Override
-            public void onPageScrollStateChanged(int i) {
-            }
-        });
-        //Kết thúc set up Tab layout
 
 
 
@@ -266,12 +274,6 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
         Log.i(TAG,"onDestroy");
         if(registration!= null) registration.remove();
         super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.i(TAG,"onResume");
-        super.onResume();
     }
 
     private void loadUI() {
@@ -345,25 +347,9 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
 
 
                     //get avatar
-                    StorageReference islandRef = storage.getReference().child(tour.getCover());
-                    final long ONE_MEGABYTE = 1024 * 1024;
-
-                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            tourCover.setImageBitmap(bitmap);
-                            layoutDetails.setVisibility(View.VISIBLE);
-                            progressDetails.setVisibility(View.GONE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            System.out.println("Fail");
-                        }
-                    });
+                    Picasso.with(DetailsActivity.this).load(tour.getCover()).into(tourCover);
+                    layoutDetails.setVisibility(View.VISIBLE);
+                    progressDetails.setVisibility(View.GONE);
 
                     db.collection("User").document(tour.getAuthor_id()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override
@@ -374,23 +360,9 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                                 System.out.println(user.toString());
                                 tourAuthorName.setText(user.getFullname());
 
-                                //get avatar
-                                StorageReference islandRef = storage.getReference().child(user.getLink_ava_user());
 
-                                islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                    @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        // Data for "images/island.jpg" is returns, use this as needed
-                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                        tourAuthorImg.setImageBitmap(bitmap);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                        System.out.println("Fail");
-                                    }
-                                });
+                                //get avatar
+                                Picasso.with(DetailsActivity.this).load(user.getLink_ava_user()).into(tourAuthorImg);
 
                             }
                         }
@@ -447,7 +419,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
             @Override
             public void onClick(View v) {
                 BottomSheetFragment bottomSheetFragment = new BottomSheetFragment(tourID);
-               // BottomSheetFragment.newInstance(tourID);
+                // BottomSheetFragment.newInstance(tourID);
                 bottomSheetFragment.show(getSupportFragmentManager(),TAG);
             }
         });
@@ -512,23 +484,7 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
                         }
 
                         //get avatar
-                        StorageReference islandRef = storage.getReference().child(user.getLink_ava_user());
-                        final long ONE_MEGABYTE = 1024 * 1024;
-                        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                //set avatar
-                                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                current_user_avatar.setImageBitmap(bitmap);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                                System.out.println("Fail to load avatar user");
-                            }
-                        });
-
+                        Picasso.with(DetailsActivity.this).load(user.getLink_ava_user()).into(current_user_avatar);
                     }
                 }
             });
@@ -625,10 +581,5 @@ public class DetailsActivity extends AppCompatActivity implements Runnable{
             return rating.substring(0, 3);
         }
         return rating;
-    }
-
-    @Override
-    public void run() {
-
     }
 }

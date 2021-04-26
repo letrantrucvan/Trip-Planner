@@ -242,24 +242,23 @@
                     android:orientation="vertical">
 
                     <FrameLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="240dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="80dp"
-                        android:layout_marginLeft="80dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:background="@color/notSoDark"
-                        android:clipToPadding="false">
+                        android:clipToPadding="false"
+                        android:layout_gravity="center">
 
                         <View
                             android:id="@+id/indicator"
-                            android:layout_width="0dp"
+                            android:layout_width="120dp"
                             android:layout_height="30dp"
                             android:background="@drawable/detail_tab_layout_bg" />
 
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/tab"
-                            android:layout_width="match_parent"
+                            android:layout_width="240dp"
                             android:layout_height="30dp"
                             android:background="@drawable/detail_outline_tab"
                             app:tabGravity="fill"

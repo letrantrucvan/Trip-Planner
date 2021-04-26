@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 
 public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
@@ -48,25 +49,10 @@ public class BookmarksTourViewHolder extends RecyclerView.ViewHolder{
         }
         else waypoint.setText(model.getWaypoints().size() + " địa điểm");
 
-        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(model.getCover());
-        final long ONE_MEGABYTE = 1024 * 1024;
-        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                cover.setImageBitmap(bitmap);
-                cover.setVisibility(View.VISIBLE);
-                progress.setVisibility(View.GONE);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-                System.out.println("Fail");
-            }
-        });
+        //get avatar
+        Picasso.with(mView.getContext()).load(model.getCover()).into(cover);
+        cover.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.GONE);
 
     }
 }

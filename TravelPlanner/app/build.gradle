@@ -64,6 +64,9 @@ dependencies {
     //cloud firestore UI
     implementation "com.firebaseui:firebase-ui-firestore:7.1.1"
 
+    //cloud storage UI
+    implementation 'com.firebaseui:firebase-ui-storage:6.4.0'
+
     //recycle view
     implementation "androidx.recyclerview:recyclerview:1.1.0"
 

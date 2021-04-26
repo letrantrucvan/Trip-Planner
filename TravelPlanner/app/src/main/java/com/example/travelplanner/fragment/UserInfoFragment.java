@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 
@@ -24,11 +25,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.LoginActivity;
 import com.example.travelplanner.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -197,14 +200,12 @@ public class UserInfoFragment extends Fragment {
                 changeAvatar.setVisibility(View.GONE);
                 edtName.setEnabled(false);
 
-                //saveInfo vo database user
-                User.editInfo(mAuth.getUid(), edtName.getText().toString());
-
                 //upload Aavatar moi len storage/
                 imgvAvatar.setDrawingCacheEnabled(true);
                 imgvAvatar.buildDrawingCache();
                 Bitmap bitmap = ((BitmapDrawable) imgvAvatar.getDrawable()).getBitmap();
-                User.uploadAvatar(mAuth.getCurrentUser().getUid(), bitmap);
+                //hàm này up avatar mới lên storage, xong lấy link URL của avatar mới bỏ vô database user luôn
+                User.uploadAvatar(mAuth.getCurrentUser().getUid(), edtName.getText().toString(),bitmap);
             }
         });
         return userInfo;
@@ -221,25 +222,9 @@ public class UserInfoFragment extends Fragment {
                     edtEmail.setText(user.getEmail());
 
                     //get avatar
-                    StorageReference islandRef = storage.getReference().child(user.getLink_ava_user());
-
-                    final long ONE_MEGABYTE = 1024 * 1024;
-                    islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            imgvAvatar.setImageBitmap(bitmap);
-                            imgvAvatar.setVisibility(View.VISIBLE);
-                            userinformation_progress.setVisibility(View.GONE);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            System.out.println("Fail");
-                        }
-                    });
+                    Picasso.with(getContext()).load(user.getLink_ava_user()).into(imgvAvatar);
+                    imgvAvatar.setVisibility(View.VISIBLE);
+                    userinformation_progress.setVisibility(View.GONE);
                 }
             }
         });

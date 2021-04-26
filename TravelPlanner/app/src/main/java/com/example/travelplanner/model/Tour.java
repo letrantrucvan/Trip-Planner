@@ -1,9 +1,11 @@
 package com.example.travelplanner.model;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -172,6 +174,10 @@ public class Tour {
         db.collection("Tour").document(tour.getTour_id()).update("rating_avg", tour.getRating_avg());
     }
 
+    public static void editImage(String tourID, String newavalink){
+        db.collection("Tour").document(tourID).update("cover", newavalink);
+    }
+
     public void addWaypoint(String PlaceID){
         db.collection("Tour").document(getTour_id())
                 .update("waypoints", FieldValue.arrayUnion(PlaceID));
@@ -230,18 +236,35 @@ public class Tour {
         cover.compress(Bitmap.CompressFormat.JPEG, 60, baos);
         byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = storageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        final UploadTask uploadTask = storageRef.putBytes(data);
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-            }
+                uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw task.getException();
+                        }
+                        // Continue with the task to get the download URL
+                        return storageRef.getDownloadUrl();
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            String avalink = task.getResult().toString();
+                            System.out.println("newLinkTour: " + avalink);
+                            Tour.editImage(tourID, avalink);
+                        }
+                    }
+                });
 
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
         });
     }
     // FULL TEXT SEARCH : Split string => Find keywords
