@@ -37,8 +37,8 @@ public class Tour {
     private String publish_day;
     private Integer rating_number;
     private Double rating_avg;
-    private boolean archived_mode;
-    private boolean isActive;
+    private boolean is_public; // cong khai chuyen di
+    private boolean is_delete; // delete chuyen di
     private ArrayList<String> search_keywords;
     private int views = 0;
     public static String currentTour;
@@ -55,7 +55,8 @@ public class Tour {
         this.des = des;
         this.publish_day = publish_day;
         this.search_keywords = generateKeyWords(name);
-        this.isActive = false;
+        this.is_delete = false;
+        this.is_public = false;
     }
 
     //get
@@ -88,10 +89,10 @@ public class Tour {
         return rating_avg;
     }
     public boolean isArchived_mode() {
-        return archived_mode;
+        return is_public;
     }
     public boolean isActive() {
-        return isActive;
+        return is_delete;
     }
     public ArrayList<String> getWaypoints() {return waypoints;}
     public int getViews() { return views; }
@@ -129,10 +130,10 @@ public class Tour {
         this.tour_id = tour_id;
     }
     public void setArchived_mode(boolean archived_mode) {
-        this.archived_mode = archived_mode;
+        this.is_public = archived_mode;
     }
     public void setActive(boolean active) {
-        isActive = active;
+        is_delete = active;
     }
     public ArrayList<String> getSearch_keywords() {
         return search_keywords;
@@ -172,6 +173,18 @@ public class Tour {
     public static void editRating(Tour tour){
         db.collection("Tour").document(tour.getTour_id()).update("rating_number", tour.getRating_number());
         db.collection("Tour").document(tour.getTour_id()).update("rating_avg", tour.getRating_avg());
+    }
+
+    public static void delete(Tour tour){
+        db.collection("Tour").document(tour.getTour_id()).update("is_delete", tour.isActive());
+    }
+
+    public static void editTour(Tour tour){
+        db.collection("Tour").document(tour.getTour_id()).update("name", tour.getName());
+        db.collection("Tour").document(tour.getTour_id()).update("des", tour.getDes());
+        db.collection("Tour").document(tour.getTour_id()).update("is_public", tour.isArchived_mode());
+
+
     }
 
     public static void editImage(String tourID, String newavalink){
@@ -303,8 +316,8 @@ public class Tour {
                 ", publish_day='" + publish_day + '\'' +
                 ", rating_number=" + rating_number +
                 ", rating_avg=" + rating_avg +
-                ", archived_mode=" + archived_mode +
-                ", isActive=" + isActive +
+                ", is_public=" + is_public +
+                ", is_delete=" + is_delete +
                 ", search_keywords=" + search_keywords +
                 ", views=" + views +
                 ", waypoints=" + waypoints +

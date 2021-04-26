@@ -1,5 +1,6 @@
 package com.example.travelplanner;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 
@@ -18,6 +19,7 @@ import com.example.travelplanner.model.Tour;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,6 +34,8 @@ public class Create_new_tour extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    int REQUEST_CODE_IMAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,5 +97,13 @@ public class Create_new_tour extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK && data!=null){
+            Picasso.with(Create_new_tour.this).load(data.getData()).into(cover_pic);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
