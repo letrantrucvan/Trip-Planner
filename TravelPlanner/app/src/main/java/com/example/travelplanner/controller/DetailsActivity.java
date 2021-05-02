@@ -98,6 +98,7 @@ public class DetailsActivity extends AppCompatActivity{
     private ListenerRegistration registration;
     private String tourID;
     private ImageView btnMore;
+    private ImageView back;
     private Fragment moreFragment;
 
     private FirestoreRecyclerAdapter adapterSameAuthorTour;
@@ -196,6 +197,7 @@ public class DetailsActivity extends AppCompatActivity{
         iconSaved = (ImageView) findViewById(R.id.detail_icon_not_saved_tour);
         iconUnSaved = (ImageView) findViewById(R.id.detail_icon_saved_tour);
         btnMore = (ImageView) findViewById(R.id.detail_more);
+        back = findViewById(R.id.back);
 
         waypoints= new ArrayList<>();
         waypointRecyclerView = findViewById(R.id.waypoints);
@@ -210,15 +212,17 @@ public class DetailsActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
 
 
-
-
-
         //Start UI
         loadUI();
         loadUIUser(); //check user đăng nhập hay chưa
         loadRatingComment();
         //loadSameAuthorTour();
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         readMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +264,7 @@ public class DetailsActivity extends AppCompatActivity{
             }
         });
 
+
     }
 
     @Override
@@ -285,6 +290,14 @@ public class DetailsActivity extends AppCompatActivity{
                     Log.i(TAG, "onEvent");
                     Tour tour = documentSnapshot.toObject(Tour.class);
                     cur_Tour = tour;
+                    tourAuthorName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(DetailsActivity.this, UserPageActivity.class);
+                            intent.putExtra("id", cur_Tour.getAuthor_id());
+                            startActivity(intent);
+                        }
+                    });
                     loadSameAuthorTour(tour.getAuthor_id());
                     //nếu chủ tour là user thì không cho đánh giá
                     if (tour.getAuthor_id().equals(mAuth.getUid())) {
@@ -569,7 +582,7 @@ public class DetailsActivity extends AppCompatActivity{
     }
 
 
-    String formatTourRating(Double rate){
+    String formatTourRating(Float rate){
         if (rate == null){
             return  "Chưa có";
         }

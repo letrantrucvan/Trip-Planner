@@ -105,11 +105,9 @@ public class SearchPlaceResultFragment extends Fragment {
 
         requestQueue = Volley.newRequestQueue(getContext());
 
-
-
-            next_btn = view.findViewById(R.id.next_button);
-            prev_btn = view.findViewById(R.id.prev_button);
-            no_place_lable = (TextView) view.findViewById(R.id.no_place_label);
+        next_btn = view.findViewById(R.id.next_button);
+        prev_btn = view.findViewById(R.id.prev_button);
+        no_place_lable = (TextView) view.findViewById(R.id.no_place_label);
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

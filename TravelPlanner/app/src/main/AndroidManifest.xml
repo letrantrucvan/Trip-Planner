@@ -15,10 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
-        <activity android:name=".controller.EditTourActivity"></activity>
+        <activity android:name=".controller.UserPageActivity"></activity>
+        <activity android:name=".controller.EditTourActivity" />
         <activity android:name=".Create_new_tour" />
         <activity android:name=".ScanActivity" />
-        <activity android:name=".controller.DetailsActivity" />
+        <activity android:name=".controller.DetailsActivity"
+            android:windowSoftInputMode="adjustPan"
+            />
+
         <activity android:name=".controller.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,9 +34,7 @@
         <activity android:name=".controller.SignupActivity" />
         <activity android:name=".controller.LoginActivity" />
         <activity android:name=".controller.MainActivity" />
-        <activity android:name=".SearchResult" />
         <activity android:name=".testGallery" />
-        <activity android:name=".controller.SearchPlaceTable" />
         <activity android:name=".controller.PlaceDetailActivity" />
         <activity android:name=".controller.SearchActivity" />
         <activity android:name=".controller.MapsTourActivity" />

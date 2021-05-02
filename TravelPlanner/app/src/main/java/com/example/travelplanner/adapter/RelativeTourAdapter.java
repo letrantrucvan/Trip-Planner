@@ -70,56 +70,6 @@ public class RelativeTourAdapter extends FirestoreRecyclerAdapter<Tour, Relative
         return new ViewHolder(view);
     }
 
-//    @Override
-//    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-//        Log.i(TAG,"onBindViewHolder");
-//
-//        RecyclerView.LayoutParams layoutParams2 = (RecyclerView.LayoutParams) holder.cardView.getLayoutParams();
-//        double wi = height/4;
-//        wi = wi*4/5;
-//        layoutParams2.height = (int)height/3;
-//        layoutParams2.width = (int)width/7*6;
-//        holder.cardView.setLayoutParams(layoutParams2);
-//
-//
-//        Log.i("Name",tours.get(position).getName());
-//        Tour tour = tours.get(position);
-//        holder.headerText.setText(tour.getName());
-//        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(tour.getCover());
-//        final long ONE_MEGABYTE = 1024 * 1024;
-//        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//            @Override
-//            public void onSuccess(byte[] bytes) {
-//                // Data for "images/island.jpg" is returns, use this as needed
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                Log.i("Thu Photo",  tour.getCover());
-//                holder.headerImage.setImageBitmap(bitmap);
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle any errors
-//            }
-//        });
-//        holder.headerImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(context, DetailsActivity.class);
-//                i.putExtra("Key", tour.getTour_id());
-//                context.startActivity(i);
-//            }
-//        });
-//        View decorView = ((Activity) context).getWindow().getDecorView();
-//
-//        Drawable windowBackground = decorView.getBackground();
-//        holder.blur.setupWith(holder.cardView)
-//                .setFrameClearDrawable(windowBackground)
-//                .setBlurAlgorithm(new RenderScriptBlur(context))
-//                .setBlurRadius(10f)
-//                .setBlurAutoUpdate(true)
-//                .setHasFixedTransformationMatrix(false);
-//    }
-
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Tour tour) {
         Log.i(TAG,"onBindViewHolder");
@@ -136,22 +86,6 @@ public class RelativeTourAdapter extends FirestoreRecyclerAdapter<Tour, Relative
         //get avatar
         Picasso.with(context).load(tour.getCover()).into(holder.headerImage);
 
-//        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(tour.getCover());
-//        final long ONE_MEGABYTE = 1024 * 1024;
-//        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-//            @Override
-//            public void onSuccess(byte[] bytes) {
-//                // Data for "images/island.jpg" is returns, use this as needed
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//                Log.i("Thu Photo",  tour.getCover());
-//                holder.headerImage.setImageBitmap(bitmap);
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                // Handle any errors
-//            }
-//        });
         holder.headerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    tools:context=".fragment.UserInfoFragment">
+    <androidx.cardview.widget.CardView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="22dp"
+        app:cardCornerRadius="75dp"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <ImageView
+
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="167dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/discover"
+
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="Tên" />
+    <TextView
+        android:id="@+id/follower"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Người theo dõi"
+        android:gravity="center_horizontal"/>
+    <Button
+        android:id="@+id/follow"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Theo dõi"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        />
+    <Button
+        android:id="@+id/unfollow"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hủy theo dõi"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        />
+    <ScrollView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_marginHorizontal="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tours"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+</LinearLayout>

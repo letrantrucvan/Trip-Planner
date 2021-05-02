@@ -47,6 +47,8 @@ public class User implements Serializable {
     private Boolean active;
     private List<String> saved_tour;
     private ArrayList<String> saved_places = new ArrayList<>();
+    private ArrayList<String> following = new ArrayList<>();
+    private ArrayList<String> follower = new ArrayList<>();
 
     //static DatabaseReference modelUser = FirebaseDatabase.getInstance().getReference();
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -111,6 +113,23 @@ public class User implements Serializable {
     public void setSaved_places(ArrayList<String> saved_places) {
         this.saved_places = saved_places;
     }
+
+    public ArrayList<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(ArrayList<String> following) {
+        this.following = following;
+    }
+
+    public ArrayList<String> getFollower() {
+        return follower;
+    }
+
+    public void setFollower(ArrayList<String> follower) {
+        this.follower = follower;
+    }
+
     //end of set get
 
     public static void addUser(String userID, User user){

@@ -41,6 +41,7 @@ import com.google.firebase.firestore.Query;
  * create an instance of this fragment.
  */
 public class BookmarkFragment extends Fragment {
+    private static final String TAG = " Thu BookmarkFragment";
 
     private LinearLayout bookmarkGotoLogin;
     private Button bookmarkBtnGotoLogin;
@@ -97,74 +98,77 @@ public class BookmarkFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        BookmarkFragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
+        try {
+            // Inflate the layout for this fragment
+            BookmarkFragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
 
-        mResultTourList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewTourBookmark);
-        mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
+            mResultTourList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewTourBookmark);
+            mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mResultPlaceList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
-       // mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mResultPlaceList.setLayoutManager(new LinearLayoutManager(getContext()));
+            mResultPlaceList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
+            // mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            mResultPlaceList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //check user đăng nhập hay chưa
-        bookmarkGotoLogin = (LinearLayout) BookmarkFragmentView.findViewById(R.id.bookmarkGotoLogin);
-        bookmarkBtnGotoLogin = (Button) BookmarkFragmentView.findViewById(R.id.bookmarkBtnGotoLogin);
-        if (FirebaseAuth.getInstance().getCurrentUser() == null){
-            bookmarkGotoLogin.setVisibility(View.VISIBLE);
-            mResultTourList.setVisibility(View.GONE);
-            mResultPlaceList.setVisibility(View.GONE);
-            bookmarkBtnGotoLogin.setOnClickListener(new View.OnClickListener() {
+            //check user đăng nhập hay chưa
+            bookmarkGotoLogin = (LinearLayout) BookmarkFragmentView.findViewById(R.id.bookmarkGotoLogin);
+            bookmarkBtnGotoLogin = (Button) BookmarkFragmentView.findViewById(R.id.bookmarkBtnGotoLogin);
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                bookmarkGotoLogin.setVisibility(View.VISIBLE);
+                mResultTourList.setVisibility(View.GONE);
+                mResultPlaceList.setVisibility(View.GONE);
+                bookmarkBtnGotoLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(), LoginActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                    }
+                });
+                return BookmarkFragmentView;
+            } else {
+                bookmarkGotoLogin.setVisibility(View.GONE);
+            }
+
+
+            //user đã đăng nhập thì thực hiện
+            btnShowTour = (Button) BookmarkFragmentView.findViewById(R.id.btn_showTourBookmark);
+            btnShowPlace = (Button) BookmarkFragmentView.findViewById(R.id.btn_showPlaceBookmark);
+
+
+            firestoreTourSearch();
+            firestorePlaceSearch();
+
+            btnShowTour.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), LoginActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
+                    btnShowTour.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark_active));
+                    btnShowTour.setTextColor(getResources().getColor(R.color.black));
+                    btnShowPlace.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark));
+                    btnShowPlace.setTextColor(getResources().getColor(R.color.orange));
+                    mResultTourList.setVisibility(View.VISIBLE);
+                    mResultPlaceList.setVisibility(View.GONE);
                 }
             });
-            return  BookmarkFragmentView;
+
+            btnShowPlace.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btnShowPlace.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark_active));
+                    btnShowPlace.setTextColor(getResources().getColor(R.color.black));
+                    btnShowTour.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark));
+                    btnShowTour.setTextColor(getResources().getColor(R.color.orange));
+                    mResultTourList.setVisibility(View.GONE);
+                    mResultPlaceList.setVisibility(View.VISIBLE);
+                }
+            });
+
+            return BookmarkFragmentView;
         }
-        else {
-            bookmarkGotoLogin.setVisibility(View.GONE);
+        catch (Exception e) {
+            Log.e(TAG, "onCreateView", e);
+            throw e;
         }
-
-
-        //user đã đăng nhập thì thực hiện
-        btnShowTour = (Button) BookmarkFragmentView.findViewById(R.id.btn_showTourBookmark);
-        btnShowPlace = (Button) BookmarkFragmentView.findViewById(R.id.btn_showPlaceBookmark);
-
-
-
-        firestoreTourSearch();
-        firestorePlaceSearch();
-
-        btnShowTour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnShowTour.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark_active));
-                btnShowTour.setTextColor(getResources().getColor(R.color.black));
-                btnShowPlace.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark));
-                btnShowPlace.setTextColor(getResources().getColor(R.color.orange));
-                mResultTourList.setVisibility(View.VISIBLE);
-                mResultPlaceList.setVisibility(View.GONE);
-            }
-        });
-
-        btnShowPlace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnShowPlace.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark_active));
-                btnShowPlace.setTextColor(getResources().getColor(R.color.black));
-                btnShowTour.setBackground(getResources().getDrawable(R.drawable.bg_button_switch_bookmark));
-                btnShowTour.setTextColor(getResources().getColor(R.color.orange));
-                mResultTourList.setVisibility(View.GONE);
-                mResultPlaceList.setVisibility(View.VISIBLE);
-            }
-        });
-
-        return  BookmarkFragmentView;
     }
-
     private void firestoreTourSearch() {
         db.collection("User").document(FirebaseAuth.getInstance().getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

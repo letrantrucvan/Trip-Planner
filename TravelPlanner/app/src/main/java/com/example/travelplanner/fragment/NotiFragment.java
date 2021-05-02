@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ import static android.content.Context.WINDOW_SERVICE;
  * create an instance of this fragment.
  */
 public class NotiFragment extends Fragment {
+
+    private static final String TAG = " Thu NotiFragment";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,18 +80,24 @@ public class NotiFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
-        //Initial
-        openCam = (Button) v.findViewById(R.id.btnStartCam);
-        openCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent (getActivity(), ScanActivity.class);
-                startActivity(i);
-            }
-        });
+        try {
+            // Inflate the layout for this fragment
+            FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
+            //Initial
+            openCam = (Button) v.findViewById(R.id.btnStartCam);
+            openCam.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), ScanActivity.class);
+                    startActivity(i);
+                }
+            });
 
-        return v;
+            return v;
+        }
+        catch (Exception e) {
+            Log.e(TAG, "onCreateView", e);
+            throw e;
+        }
     }
 }

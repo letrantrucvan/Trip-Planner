@@ -36,7 +36,7 @@ public class Tour {
     private String des;
     private String publish_day;
     private Integer rating_number;
-    private Double rating_avg;
+    private Float rating_avg;
     private boolean is_public; // cong khai chuyen di
     private boolean is_delete; // delete chuyen di
     private ArrayList<String> search_keywords;
@@ -85,7 +85,7 @@ public class Tour {
     public Integer getRating_number() {
         return rating_number;
     }
-    public Double getRating_avg() {
+    public float getRating_avg() {
         return rating_avg;
     }
     public boolean isArchived_mode() {
@@ -123,7 +123,7 @@ public class Tour {
     public void setRating_number(Integer rating_number) {
         this.rating_number = rating_number;
     }
-    public void setRating_avg(Double rating_avg) {
+    public void setRating_avg(Float rating_avg) {
         this.rating_avg = rating_avg;
     }
     public void setTour_id(String tour_id) {
@@ -157,11 +157,11 @@ public class Tour {
                     Tour tour = documentSnapshot.toObject(Tour.class);
                     if (tour.getRating_number() == 0){
                         tour.setRating_number(1);
-                        tour.setRating_avg(rate*1.0);
+                        tour.setRating_avg((float) (rate*1.0));
                     }
                     else {
                         Integer newRatingNumber = tour.getRating_number() + 1;
-                        Double newRatingAvg = ((tour.getRating_avg()*tour.getRating_number()) + (float) rate) / newRatingNumber;
+                        Float newRatingAvg = ((tour.getRating_avg()*tour.getRating_number()) + (float) rate) / newRatingNumber;
                         tour.setRating_number(newRatingNumber);
                         tour.setRating_avg(newRatingAvg);
                     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import com.squareup.picasso.Picasso;
  */
 public class UserInfoFragment extends Fragment {
 
-    private static final String TAG = "UserInfoFragment";
+    private static final String TAG = " Thu UserInfoFragment";
     private LinearLayout userInfoGotoLogin;
     private LinearLayout userinformation_progress;
     private Button userInfoBtnGotoLogin;
@@ -102,96 +103,101 @@ public class UserInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        FrameLayout userInfo = (FrameLayout) inflater.inflate(R.layout.fragment_user_info, container, false);
+        try  {
+            // Inflate the layout for this fragment
+            FrameLayout userInfo = (FrameLayout) inflater.inflate(R.layout.fragment_user_info, container, false);
 
 
-        mAuth = FirebaseAuth.getInstance();
+            mAuth = FirebaseAuth.getInstance();
 
-        userinformation_progress = (LinearLayout) userInfo.findViewById(R.id.userinformation_progress);
+            userinformation_progress = (LinearLayout) userInfo.findViewById(R.id.userinformation_progress);
 
-        //check user đăng nhập hay chưa
-        userInfoGotoLogin = (LinearLayout) userInfo.findViewById(R.id.userInfoGotoLogin);
-        userInfoNormal = (LinearLayout) userInfo.findViewById(R.id.userInfoNormal);
-        userInfoBtnGotoLogin = (Button) userInfo.findViewById(R.id.userInfoBtnGotoLogin);
-        if (mAuth.getCurrentUser() == null){
-            userInfoGotoLogin.setVisibility(View.VISIBLE);
-            userInfoNormal.setVisibility(View.GONE);
-            userInfoBtnGotoLogin.setOnClickListener(new View.OnClickListener() {
+            //check user đăng nhập hay chưa
+            userInfoGotoLogin = (LinearLayout) userInfo.findViewById(R.id.userInfoGotoLogin);
+            userInfoNormal = (LinearLayout) userInfo.findViewById(R.id.userInfoNormal);
+            userInfoBtnGotoLogin = (Button) userInfo.findViewById(R.id.userInfoBtnGotoLogin);
+            if (mAuth.getCurrentUser() == null) {
+                userInfoGotoLogin.setVisibility(View.VISIBLE);
+                userInfoNormal.setVisibility(View.GONE);
+                userInfoBtnGotoLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(getActivity(), LoginActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                    }
+                });
+                return userInfo;
+            }
+
+            //user đã đăng nhập thì thực hiện
+            changeAvatar = (CardView) userInfo.findViewById(R.id.userinformation_chooseType);
+            changeAvatar.setVisibility(View.GONE);
+            edtEmail = (TextView) userInfo.findViewById(R.id.userinformation_edtEmail);
+            edtName = (EditText) userInfo.findViewById(R.id.userinformation_edtName);
+            imgvAvatar = (ImageView) userInfo.findViewById(R.id.userinformation_imgvAvatar);
+            btnSaveInfo = (Button) userInfo.findViewById(R.id.userinformation_btnSaveInfo);
+            edtEditInfo = (TextView) userInfo.findViewById(R.id.userinformation_edtEditInfo);
+            btnSignout = (Button) userInfo.findViewById(R.id.userinformation_btnSignout);
+
+
+            mAuth = FirebaseAuth.getInstance();
+            storage = FirebaseStorage.getInstance();
+
+            //Get User Information
+            getUserInformation();
+
+
+            btnSignout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mAuth.signOut();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
             });
-            return  userInfo;
+
+            edtEditInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    edtEditInfo.setVisibility(View.GONE);
+                    btnSaveInfo.setVisibility(View.VISIBLE);
+                    changeAvatar.setVisibility(View.VISIBLE);
+                    edtName.setEnabled(true);
+                    edtName.requestFocus();
+                    changeAvatar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            BottomChooseCamera ChooseCamera = new BottomChooseCamera(mAuth.getUid(), imgvAvatar);
+                            ChooseCamera.show(getActivity().getSupportFragmentManager(), TAG);
+                        }
+                    });
+                }
+            });
+
+            btnSaveInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    edtEditInfo.setVisibility(View.VISIBLE);
+                    btnSaveInfo.setVisibility(View.GONE);
+                    changeAvatar.setVisibility(View.GONE);
+                    edtName.setEnabled(false);
+
+                    //upload Aavatar moi len storage/
+                    imgvAvatar.setDrawingCacheEnabled(true);
+                    imgvAvatar.buildDrawingCache();
+                    Bitmap bitmap = ((BitmapDrawable) imgvAvatar.getDrawable()).getBitmap();
+                    //hàm này up avatar mới lên storage, xong lấy link URL của avatar mới bỏ vô database user luôn
+                    User.uploadAvatar(mAuth.getCurrentUser().getUid(), edtName.getText().toString(), bitmap);
+                }
+            });
+            return userInfo;
         }
-
-        //user đã đăng nhập thì thực hiện
-        changeAvatar = (CardView) userInfo.findViewById(R.id.userinformation_chooseType);
-        changeAvatar.setVisibility(View.GONE);
-        edtEmail = (TextView) userInfo.findViewById(R.id.userinformation_edtEmail);
-        edtName = (EditText) userInfo.findViewById(R.id.userinformation_edtName);
-        imgvAvatar = (ImageView) userInfo.findViewById(R.id.userinformation_imgvAvatar);
-        btnSaveInfo = (Button) userInfo.findViewById(R.id.userinformation_btnSaveInfo);
-        edtEditInfo = (TextView) userInfo.findViewById(R.id.userinformation_edtEditInfo);
-        btnSignout = (Button) userInfo.findViewById(R.id.userinformation_btnSignout);
-
-
-        mAuth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
-
-        //Get User Information
-        getUserInformation();
-
-
-        btnSignout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent i = new Intent(getActivity(), LoginActivity.class);
-                startActivity(i);
-            }
-        });
-
-        edtEditInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edtEditInfo.setVisibility(View.GONE);
-                btnSaveInfo.setVisibility(View.VISIBLE);
-                changeAvatar.setVisibility(View.VISIBLE);
-                edtName.setEnabled(true);
-                edtName.requestFocus();
-                changeAvatar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BottomChooseCamera ChooseCamera = new BottomChooseCamera(mAuth.getUid(), imgvAvatar);
-                        ChooseCamera.show(getActivity().getSupportFragmentManager(),TAG);
-                    }
-                });
-            }
-        });
-
-        btnSaveInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edtEditInfo.setVisibility(View.VISIBLE);
-                btnSaveInfo.setVisibility(View.GONE);
-                changeAvatar.setVisibility(View.GONE);
-                edtName.setEnabled(false);
-
-                //upload Aavatar moi len storage/
-                imgvAvatar.setDrawingCacheEnabled(true);
-                imgvAvatar.buildDrawingCache();
-                Bitmap bitmap = ((BitmapDrawable) imgvAvatar.getDrawable()).getBitmap();
-                //hàm này up avatar mới lên storage, xong lấy link URL của avatar mới bỏ vô database user luôn
-                User.uploadAvatar(mAuth.getCurrentUser().getUid(), edtName.getText().toString(),bitmap);
-            }
-        });
-        return userInfo;
+        catch (Exception e) {
+            Log.e(TAG, "onCreateView", e);
+            throw e;
+        }
     }
-
     private void getUserInformation(){
         db.collection("User").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
