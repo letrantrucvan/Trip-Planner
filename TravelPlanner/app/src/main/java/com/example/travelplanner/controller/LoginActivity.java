@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,10 +63,11 @@ import java.io.IOException;
 public class LoginActivity extends AppCompatActivity {
 
     public static final int GOOGLE_SIGN_IN_CODE = 1005;
-    private static final String TAG = "FacebookAuthentication";
+    private static final String TAG = "LoginActivity";
     private Button btnLogin;
-    private Button btnLoginGoogle;
-    private Button btnSignup;
+    private ImageView btnLoginGoogle;
+    private ImageView logo_fb;
+    private TextView btnSignup;
     private EditText edtEmail;
     private EditText edtPassword;
     private TextView edtForgot;
@@ -84,8 +86,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         btnLogin = (Button) findViewById(R.id.login_btnLogin);
-        btnLoginGoogle = (Button) findViewById(R.id.login_btnGoogle);
-        btnSignup = (Button) findViewById(R.id.login_btnSignup);
+        btnLoginGoogle = findViewById(R.id.login_btnGoogle);
+        logo_fb = findViewById(R.id.logo_fb);
+        btnSignup = findViewById(R.id.login_btnSignup);
         edtEmail = (EditText) findViewById(R.id.login_edtEmail);
         edtPassword = (EditText) findViewById(R.id.login_edtPassword);
         edtForgot = (TextView) findViewById(R.id.login_edtForgot);
@@ -98,8 +101,15 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         mCbm = CallbackManager.Factory.create();
+
+        logo_fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                facbook_login.performClick();
+            }
+        });
         facbook_login = (LoginButton) findViewById(R.id.login_button);
-        facbook_login.setReadPermissions("email", "public_profile");
+        facbook_login.setReadPermissions("email", "public_profile", "user_friends");
         facbook_login.registerCallback(mCbm, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -188,6 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Google Account is connect.", Toast.LENGTH_SHORT).show();
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
+                Log.i(TAG, e.getStatusCode()+"");
                 // Google Sign In failed, update UI appropriately
                 Toast.makeText(LoginActivity.this, "Google Sign In failed.",
                         Toast.LENGTH_SHORT).show();

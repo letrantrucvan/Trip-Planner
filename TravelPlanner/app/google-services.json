@@ -15,6 +15,51 @@
       },
       "oauth_client": [
         {
+          "client_id": "783867193943-539hf2a8vh4c8ubscctmt8hblk6h0akt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.travelplanner",
+            "certificate_hash": "606192a7871b22a5a372868fbceab70e5c215c51"
+          }
+        },
+        {
+          "client_id": "783867193943-4k5st8evpm88ck81l3d2o4jup25o2192.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3MQx6X93LxdAtvQa9AtxwTrf2ZNXjEDk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783867193943-4k5st8evpm88ck81l3d2o4jup25o2192.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783867193943:android:8e5732025ea602feea9112",
+        "android_client_info": {
+          "package_name": "com.example.travelplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783867193943-dgkdnd1j7ao7v3lo57ses8dns0qtkelv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.travelplanner",
+            "certificate_hash": "606192a7871b22a5a372868fbceab70e5c215c51"
+          }
+        },
+        {
           "client_id": "783867193943-4k5st8evpm88ck81l3d2o4jup25o2192.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -39,7 +84,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:783867193943:android:a45baa35937c56b1ea9112",
         "android_client_info": {
-          "package_name": "com.example.travelplanner"
+          "package_name": "com.example.tripplanner"
         }
       },
       "oauth_client": [
