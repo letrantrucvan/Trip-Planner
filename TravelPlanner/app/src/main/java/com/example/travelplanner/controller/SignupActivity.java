@@ -3,12 +3,16 @@ package com.example.travelplanner.controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelplanner.R;
@@ -21,10 +25,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import eightbitlab.com.blurview.BlurView;
+import eightbitlab.com.blurview.RenderScriptBlur;
+
 public class SignupActivity extends AppCompatActivity {
 
-    private Button btnLogin;
-    private Button btnSignup;
     private EditText edtName;
     private EditText edtEmail;
     private EditText edtPassword;
@@ -40,14 +45,19 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        btnLogin = (Button) findViewById(R.id.signup_btnLogin);
-        btnSignup = (Button) findViewById(R.id.signup_btnSignup);
+        TextView btnLogin = findViewById(R.id.signup_btnLogin);
+        Button btnSignup = (Button) findViewById(R.id.signup_btnSignup);
+        BlurView blurView = findViewById(R.id.blurView);
+
         edtName = (EditText) findViewById(R.id.signup_edtName);
         edtEmail = (EditText) findViewById(R.id.signup_edtEmail);
         edtPassword = (EditText) findViewById(R.id.signup_edtPassword);
         edtRetype = (EditText) findViewById(R.id.signup_edtRetype);
 
         btnLogin.setText(Html.fromHtml("<i>Already have an account?</i> <font size=\"18sp\"><b>LOG IN</b></font>"));
+
+        ViewGroup rootView = findViewById(R.id.root);
+        BlurryView(blurView,rootView, 10f);
 
         mAuth = FirebaseAuth.getInstance();
         //user = mAuth.getCurrentUser();
@@ -133,5 +143,16 @@ public class SignupActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+    private void BlurryView (BlurView blurView, ViewGroup rootView, float radius){
+        View decorView = this.getWindow().getDecorView();
+
+        Drawable windowBackground = decorView.getBackground();
+        blurView.setupWith(rootView)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurAlgorithm(new RenderScriptBlur(this))
+                .setBlurRadius(radius)
+                .setBlurAutoUpdate(true)
+                .setHasFixedTransformationMatrix(false);
     }
 }

@@ -223,70 +223,71 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
                 }
             });
         }
-        db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    User b = documentSnapshot.toObject(User.class);
-                    ArrayList<String> saved_places = b.getSaved_places();
-                    if (saved_places.contains(cur_placeID))
-                    {
-                        unSave.setVisibility(View.VISIBLE);
-                        save.setVisibility(View.GONE);
-                        Log.i(TAG, "contain "+ cur_placeID);
+        if (HomeFragment.mAuth.getCurrentUser() != null) {
 
-                    }
-                    else
-                    {
-                        unSave.setVisibility(View.GONE);
-                        save.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "not contain "+ cur_placeID);
+            db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        User b = documentSnapshot.toObject(User.class);
+                        ArrayList<String> saved_places = b.getSaved_places();
+                        if (saved_places.contains(cur_placeID)) {
+                            unSave.setVisibility(View.VISIBLE);
+                            save.setVisibility(View.GONE);
+                            Log.i(TAG, "contain " + cur_placeID);
 
+                        } else {
+                            unSave.setVisibility(View.GONE);
+                            save.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "not contain " + cur_placeID);
+
+                        }
                     }
                 }
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (HomeFragment.mAuth.getCurrentUser() == null){
-                    Toast.makeText(getContext(), "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                User.savePlace(HomeFragment.mAuth.getUid(), cur_placeID);
-                Toast.makeText(getContext(), "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
-                unSave.setVisibility(View.VISIBLE);
-                save.setVisibility(View.GONE);
-                //notifyDataSetChanged();
-            }
-        });
-        unSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User.unsavePlace(HomeFragment.mAuth.getUid(), cur_placeID);
-                Toast.makeText(getContext(), "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
-                unSave.setVisibility(View.GONE);
-                save.setVisibility(View.VISIBLE);
-                //notifyDataSetChanged();
-            }
-        });
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                                R.anim.slide_in_y,
-                                R.anim.fade_out,
-                                R.anim.fade_in,
-                                R.anim.slide_out_y
-                        )
-                        .setReorderingAllowed(true)
-                        .add(R.id.fragment_container_view, TripPopUpFragment.class, null)
-                        .addToBackStack("TripPopUp")
-                        .commit();
-            }
-        });
+            });
 
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (HomeFragment.mAuth.getCurrentUser() == null) {
+                        Toast.makeText(getContext(), "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    User.savePlace(HomeFragment.mAuth.getUid(), cur_placeID);
+                    Toast.makeText(getContext(), "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    unSave.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.GONE);
+                    //notifyDataSetChanged();
+                }
+            });
+            unSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User.unsavePlace(HomeFragment.mAuth.getUid(), cur_placeID);
+                    Toast.makeText(getContext(), "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    unSave.setVisibility(View.GONE);
+                    save.setVisibility(View.VISIBLE);
+                    //notifyDataSetChanged();
+                }
+            });
+            addButton.setVisibility(View.VISIBLE);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getParentFragmentManager().beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_in_y,
+                                    R.anim.fade_out,
+                                    R.anim.fade_in,
+                                    R.anim.slide_out_y
+                            )
+                            .setReorderingAllowed(true)
+                            .add(R.id.fragment_container_view, TripPopUpFragment.class, null)
+                            .addToBackStack("TripPopUp")
+                            .commit();
+                }
+            });
+        }
 
         //String urlPhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=" + image_reference + "&key=" + getResources().getString(R.string.google_maps_key);
         String urlPhoto = URLRequest.getPhotoRequest(image_reference);
@@ -564,7 +565,8 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getActivity(), "Nothing found!", Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, e.toString());
+                            Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
                         }
 
                         hideProgressingView();
@@ -575,6 +577,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
             public void onErrorResponse(VolleyError error) {
 
                 hideProgressingView();
+                Log.i(TAG, error.toString());
                 Toast.makeText(getActivity(), "Nothing found!", Toast.LENGTH_SHORT).show();
 
             }

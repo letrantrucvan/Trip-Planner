@@ -59,55 +59,54 @@ public class SearchPlaceResultAdapter extends
         holder.txtName.setText(place.getName());
         holder.txtAddress.setText(place.getAddress());
 
-        db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Log.i(TAG, "onSuccess "+ position);
-                if (documentSnapshot.exists()) {
-                    User b = documentSnapshot.toObject(User.class);
-                    ArrayList<String> saved_places = b.getSaved_places();
-                    if (saved_places.contains(place.getPlace_id()))
-                    {
-                        holder.unSave.setVisibility(View.VISIBLE);
-                        holder.save.setVisibility(View.GONE);
-                        Log.i(TAG, "contain "+ place.getPlace_id());
+        if (HomeFragment.mAuth.getCurrentUser() != null) {
+            db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Log.i(TAG, "onSuccess " + position);
+                    if (documentSnapshot.exists()) {
+                        User b = documentSnapshot.toObject(User.class);
+                        ArrayList<String> saved_places = b.getSaved_places();
+                        if (saved_places.contains(place.getPlace_id())) {
+                            holder.unSave.setVisibility(View.VISIBLE);
+                            holder.save.setVisibility(View.GONE);
+                            Log.i(TAG, "contain " + place.getPlace_id());
 
-                    }
-                    else
-                    {
-                        holder.unSave.setVisibility(View.GONE);
-                        holder.save.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "not contain "+ place.getPlace_id());
+                        } else {
+                            holder.unSave.setVisibility(View.GONE);
+                            holder.save.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "not contain " + place.getPlace_id());
 
+                        }
                     }
                 }
-            }
-        });
-        holder.save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (HomeFragment.mAuth.getCurrentUser() == null){
-                    Toast.makeText(context, "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
-                    return;
+            });
+            holder.save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (HomeFragment.mAuth.getCurrentUser() == null) {
+                        Toast.makeText(context, "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    User.savePlace(HomeFragment.mAuth.getUid(), place.getPlace_id());
+                    Toast.makeText(context, "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    holder.unSave.setVisibility(View.VISIBLE);
+                    holder.save.setVisibility(View.GONE);
+                    place.addPlace();
+                    //notifyDataSetChanged();
                 }
-                User.savePlace(HomeFragment.mAuth.getUid(), place.getPlace_id());
-                Toast.makeText(context, "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
-                holder.unSave.setVisibility(View.VISIBLE);
-                holder.save.setVisibility(View.GONE);
-                place.addPlace();
-                //notifyDataSetChanged();
-            }
-        });
-        holder.unSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User.unsavePlace(HomeFragment.mAuth.getUid(), place.getPlace_id());
-                Toast.makeText(context, "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
-                holder.unSave.setVisibility(View.GONE);
-                holder.save.setVisibility(View.VISIBLE);
-                //notifyDataSetChanged();
-            }
-        });
+            });
+            holder.unSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User.unsavePlace(HomeFragment.mAuth.getUid(), place.getPlace_id());
+                    Toast.makeText(context, "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    holder.unSave.setVisibility(View.GONE);
+                    holder.save.setVisibility(View.VISIBLE);
+                    //notifyDataSetChanged();
+                }
+            });
+        }
         if(place.getRating()!= null)
             holder.ratingBar.setRating(Float.parseFloat(place.getRating()));
     }

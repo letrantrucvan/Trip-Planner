@@ -52,7 +52,8 @@ public class NotiFragment extends Fragment {
     @Override
     public void onResume() {
         Log.i(TAG, "onResume");
-        notificationAdapter.startListening();
+        if(notificationAdapter != null)
+            notificationAdapter.startListening();
         super.onResume();
     }
 
@@ -65,7 +66,8 @@ public class NotiFragment extends Fragment {
     @Override
     public void onStop() {
         Log.i(TAG, "onStop");
-        notificationAdapter.stopListening();
+        if(notificationAdapter != null)
+            notificationAdapter.stopListening();
         super.onStop();
     }
 

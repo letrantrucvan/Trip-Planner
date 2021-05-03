@@ -4,78 +4,121 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/root"
     tools:context=".controller.LoginActivity">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
+
+
+    <eightbitlab.com.blurview.BlurView
+
+        android:layout_gravity="center"
+        android:id="@+id/blurView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:blurOverlayColor="#00D1D1D1">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:orientation="vertical">
-        <androidx.cardview.widget.CardView
+        android:gravity="top"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:elevation="20dp">
+        <TextView
+            android:id="@+id/travel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:outlineProvider="none">
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/black_ops_one"
+            android:gravity="center"
+            android:text="TRAVEL"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/planner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/black_ops_one"
+            android:gravity="center"
+            android:text="PLANNER"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:paddingHorizontal="40dp"
+            android:layout_marginTop="20dp"
+            android:elevation="20dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="250dp"
-
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_wave" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="TRAVEL PLANNER"
-                android:textColor="@color/white"
-                android:textSize="30dp"
-                android:textStyle="bold|italic" />
-        </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:orientation="vertical"
-        android:padding="40dp"
-        android:layout_marginTop="-100dp"
-        android:elevation="20dp">
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:text="Fullname"/>
         <EditText
             android:id="@+id/signup_edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_white"
             android:ems="10"
+            android:layout_marginTop="5dp"
             android:hint="Fullname"
             android:inputType="textPersonName" />
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:layout_marginTop="5dp"
+            android:text="Email"/>
 
         <EditText
             android:id="@+id/signup_edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_white"
             android:ems="10"
             android:hint="Email"
             android:inputType="textPersonName" />
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:layout_marginTop="5dp"
+            android:text="Password"/>
 
         <EditText
             android:id="@+id/signup_edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_white"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
-
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:layout_marginTop="5dp"
+            android:text="Confirm password"/>
         <EditText
             android:id="@+id/signup_edtRetype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_white"
             android:ems="10"
             android:hint="Confirm password"
@@ -85,27 +128,27 @@
             android:id="@+id/signup_btnSignup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/bg_round"
+            android:layout_marginTop="25dp"
+            android:layout_marginHorizontal="50dp"
             android:text="Sign Up"
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/orange" />
+            app:backgroundTint="#A9336E89"
+            />
 
-        <Button
+        <TextView
             android:id="@+id/signup_btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_round"
+            android:gravity="center"
             android:text="Allready have an account? LOG IN"
             android:textAllCaps="false"
-            android:textColor="@color/white"
             android:textSize="14sp"
-            app:backgroundTint="@color/orange" />
+          />
+    </LinearLayout>
     </LinearLayout>
 
-    </LinearLayout>
+    </eightbitlab.com.blurview.BlurView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

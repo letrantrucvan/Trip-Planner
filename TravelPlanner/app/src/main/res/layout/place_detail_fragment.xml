@@ -14,6 +14,7 @@
         android:id="@+id/unSave"
         android:layout_alignParentEnd="true"
         android:background="@drawable/ic_baseline_bookmark_24"
+        android:visibility="gone"
         android:layout_height="30dp" />
     <ImageView
         android:translationZ="7dp"
@@ -22,6 +23,7 @@
         android:layout_marginEnd="10dp"
         android:id="@+id/save"
         android:layout_alignParentEnd="true"
+        android:visibility="gone"
         android:background="@drawable/ic_outline_bookmark_border_24"
         android:layout_height="30dp" />
     <ImageView
@@ -524,5 +526,6 @@
     android:layout_alignParentEnd="true"
     android:layout_alignParentBottom="true"
     android:layout_margin="36dp"
+    android:visibility="gone"
     android:background="@android:color/transparent"/>
 </RelativeLayout>

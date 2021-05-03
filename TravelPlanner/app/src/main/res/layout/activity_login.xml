@@ -68,7 +68,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_round"
                 android:text="Log In"
                 android:textSize="18sp"
                 app:backgroundTint="#A9336E89"

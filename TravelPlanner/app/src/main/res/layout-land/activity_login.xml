@@ -55,8 +55,6 @@
                 android:layout_width="200dp"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/bg_round"
-                android:layout_height="40dp"
                 android:text="Log In"
                 android:textSize="15sp"
                 app:backgroundTint="#A9336E89"
@@ -125,7 +123,6 @@
                     android:gravity="center"
                     android:text="Or Login With"
                     android:textSize="11sp"
-                    android:textColor="@color/black"
                     android:textStyle="italic"
                     />
 
