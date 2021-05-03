@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
@@ -38,7 +39,7 @@ import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA
 
 public class SavedPlacesAdapter extends
         FirestoreRecyclerAdapter<MyPlace, SavedPlacesAdapter.MyViewHolder> {
-    private final String TAG= "Thu SavedPlacesAdapter";
+    private static final String TAG= "Thu SavedPlacesAdapter";
     private ArrayList<MyPlace> places;
     private Context context;
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -85,22 +86,19 @@ public class SavedPlacesAdapter extends
                 Toast.makeText(context, "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
                 holder.itemView.setVisibility(View.GONE);
                 ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
                 params.height = 0;
-                holder.itemView.setLayoutParams(params);
+                p.setMargins(0,0,0,0);
+                p.height = 0;
+                holder.itemView.setLayoutParams(p);
             }
         });
         if(place.getRating()!= null)
             holder.ratingBar.setRating(Float.parseFloat(place.getRating()));
     }
 
-
-//    @Override
-//    public int getItemCount() {
-//        return places.size();
-//    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout item_row;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public CardView item_row;
 
         public ImageView placeCover;
         public TextView txtName;
@@ -110,7 +108,7 @@ public class SavedPlacesAdapter extends
         public RatingBar ratingBar;
         public MyViewHolder(View view) {
             super(view);
-            item_row = view.findViewById(R.id.item_row);
+            item_row = view.findViewById(R.id.containerActivities);
 
             placeCover = view.findViewById(R.id.placeCover);
             txtName = view.findViewById(R.id.placeHeader);

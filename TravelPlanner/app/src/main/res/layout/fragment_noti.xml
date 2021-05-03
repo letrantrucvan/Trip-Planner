@@ -13,25 +13,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black">
-
-<!--        <ImageView-->
-<!--            android:id="@+id/qr_code"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:contentDescription="@string/qr_code"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-        <Button
-            android:id="@+id/btnStartCam"
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông báo"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="26sp"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <ImageButton
+            android:id="@+id/seenAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OPEN CAMERA"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:src="@drawable/ic_baseline_fact_check_24"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="33dp"
+            android:layout_marginEnd="30dp"
+            android:background="@color/orange"
+            android:padding="3dp"
+            />
+        <ScrollView
+            android:id="@+id/scrollViewTourBookmark"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/text"
+            android:layout_marginTop="30dp"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/newNoti"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

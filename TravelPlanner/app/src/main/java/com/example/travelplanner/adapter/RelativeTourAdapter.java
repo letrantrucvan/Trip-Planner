@@ -3,8 +3,6 @@ package com.example.travelplanner.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,17 +17,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.DetailsActivity;
-import com.example.travelplanner.controller.PlaceDetailActivity;
-import com.example.travelplanner.model.MyPlace;
+import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.model.Tour;
-import com.example.travelplanner.model.URLRequest;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -89,7 +80,7 @@ public class RelativeTourAdapter extends FirestoreRecyclerAdapter<Tour, Relative
         holder.headerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context, DetailsActivity.class);
+                Intent i = new Intent(context, TourDetailsActivity.class);
                 i.putExtra("Key", tour.getTour_id());
                 context.startActivity(i);
             }

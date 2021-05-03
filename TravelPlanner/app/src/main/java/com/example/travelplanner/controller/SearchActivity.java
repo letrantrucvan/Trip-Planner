@@ -9,22 +9,15 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,7 +27,6 @@ import com.example.travelplanner.R;
 import com.example.travelplanner.ScanActivity;
 import com.example.travelplanner.fragment.CategoryFragment;
 import com.example.travelplanner.fragment.SearchPlaceResultFragment;
-import com.example.travelplanner.fragment.TripPopUpFragment;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -227,7 +219,7 @@ public class SearchActivity extends AppCompatActivity {
                     holder.setDetail(model);
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent i = new Intent(SearchActivity.this, DetailsActivity.class);
+                            Intent i = new Intent(SearchActivity.this, TourDetailsActivity.class);
                             String documentId = getSnapshots().getSnapshot(position).getId();
                             i.putExtra("Key", documentId);
                             startActivity(i);

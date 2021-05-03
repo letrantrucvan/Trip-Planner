@@ -10,17 +10,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.DetailsActivity;
-import com.example.travelplanner.fragment.HomeFragment;
+import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.model.Tour;
-import com.example.travelplanner.model.URLRequest;
-import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,7 +50,7 @@ public class ToursOfUserAdapter extends
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, DetailsActivity.class);
+                Intent intent = new Intent(context, TourDetailsActivity.class);
                 intent.putExtra("Key", tour.getTour_id());
 
                 context.startActivity(intent);

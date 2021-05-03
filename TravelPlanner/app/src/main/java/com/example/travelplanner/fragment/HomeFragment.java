@@ -4,31 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.example.travelplanner.Create_new_tour;
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.controller.EditTourActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
@@ -166,7 +155,7 @@ public class HomeFragment extends Fragment {
                     holder.setDetail(model);
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent i = new Intent(getActivity(), DetailsActivity.class);
+                            Intent i = new Intent(getActivity(), TourDetailsActivity.class);
                             String documentId = getSnapshots().getSnapshot(position).getId();
                             i.putExtra("Key", documentId);
                             startActivity(i);

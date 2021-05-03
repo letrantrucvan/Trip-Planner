@@ -1,11 +1,8 @@
 package com.example.travelplanner.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -22,15 +19,13 @@ import android.widget.TextView;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
-import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.controller.SearchActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
-import com.example.travelplanner.controller.UserPageActivity;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,7 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -212,7 +206,7 @@ public class DiscoverFragment extends Fragment {
             cardview1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), DetailsActivity.class);
+                    Intent i = new Intent(getActivity(), TourDetailsActivity.class);
                     i.putExtra("Key", TOTW_id);
                     startActivity(i);
                 }
@@ -251,7 +245,7 @@ public class DiscoverFragment extends Fragment {
             cardview3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), DetailsActivity.class);
+                    Intent i = new Intent(getActivity(), TourDetailsActivity.class);
                     i.putExtra("Key", TNWT_id);
                     startActivity(i);
                 }
@@ -263,7 +257,6 @@ public class DiscoverFragment extends Fragment {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             if (user!= null) {
-                Log.i("Thu Debug: ", "1");
                 String curUid = user.getUid();
                 db.collection("User").document(curUid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
@@ -271,9 +264,7 @@ public class DiscoverFragment extends Fragment {
                         if (documentSnapshot.exists()) {
                             User user = documentSnapshot.toObject(User.class);
                             ArrayList<String> fl = user.getFollowing();
-                            Log.i("Thu Debug: ", "2 "+fl.toString());
                             if(fl.size()>0) {
-                                Log.i("Thu Debug: ", "3");
                                 Query fy = db.collection("Tour").whereIn("author_id",fl).orderBy("views", Query.Direction.ASCENDING).limit(10);
                                 adapter_fyp = horizonto(fy);
                             }
@@ -327,7 +318,7 @@ public class DiscoverFragment extends Fragment {
                                 holder.setDetail(model);
                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                                     public void onClick(View view) {
-                                        Intent i = new Intent(getActivity(), DetailsActivity.class);
+                                        Intent i = new Intent(getActivity(), TourDetailsActivity.class);
                                         String documentId = getSnapshots().getSnapshot(position).getId();
                                         i.putExtra("Key", documentId);
                                         startActivity(i);
@@ -384,7 +375,7 @@ public class DiscoverFragment extends Fragment {
                 holder.setDetail(model);
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
-                        Intent i = new Intent(getActivity(), DetailsActivity.class);
+                        Intent i = new Intent(getActivity(), TourDetailsActivity.class);
                         String documentId = getSnapshots().getSnapshot(position).getId();
                         i.putExtra("Key", documentId);
                         startActivity(i);

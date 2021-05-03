@@ -1,8 +1,6 @@
 package com.example.travelplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,7 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.TourDetailsActivity;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -84,7 +82,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
             System.out.println(rawResult.getText());
             Toast.makeText(this, rawResult.getText(), Toast.LENGTH_SHORT).show();
             Log.v(TAG,rawResult.getText());
-            Intent intent = new Intent(this, DetailsActivity.class);
+            Intent intent = new Intent(this, TourDetailsActivity.class);
             intent.putExtra("Key", rawResult.getText());
             startActivity(intent);
             finish();

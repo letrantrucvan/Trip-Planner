@@ -3,16 +3,19 @@ package com.example.travelplanner.controller;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.fragment.BookmarkFragment;
@@ -25,7 +28,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -41,18 +53,69 @@ public class HomeActivity extends AppCompatActivity {
     private Location lastKnownLocation;
 
     private ActionBar toolbar;
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private BottomNavigationView bt_nav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        BottomNavigationView bt_nav = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        bt_nav = findViewById(R.id.bottomNavigationView);
         bt_nav.setOnNavigationItemSelectedListener(navListener);
+        if(savedInstanceState != null) {
+            Log.i(TAG,savedInstanceState.toString());
+            bt_nav.setSelectedItemId(savedInstanceState.getInt("Nav", R.id.discoverFragment));
+        }else
+            bt_nav.setSelectedItemId( R.id.discoverFragment);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() != null) {
+            db.collection("Notification").whereEqualTo("userID",mAuth.getUid())
+                    .whereEqualTo("seen", false).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value,
+                                    @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e);
+                        return;
+                    }
+                    BadgeDrawable badge = bt_nav.getOrCreateBadge(R.id.notiFragment);
+                    badge.setVisible(true);
+                    badge.setNumber(value.size());
+                    if(value.size() == 0) badge.setVisible(false);
+                }
+            });
+        }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // To get current location
         getDeviceLocation();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        Log.i(TAG,"onSaveInstanceState");
+        Log.i(TAG, bt_nav.getSelectedItemId()+"");
+        outState.putInt("Nav", bt_nav.getSelectedItemId());
+        super.onSaveInstanceState(outState);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -77,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
                             selectedFragment = new NotiFragment();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment, selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment, selectedFragment,selectedFragment.getClass().getSimpleName()).commit();
                     return true;
                 }
 
@@ -144,4 +207,11 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void refresh(){
+        Fragment frg = getSupportFragmentManager().findFragmentByTag("NotiFragment");
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.detach(frg);
+        ft.attach(frg);
+        ft.commit();
+    }
 }

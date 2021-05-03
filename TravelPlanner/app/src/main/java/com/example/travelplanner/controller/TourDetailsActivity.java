@@ -9,10 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,17 +31,18 @@ import com.example.travelplanner.fragment.FragmentTwo;
 import com.example.travelplanner.fragment.MapTourFragment;
 import com.example.travelplanner.fragment.TabFragmentAdapter;
 import com.example.travelplanner.model.MyPlace;
+import com.example.travelplanner.model.Notification;
 import com.example.travelplanner.model.Rating;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
@@ -52,14 +50,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-public class DetailsActivity extends AppCompatActivity{
+public class TourDetailsActivity extends AppCompatActivity{
 
 
     private static final String TAG = "Thu DetailsActivity";
@@ -92,7 +88,6 @@ public class DetailsActivity extends AppCompatActivity{
     private ImageView iconSaved;
     private ImageView iconUnSaved;
     private LinearLayout CommentBox;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListenerRegistration registration;
@@ -245,13 +240,13 @@ public class DetailsActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() == null){
-                    Toast.makeText(DetailsActivity.this, "Bạn vui lòng đăng nhập để lưu Tour", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TourDetailsActivity.this, "Bạn vui lòng đăng nhập để lưu Tour", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 User.saveTour(mAuth.getUid(), tourID);
                 iconSaved.setVisibility(View.GONE);
                 iconUnSaved.setVisibility(View.VISIBLE);
-                Toast.makeText(DetailsActivity.this, "Đã lưu Tour", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TourDetailsActivity.this, "Đã lưu Tour", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -263,8 +258,6 @@ public class DetailsActivity extends AppCompatActivity{
                 iconUnSaved.setVisibility(View.GONE);
             }
         });
-
-
     }
 
     @Override
@@ -293,7 +286,7 @@ public class DetailsActivity extends AppCompatActivity{
                     tourAuthorName.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(DetailsActivity.this, UserPageActivity.class);
+                            Intent intent = new Intent(TourDetailsActivity.this, UserPageActivity.class);
                             intent.putExtra("id", cur_Tour.getAuthor_id());
                             startActivity(intent);
                         }
@@ -348,7 +341,7 @@ public class DetailsActivity extends AppCompatActivity{
                                         Log.i(TAG,"WAYPONTS after size "+ waypoints.size());
                                         Log.i(TAG,"WAYPONTS after "+ waypoints);
                                         Log.i(TAG, map.toString());
-                                        WaypointAdapter destinationAdapter = new WaypointAdapter(DetailsActivity.this, waypoints);
+                                        WaypointAdapter destinationAdapter = new WaypointAdapter(TourDetailsActivity.this, waypoints);
                                         waypointRecyclerView.setAdapter(destinationAdapter);
                                     }
                                 } else {
@@ -360,7 +353,7 @@ public class DetailsActivity extends AppCompatActivity{
 
 
                     //get avatar
-                    Picasso.with(DetailsActivity.this).load(tour.getCover()).into(tourCover);
+                    Picasso.with(TourDetailsActivity.this).load(tour.getCover()).into(tourCover);
                     layoutDetails.setVisibility(View.VISIBLE);
                     progressDetails.setVisibility(View.GONE);
 
@@ -375,7 +368,7 @@ public class DetailsActivity extends AppCompatActivity{
 
 
                                 //get avatar
-                                Picasso.with(DetailsActivity.this).load(user.getLink_ava_user()).into(tourAuthorImg);
+                                Picasso.with(TourDetailsActivity.this).load(user.getLink_ava_user()).into(tourAuthorImg);
 
                             }
                         }
@@ -471,7 +464,7 @@ public class DetailsActivity extends AppCompatActivity{
             btnGoToLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i = new Intent(DetailsActivity.this, LoginActivity.class);
+                    Intent i = new Intent(TourDetailsActivity.this, LoginActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
                 }
@@ -497,7 +490,7 @@ public class DetailsActivity extends AppCompatActivity{
                         }
 
                         //get avatar
-                        Picasso.with(DetailsActivity.this).load(user.getLink_ava_user()).into(current_user_avatar);
+                        Picasso.with(TourDetailsActivity.this).load(user.getLink_ava_user()).into(current_user_avatar);
                     }
                 }
             });
@@ -515,6 +508,22 @@ public class DetailsActivity extends AppCompatActivity{
                         Rating userRating = new Rating(mAuth.getUid(), tourID, current_user_comment.getText().toString(), rate);
                         Rating.addRating(userRating);
                         Tour.alterRating(tourID, rate);
+
+                        db.collection("User").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                                if (documentSnapshot.exists()){
+                                    User user = documentSnapshot.toObject(User.class);
+
+                                    Notification notification = new Notification(cur_Tour.getAuthor_id(), user.getFullname()+ " đã đánh giá "+ cur_Tour.getName(),
+                                            cur_Tour.getTour_id(), cur_Tour.getCover(),1);
+                                    DocumentReference documentReference = db.collection("Notification").document();
+                                    notification.setId(documentReference.getId());
+                                    documentReference.set(notification);
+                                }
+                            }
+                        });
+
                     }
                 }
             });
@@ -571,11 +580,11 @@ public class DetailsActivity extends AppCompatActivity{
 
     boolean checkValidInput(){
         if (current_user_comment.getText().toString().equals("")){
-            Toast.makeText(DetailsActivity.this, "Vui lòng nhập ý kiến đánh giá của bạn", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TourDetailsActivity.this, "Vui lòng nhập ý kiến đánh giá của bạn", Toast.LENGTH_SHORT).show();
             return false;
         }
         else if (!current_user_rate_1.isChecked() && !current_user_rate_2.isChecked() && !current_user_rate_3.isChecked() && !current_user_rate_4.isChecked() && !current_user_rate_5.isChecked()){
-            Toast.makeText(DetailsActivity.this, "Vui lòng chọn đánh giá của bạn", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TourDetailsActivity.this, "Vui lòng chọn đánh giá của bạn", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

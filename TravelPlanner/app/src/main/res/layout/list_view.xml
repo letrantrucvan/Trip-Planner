@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#000000"
     android:layout_gravity="center_vertical"
-    tools:context=".SearchResult">
+    tools:context=".controller.SearchActivity">
 
     <LinearLayout
         android:layout_margin="15dp"
@@ -69,7 +69,7 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textColor="#ffffff"
-                android:textSize="18sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/numberPlace"
@@ -78,7 +78,7 @@
                 android:layout_marginTop="5dp"
                 android:text="Những mẫu hoa thú vị"
                 android:textColor="#bebebe"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 

@@ -203,23 +203,6 @@ public class User implements Serializable {
     }
     public static void unsavePlace(String userID, String placeID){
         //db.collection("User").document(userID).update("saved_tour", FieldValue.arrayRemove(tourID));
-        db.collection("User").document(userID).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    User b = documentSnapshot.toObject(User.class);
-                    ArrayList<String> save_places = b.getSaved_places();
-                    db.collection("User").document(userID).update("saved_places", FieldValue.arrayRemove(placeID));
-
-//                    if (save_places.size() == 1){
-//                        db.collection("User").document(userID).update("saved_places", null);
-//                    }
-//                    else {
-//                        db.collection("User").document(userID).update("saved_places", FieldValue.arrayRemove(placeID));
-//                    }
-
-                }
-            }
-        });
+        db.collection("User").document(userID).update("saved_places", FieldValue.arrayRemove(placeID));
     }
 }

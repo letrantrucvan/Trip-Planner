@@ -1,5 +1,6 @@
 package com.example.travelplanner.controller;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,19 +8,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.ToursOfUserAdapter;
+import com.example.travelplanner.model.Notification;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import android.content.Intent;
@@ -41,6 +48,7 @@ public class UserPageActivity extends AppCompatActivity {
     ToursOfUserAdapter toursOfUserAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout.user_page);
@@ -69,28 +77,56 @@ public class UserPageActivity extends AppCompatActivity {
                                 if (!curUid.equals(uID))
                                     follow.setVisibility(View.VISIBLE);
                             }
+                            follow.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.i(TAG, "follow onClick");
+
+                                    follow.setVisibility(View.GONE);
+                                    unfollow.setVisibility(View.VISIBLE);
+                                    db.collection("User").document(uID).update("follower", FieldValue.arrayUnion(curUid));
+                                    db.collection("User").document(curUid).update("following", FieldValue.arrayUnion(uID));
+                                    Notification notification = new Notification(uID,curUser.getFullname() + " đã theo dõi bạn",
+                                            curUid,curUser.getLink_ava_user(),0);
+                                    DocumentReference documentReference = db.collection("Notification").document();
+                                    notification.setId(documentReference.getId());
+
+                                    db.collection("Notification")
+                                            .whereEqualTo("content", notification.getContent())
+                                            .whereEqualTo("userID", notification.getUserID())
+                                            .whereNotEqualTo("id", documentReference.getId())
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            Log.i(TAG," delete "+ document.getId());
+                                                            db.collection("Notification").document(document.getId()).delete();
+                                                        }
+                                                    } else {
+                                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                                    }
+                                                }
+                                            });
+
+                                    documentReference.set(notification);
+                                }
+                            });
+
+                            unfollow.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.i(TAG, "unfollow onClick");
+
+                                    follow.setVisibility(View.VISIBLE);
+                                    unfollow.setVisibility(View.GONE);
+                                    db.collection("User").document(uID).update("follower", FieldValue.arrayRemove(curUid));
+                                    db.collection("User").document(curUid).update("following", FieldValue.arrayRemove(uID));
+                                }
+                            });
                         }
                     });
-
-            follow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    follow.setVisibility(View.GONE);
-                    unfollow.setVisibility(View.VISIBLE);
-                    db.collection("User").document(uID).update("follower", FieldValue.arrayUnion(curUid));
-                    db.collection("User").document(curUid).update("following", FieldValue.arrayUnion(uID));
-                }
-            });
-
-            unfollow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    follow.setVisibility(View.VISIBLE);
-                    unfollow.setVisibility(View.GONE);
-                    db.collection("User").document(uID).update("follower", FieldValue.arrayRemove(curUid));
-                    db.collection("User").document(curUid).update("following", FieldValue.arrayRemove(uID));
-                }
-            });
         }
         getUserInformation();
         Query searchQuery  = db.collection("Tour").whereEqualTo("author_id", uID);
@@ -122,5 +158,29 @@ public class UserPageActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,9 +17,8 @@ import android.widget.LinearLayout;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.SavedPlacesAdapter;
-import com.example.travelplanner.controller.BookmarksPlaceViewHolder;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
-import com.example.travelplanner.controller.DetailsActivity;
+import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.controller.LoginActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
@@ -105,7 +103,7 @@ public class BookmarkFragment extends Fragment {
             mResultTourList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewTourBookmark);
             mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            mResultPlaceList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
+            mResultPlaceList =  BookmarkFragmentView.findViewById(R.id.recycleviewPlaceBookmark);
             // mResultPlaceList.setLayoutManager(new GridLayoutManager(getContext(), 2));
             mResultPlaceList.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -197,7 +195,7 @@ public class BookmarkFragment extends Fragment {
                                         holder.setDetail(model);
                                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             public void onClick(View view) {
-                                                Intent i = new Intent(getActivity(), DetailsActivity.class);
+                                                Intent i = new Intent(getActivity(), TourDetailsActivity.class);
                                                 String documentId = getSnapshots().getSnapshot(position).getId();
                                                 i.putExtra("Key", documentId);
                                                 startActivity(i);

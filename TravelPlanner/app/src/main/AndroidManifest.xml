@@ -19,7 +19,7 @@
         <activity android:name=".controller.EditTourActivity" />
         <activity android:name=".Create_new_tour" />
         <activity android:name=".ScanActivity" />
-        <activity android:name=".controller.DetailsActivity"
+        <activity android:name=".controller.TourDetailsActivity"
             android:windowSoftInputMode="adjustPan"
             />
 

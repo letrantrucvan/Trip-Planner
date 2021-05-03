@@ -659,11 +659,11 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     private void showDirection(){
         List<Polyline> path_list = new ArrayList<>();
         //String origin_fromAuto = "611 điện biên phủ";
-        RequestQueue mrequestQueue = Volley.newRequestQueue(getActivity());
        // origin_fromAuto.replace(" ","+");
         //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin_fromAuto+"&destination=" + PlaceDetailFragment.cur_latitude +","+ PlaceDetailFragment.cur_longitude
           //      +"&key="+getResources().getString(R.string.google_maps_key);
         try {
+            RequestQueue mrequestQueue = Volley.newRequestQueue(getActivity());
             String url = URLRequest.getDirectionRequest(HomeActivity.cur_lat.toString(), HomeActivity.cur_lng.toString(), PlaceDetailFragment.cur_latitude, PlaceDetailFragment.cur_longitude);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {

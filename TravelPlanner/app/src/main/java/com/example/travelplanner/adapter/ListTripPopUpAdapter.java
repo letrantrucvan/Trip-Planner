@@ -106,7 +106,7 @@ public class ListTripPopUpAdapter extends RecyclerView.Adapter<ListTripPopUpAdap
         return tours.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView headerText;
         TextView content;
