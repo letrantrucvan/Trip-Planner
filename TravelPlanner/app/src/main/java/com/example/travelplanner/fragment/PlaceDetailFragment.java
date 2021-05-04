@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -79,8 +80,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private RequestQueue requestQueue;
-
-
     private TextView name;
     private ImageView save;
     private ImageView unSave;
@@ -100,14 +99,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     private TextView show_all_reviews;
     private LinearLayout review_zone;
     private ViewGroup progressView;
-    private BlurView blurName;
-    private BlurView blurDetail;
-    private BlurView blurPhoto;
-    private BlurView blurNearby;
-    private BlurView blurMap;
-    private BlurView blurReview;
-    private BlurView blurTrip;
-    private FloatingActionButton addButton;
 
     private LinearLayout row_address;
     private LinearLayout row_phone;
@@ -141,7 +132,14 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 
         LOADING = false;
         showProgressingView();
-
+        BlurView blurName = view.findViewById(R.id.blurName);
+        BlurView blurDetail = view.findViewById(R.id.blurDetail);
+        BlurView blurPhoto = view.findViewById(R.id.blurPhoto);
+        BlurView blurNearby = view.findViewById(R.id.blurNearby);
+        BlurView blurMap = view.findViewById(R.id.blurMap);
+        BlurView blurReview = view.findViewById(R.id.blurReview);
+        BlurView blurTrip = view.findViewById(R.id.blurTrip);
+        FloatingActionButton addButton = view.findViewById(R.id.addButton);
         Bundle bundle = requireArguments();
         width = bundle.getDouble("width");
         height = bundle.getDouble("height");
@@ -173,14 +171,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
         img_review = view.findViewById(R.id.img_review);
         show_all_reviews = view.findViewById(R.id.show_all_reviews);
         review_zone = view.findViewById(R.id.review_zone);
-        blurName = view.findViewById(R.id.blurName);
-        blurDetail = view.findViewById(R.id.blurDetail);
-        blurPhoto = view.findViewById(R.id.blurPhoto);
-        blurNearby = view.findViewById(R.id.blurNearby);
-        blurMap = view.findViewById(R.id.blurMap);
-        blurReview = view.findViewById(R.id.blurReview);
-        blurTrip = view.findViewById(R.id.blurTrip);
-        addButton = view.findViewById(R.id.addButton);
+
         save = view.findViewById(R.id.save);
         unSave = view.findViewById(R.id.unSave);
         recyclerDestination = view.findViewById(R.id.nearby_destinations);
@@ -639,8 +630,12 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 
         if (!LOADING) {
             LOADING = true;
+            AnimationDrawable animationDrawable;
             progressView = (ViewGroup) getLayoutInflater().inflate(R.layout.loading_spinner, null);
             View v = getActivity().findViewById(android.R.id.content).getRootView();
+            ImageView loading = progressView.findViewById(R.id.loading);
+            animationDrawable = (AnimationDrawable) loading.getDrawable();
+            animationDrawable.start();
             ViewGroup viewGroup = (ViewGroup) v;
             viewGroup.addView(progressView);
         }

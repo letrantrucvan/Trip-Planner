@@ -30,4 +30,8 @@
     <style name="Theme.TravelPlanner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.TravelPlanner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_launch</item>
+    </style>
 </resources>

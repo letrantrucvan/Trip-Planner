@@ -53,8 +53,9 @@
             <Button
                 android:id="@+id/login_btnLogin"
                 android:layout_width="200dp"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="Log In"
                 android:textSize="15sp"
                 app:backgroundTint="#A9336E89"
@@ -91,6 +92,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:textSize="11sp"
+                    android:background="#57FFFFFF"
+                    android:padding="5dp"
                     android:text="Dont have an account?"
                     android:textStyle="italic" />
 
@@ -104,6 +107,15 @@
                     android:padding="5dp"
                     android:textSize="11sp"
                     android:text="Sign Up"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/nonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="#57FFFFFF"
+                    android:padding="5dp"
+                    android:text="Continue without Login"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -123,6 +135,8 @@
                     android:gravity="center"
                     android:text="Or Login With"
                     android:textSize="11sp"
+                    android:background="#57FFFFFF"
+                    android:padding="5dp"
                     android:textStyle="italic"
                     />
 

@@ -2,6 +2,7 @@ package com.example.travelplanner.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -14,9 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.travelplanner.Create_new_tour;
 import com.example.travelplanner.R;
+import com.example.travelplanner.controller.HomeActivity;
 import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.controller.EditTourActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
@@ -35,7 +38,10 @@ import com.google.firebase.firestore.Query;
  */
 public class HomeFragment extends Fragment {
     private static final String TAG = "Thu HomeFragment";
-    Context context ;
+    private Context context;
+    private HomeActivity homeActivity;
+
+
     public static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -88,6 +94,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         try {
+            homeActivity = (HomeActivity) getActivity();
             // Inflate the layout for this fragment
             View v = inflater.inflate(R.layout.fragment_home, container, false);
             final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -171,6 +178,7 @@ public class HomeFragment extends Fragment {
                             return false;
                         }
                     });
+                    if(homeActivity.LOADING) homeActivity.hideProgressingView();
                 }
 
                 @Override
@@ -212,4 +220,5 @@ public class HomeFragment extends Fragment {
         super.onStop();
         //adapter.stopListening();
     }
+
 }

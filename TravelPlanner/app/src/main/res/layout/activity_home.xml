@@ -30,6 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:itemIconTint="@drawable/btn_nav"
         app:itemTextColor="@drawable/btn_nav"
+        android:translationZ="30dp"
         app:menu="@menu/bottom_menu">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

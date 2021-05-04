@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail;
     private EditText edtPassword;
     private TextView edtForgot;
+    private TextView nonLogin;
 
     private LoginButton facbook_login;
     private CallbackManager mCbm;
@@ -92,8 +93,8 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = (EditText) findViewById(R.id.login_edtEmail);
         edtPassword = (EditText) findViewById(R.id.login_edtPassword);
         edtForgot = (TextView) findViewById(R.id.login_edtForgot);
+        nonLogin = (TextView) findViewById(R.id.nonLogin);
 
-        btnSignup.setText(Html.fromHtml("<font size=\"18sp\"><b>SIGN UP</b></font>"));
         edtForgot.setText(Html.fromHtml("<i><u>Forgot your password?</u></i>"));
 
         mAuth = FirebaseAuth.getInstance();
@@ -140,6 +141,14 @@ public class LoginActivity extends AppCompatActivity {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
         }
+        nonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
 
 
         // Configure Google Sign In

@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
-        <activity android:name=".controller.UserPageActivity"></activity>
+        <activity android:name=".controller.UserPageActivity" />
         <activity android:name=".controller.EditTourActivity" />
         <activity android:name=".Create_new_tour" />
         <activity android:name=".ScanActivity" />
@@ -23,16 +23,22 @@
             android:windowSoftInputMode="adjustPan"
             />
 
-        <activity android:name=".controller.HomeActivity">
+        <activity
+            android:name=".controller.HomeActivity"
+            >
+
+        </activity>
+        <activity android:name=".controller.ForgotPasswordActivity" />
+        <activity android:name=".controller.SignupActivity" />
+        <activity
+            android:name=".controller.LoginActivity"
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.ForgotPasswordActivity" />
-        <activity android:name=".controller.SignupActivity" />
-        <activity android:name=".controller.LoginActivity" />
         <activity android:name=".controller.MainActivity" />
         <activity android:name=".testGallery" />
         <activity android:name=".controller.PlaceDetailActivity" />

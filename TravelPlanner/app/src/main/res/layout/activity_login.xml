@@ -67,12 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:text="Log In"
                 android:textSize="18sp"
                 app:backgroundTint="#A9336E89"
                 app:layout_constraintBottom_toTopOf="@id/login_edtForgot" />
-
             <TextView
                 android:id="@+id/login_edtForgot"
                 android:layout_width="wrap_content"
@@ -80,15 +79,28 @@
                 android:layout_marginBottom="20dp"
                 android:background="#57FFFFFF"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:text="Forgot your password?"
                 android:textColor="@color/black"
                 android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@id/dontHaveAc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
+
+            <TextView
+                android:id="@+id/dontHaveAc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="Dont have an account?"
+                android:background="#57FFFFFF"
+                android:padding="3dp"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@id/dontHaveAcc"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-
+                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="italic" />
             <LinearLayout
                 android:id="@+id/dontHaveAcc"
                 android:layout_width="match_parent"
@@ -97,13 +109,6 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/orLoginWith">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:text="Dont have an account?"
-                    android:textColor="@color/black"
-                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/login_btnSignup"
@@ -111,9 +116,18 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:background="#57FFFFFF"
-                    android:gravity="center"
                     android:padding="5dp"
                     android:text="Sign Up"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/nonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="#57FFFFFF"
+                    android:padding="5dp"
+                    android:text="Continue without Login"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 

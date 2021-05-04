@@ -42,7 +42,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_showTourBookmark"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:text="Chuyến đi"
                 android:textSize="12dp"
@@ -52,7 +52,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_showPlaceBookmark"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"

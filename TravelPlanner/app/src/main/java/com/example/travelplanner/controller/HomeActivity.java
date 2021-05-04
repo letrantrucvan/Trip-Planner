@@ -1,11 +1,15 @@
 package com.example.travelplanner.controller;
 
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +46,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class HomeActivity extends AppCompatActivity {
 
     static final String TAG ="Thu HomeActivity";
+    private ViewGroup progressView;
+    public boolean LOADING;
+
     static public String cur_location;
     static public Double cur_lat = 0.0;
     static public Double cur_lng = 0.0;
@@ -60,6 +67,9 @@ public class HomeActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        LOADING = false;
+        showProgressingView();
 
         bt_nav = findViewById(R.id.bottomNavigationView);
         bt_nav.setOnNavigationItemSelectedListener(navListener);
@@ -125,12 +135,14 @@ public class HomeActivity extends AppCompatActivity {
                     Fragment selectedFragment = null;
                     switch (item.getItemId()) {
                         case R.id.discoverFragment:
+                            showProgressingView();
                             selectedFragment = new DiscoverFragment();
                             break;
                         case R.id.userInfoFragment:
                             selectedFragment = new UserInfoFragment();
                             break;
                         case R.id.homeFragment:
+                            showProgressingView();
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.bookmarkFragment:
@@ -213,5 +225,27 @@ public class HomeActivity extends AppCompatActivity {
         ft.detach(frg);
         ft.attach(frg);
         ft.commit();
+    }
+    public void showProgressingView() {
+
+        if (!LOADING) {
+            LOADING = true;
+            AnimationDrawable animationDrawable;
+            progressView = (ViewGroup) getLayoutInflater().inflate(R.layout.loading_spinner, null);
+
+            View v = findViewById(android.R.id.content).getRootView();
+            ImageView loading = progressView.findViewById(R.id.loading);
+            animationDrawable = (AnimationDrawable) loading.getDrawable();
+            animationDrawable.start();
+            ViewGroup viewGroup = (ViewGroup) v;
+            viewGroup.addView(progressView);
+        }
+    }
+
+    public void hideProgressingView() {
+        View v = findViewById(android.R.id.content).getRootView();
+        ViewGroup viewGroup = (ViewGroup) v;
+        viewGroup.removeView(progressView);
+        LOADING = false;
     }
 }

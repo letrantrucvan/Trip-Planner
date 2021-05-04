@@ -86,12 +86,14 @@
                     android:id="@+id/unSave"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/ic_baseline_bookmark_24"
+                    android:visibility="gone"
                     android:layout_height="30dp" />
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_marginTop="2dp"
                     android:id="@+id/save"
                     android:layout_alignParentEnd="true"
+                    android:visibility="gone"
                     android:background="@drawable/ic_outline_bookmark_border_24"
                     android:layout_height="30dp" />
 

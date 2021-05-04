@@ -1,6 +1,7 @@
 package com.example.travelplanner.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.controller.BookmarksTourViewHolder;
+import com.example.travelplanner.controller.HomeActivity;
 import com.example.travelplanner.controller.TourDetailsActivity;
 import com.example.travelplanner.controller.SearchActivity;
 import com.example.travelplanner.controller.ToursViewHolder;
@@ -48,6 +50,8 @@ import java.util.ArrayList;
 public class DiscoverFragment extends Fragment {
 
     private static String TAG ="Thu DiscoverFragment";
+    private HomeActivity homeActivity;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -86,8 +90,6 @@ public class DiscoverFragment extends Fragment {
     private String TOTW_id;
     private String TNWT_id;
 
-    private LinearLayout progress1;
-    private LinearLayout progress2;
     private TextView tourofweek;
     private TextView latesttour;
     public DiscoverFragment() {
@@ -125,13 +127,10 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         try {
+            homeActivity = (HomeActivity) getActivity();
             // Inflate the layout for this fragment
-
             View v = inflater.inflate(R.layout.fragment_discover, container, false);
-            progress1 = (LinearLayout) v.findViewById(R.id.discover_progress1);
-            progress2 = (LinearLayout) v.findViewById(R.id.discover_progress2);
-            progress1.setVisibility(View.VISIBLE);
-            progress2.setVisibility(View.VISIBLE);
+
             tourofweek = (TextView) v.findViewById(R.id.textView4);
             latesttour = (TextView) v.findViewById(R.id.textView7);
             tourofweek.setVisibility(View.GONE);
@@ -197,8 +196,8 @@ public class DiscoverFragment extends Fragment {
 
                         //get avatar
                         Picasso.with(getContext()).load(tour.getCover()).into(TOTW_img);
-                        progress1.setVisibility(View.GONE);
                         tourofweek.setVisibility(View.VISIBLE);
+                        homeActivity.hideProgressingView();
                     });
                 }
             });
@@ -211,7 +210,6 @@ public class DiscoverFragment extends Fragment {
                     startActivity(i);
                 }
             });
-
 
             Query theNewestTour = db.collection("Tour").orderBy("rating_avg", Query.Direction.DESCENDING).limit(1); // Tour mới nhất
             theNewestTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -237,7 +235,6 @@ public class DiscoverFragment extends Fragment {
 
                         //get avatar
                         Picasso.with(getContext()).load(tour.getCover()).into(TNWT_img);
-                        progress2.setVisibility(View.GONE);
                         latesttour.setVisibility(View.VISIBLE);
                     });
                 }
@@ -397,6 +394,5 @@ public class DiscoverFragment extends Fragment {
 
         };
     }
-
 
 }
