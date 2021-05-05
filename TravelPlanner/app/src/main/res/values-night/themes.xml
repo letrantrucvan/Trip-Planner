@@ -18,6 +18,8 @@
         <item name="android:editTextColor">@android:color/white</item>
         <item name="android:textColorHint">#A3A3A3</item>
         <item name="android:textColor">#FFF</item>
+        <item name = "android:windowBackground">#000</item>
+
     </style>
 
     <style name="Theme.TravelPlanner.NoActionBar">
