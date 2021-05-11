@@ -15,11 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.NotificationAdapter;
-import com.example.travelplanner.controller.HomeActivity;
+import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.model.Notification;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -91,7 +90,7 @@ public class NotiFragment extends Fragment {
         try {
             // Inflate the layout for this fragment
             FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
-
+            homeActivity = (HomeActivity) getActivity();
             RecyclerView newNoti = v.findViewById(R.id.newNoti);
             ImageButton seenAll = v.findViewById(R.id.seenAll);
 
@@ -146,6 +145,7 @@ public class NotiFragment extends Fragment {
                     }
                 }).attachToRecyclerView(newNoti);
             }
+            if(homeActivity.LOADING) homeActivity.hideProgressingView();
             return v;
         } catch (Exception e) {
             Log.e(TAG, "onCreateView", e);

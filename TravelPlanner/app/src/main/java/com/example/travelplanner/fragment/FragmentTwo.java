@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.MapsTourActivity;
+import com.example.travelplanner.activity.MapsTourActivity;
 
 public class FragmentTwo extends Fragment {
 

@@ -1,15 +1,12 @@
-package com.example.travelplanner.controller;
+package com.example.travelplanner.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -26,9 +23,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.internal.WebDialog;
-import com.facebook.login.LoginBehavior;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -52,18 +46,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
-
-import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity {
 
     public static final int GOOGLE_SIGN_IN_CODE = 1005;
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "Thu LoginActivity";
     private Button btnLogin;
     private ImageView btnLoginGoogle;
     private ImageView logo_fb;
@@ -83,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -137,8 +126,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         if(mAuth.getCurrentUser() != null){
+            Log.i(TAG, "already login");
             Intent i = new Intent(this, HomeActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
         }
         nonLogin.setOnClickListener(new View.OnClickListener() {
@@ -216,23 +207,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
+        Log.i(TAG, "firebaseAuthWithGoogle");
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Log.i(TAG, "Complete");
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             createIfNotExist(user);
                             Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
                         } else {
+                            Log.i(TAG, "Fail");
                             // If sign in fails, display a message to the user.
                             Toast.makeText(LoginActivity.this, "Sign in fail.",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
     }
 
@@ -245,6 +242,8 @@ public class LoginActivity extends AppCompatActivity {
                         //LOGIN SUCCESSFULLY
                         //chuyen qua man hinh khac
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                     } else{
                         Toast.makeText(LoginActivity.this, "Please verify your email.",
@@ -372,6 +371,8 @@ public class LoginActivity extends AppCompatActivity {
                     FirebaseUser new_user = mAuth.getCurrentUser();
                     createIfNotExist(new_user);
                     Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
                 }else {
                     Log.d(TAG, "sign with credential: Failed" + task.getException());

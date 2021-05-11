@@ -1,4 +1,4 @@
-package com.example.travelplanner.controller;
+package com.example.travelplanner.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.ScanActivity;
+import com.example.travelplanner.adapter.ToursViewHolder;
 import com.example.travelplanner.fragment.CategoryFragment;
 import com.example.travelplanner.fragment.SearchPlaceResultFragment;
 import com.example.travelplanner.model.Tour;

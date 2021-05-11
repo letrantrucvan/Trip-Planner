@@ -1,4 +1,4 @@
-package com.example.travelplanner.controller;
+package com.example.travelplanner.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +25,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.travelplanner.R;
+import com.example.travelplanner.adapter.CommentViewHolder;
+import com.example.travelplanner.adapter.ToursViewHolder;
 import com.example.travelplanner.adapter.WaypointAdapter;
 import com.example.travelplanner.fragment.BottomSheetFragment;
 import com.example.travelplanner.fragment.FragmentTwo;
@@ -301,7 +303,6 @@ public class TourDetailsActivity extends AppCompatActivity{
 
                     //get thông tin tour
                     waypoints.clear();
-                    Log.i(TAG, "clear");
                     tourName.setText(tour.getName());
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
@@ -509,21 +510,23 @@ public class TourDetailsActivity extends AppCompatActivity{
                         Rating.addRating(userRating);
                         Tour.alterRating(tourID, rate);
 
-                        db.collection("User").document(mAuth.getUid()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        db.collection("User").document(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
-                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                                if (documentSnapshot.exists()){
-                                    User user = documentSnapshot.toObject(User.class);
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                Log.i(TAG, "btnUploadComment");
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        User user = document.toObject(User.class);
 
-                                    Notification notification = new Notification(cur_Tour.getAuthor_id(), user.getFullname()+ " đã đánh giá "+ cur_Tour.getName(),
-                                            cur_Tour.getTour_id(), cur_Tour.getCover(),1);
-                                    DocumentReference documentReference = db.collection("Notification").document();
-                                    notification.setId(documentReference.getId());
-                                    documentReference.set(notification);
+                                        Notification notification = new Notification(cur_Tour.getAuthor_id(), user.getFullname()+ " đã đánh giá "+ cur_Tour.getName(),
+                                                cur_Tour.getTour_id(), cur_Tour.getCover(),1);
+                                        DocumentReference documentReference = db.collection("Notification").document();
+                                        notification.setId(documentReference.getId());
+                                        documentReference.set(notification);                                    }
                                 }
                             }
                         });
-
                     }
                 }
             });

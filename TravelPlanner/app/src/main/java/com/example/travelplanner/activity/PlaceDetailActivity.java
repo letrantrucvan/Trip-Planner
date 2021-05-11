@@ -1,4 +1,4 @@
-package com.example.travelplanner.controller;
+package com.example.travelplanner.activity;
 
 import android.content.Intent;
 import android.graphics.Point;

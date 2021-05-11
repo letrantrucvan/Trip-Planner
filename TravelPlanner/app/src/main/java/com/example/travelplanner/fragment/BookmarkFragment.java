@@ -17,9 +17,10 @@ import android.widget.LinearLayout;
 
 import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.SavedPlacesAdapter;
-import com.example.travelplanner.controller.BookmarksTourViewHolder;
-import com.example.travelplanner.controller.TourDetailsActivity;
-import com.example.travelplanner.controller.LoginActivity;
+import com.example.travelplanner.adapter.BookmarksTourViewHolder;
+import com.example.travelplanner.activity.HomeActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.LoginActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
@@ -52,6 +53,7 @@ public class BookmarkFragment extends Fragment {
     private FirestoreRecyclerAdapter adapterTour;
     private FirestoreRecyclerAdapter adapterPlace;
     private View BookmarkFragmentView;
+    HomeActivity homeActivity;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -100,6 +102,7 @@ public class BookmarkFragment extends Fragment {
             // Inflate the layout for this fragment
             BookmarkFragmentView = inflater.inflate(R.layout.fragment_bookmark, container, false);
 
+            homeActivity = (HomeActivity) getActivity();
             mResultTourList = (RecyclerView) BookmarkFragmentView.findViewById(R.id.recycleviewTourBookmark);
             mResultTourList.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -159,7 +162,7 @@ public class BookmarkFragment extends Fragment {
                     mResultPlaceList.setVisibility(View.VISIBLE);
                 }
             });
-
+            if(homeActivity.LOADING) homeActivity.hideProgressingView();
             return BookmarkFragmentView;
         }
         catch (Exception e) {

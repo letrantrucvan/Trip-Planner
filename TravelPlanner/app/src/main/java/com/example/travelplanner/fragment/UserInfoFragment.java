@@ -20,7 +20,8 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.LoginActivity;
+import com.example.travelplanner.activity.HomeActivity;
+import com.example.travelplanner.activity.LoginActivity;
 import com.example.travelplanner.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -51,7 +52,7 @@ public class UserInfoFragment extends Fragment {
     private Button btnSignout;
 
     private FirebaseAuth mAuth;
-
+    private HomeActivity homeActivity;
     private FirebaseStorage storage;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -106,6 +107,7 @@ public class UserInfoFragment extends Fragment {
         try  {
             // Inflate the layout for this fragment
             FrameLayout userInfo = (FrameLayout) inflater.inflate(R.layout.fragment_user_info, container, false);
+            homeActivity = (HomeActivity) getActivity();
 
 
             mAuth = FirebaseAuth.getInstance();
@@ -191,6 +193,7 @@ public class UserInfoFragment extends Fragment {
                     User.uploadAvatar(mAuth.getCurrentUser().getUid(), edtName.getText().toString(), bitmap);
                 }
             });
+            if(homeActivity.LOADING) homeActivity.hideProgressingView();
             return userInfo;
         }
         catch (Exception e) {

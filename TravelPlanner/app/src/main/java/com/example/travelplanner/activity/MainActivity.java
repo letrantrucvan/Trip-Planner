@@ -1,4 +1,4 @@
-package com.example.travelplanner.controller;
+package com.example.travelplanner.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

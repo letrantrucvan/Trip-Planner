@@ -1,8 +1,7 @@
-package com.example.travelplanner;
+package com.example.travelplanner.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,7 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.travelplanner.controller.HomeActivity;
+import com.example.travelplanner.R;
 import com.example.travelplanner.fragment.BottomChooseCamera;
 import com.example.travelplanner.model.Tour;
 import com.google.firebase.auth.FirebaseAuth;

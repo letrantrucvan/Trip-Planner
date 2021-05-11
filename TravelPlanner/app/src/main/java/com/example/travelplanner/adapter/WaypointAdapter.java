@@ -15,8 +15,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.TourDetailsActivity;
-import com.example.travelplanner.controller.PlaceDetailActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.PlaceDetailActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.URLRequest;
 import com.google.firebase.auth.FirebaseAuth;

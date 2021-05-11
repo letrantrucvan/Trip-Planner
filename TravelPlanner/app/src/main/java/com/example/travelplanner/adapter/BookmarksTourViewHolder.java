@@ -1,4 +1,4 @@
-package com.example.travelplanner.controller;
+package com.example.travelplanner.adapter;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

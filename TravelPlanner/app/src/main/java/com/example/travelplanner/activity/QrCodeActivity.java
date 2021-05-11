@@ -1,4 +1,4 @@
-package com.example.travelplanner;
+package com.example.travelplanner.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,8 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+
+import com.example.travelplanner.R;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;

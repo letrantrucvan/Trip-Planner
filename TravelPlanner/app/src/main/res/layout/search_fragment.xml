@@ -8,7 +8,7 @@
     android:background="#000"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".controller.SearchActivity">
+    tools:context=".activity.SearchActivity">
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_search_view"
         android:layout_width="match_parent"

@@ -2,7 +2,6 @@ package com.example.travelplanner.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -15,14 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.example.travelplanner.Create_new_tour;
+import com.example.travelplanner.activity.Create_new_tour;
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.HomeActivity;
-import com.example.travelplanner.controller.TourDetailsActivity;
-import com.example.travelplanner.controller.EditTourActivity;
-import com.example.travelplanner.controller.ToursViewHolder;
+import com.example.travelplanner.activity.HomeActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.EditTourActivity;
+import com.example.travelplanner.adapter.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;

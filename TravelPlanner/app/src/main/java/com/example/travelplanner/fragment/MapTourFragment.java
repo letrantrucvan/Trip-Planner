@@ -17,8 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.travelplanner.controller.TourDetailsActivity;
-import com.example.travelplanner.controller.MapsTourActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.MapsTourActivity;
 import com.example.travelplanner.model.CustomMapView;
 import com.example.travelplanner.model.MyPlace;
 import com.google.android.gms.maps.CameraUpdateFactory;

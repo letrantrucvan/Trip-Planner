@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#000000"
     android:layout_gravity="center_vertical"
-    tools:context=".controller.SearchActivity">
+    tools:context=".activity.SearchActivity">
 
     <LinearLayout
         android:layout_margin="15dp"

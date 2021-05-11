@@ -1,4 +1,4 @@
-package com.example.travelplanner;
+package com.example.travelplanner.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.travelplanner.controller.TourDetailsActivity;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;

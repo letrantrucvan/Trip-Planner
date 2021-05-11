@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.travelplanner.QrCodeActivity;
+import com.example.travelplanner.activity.QrCodeActivity;
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.TourDetailsActivity;
-import com.example.travelplanner.controller.EditTourActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.EditTourActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 

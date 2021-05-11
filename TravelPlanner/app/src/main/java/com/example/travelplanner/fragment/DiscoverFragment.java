@@ -1,7 +1,6 @@
 package com.example.travelplanner.fragment;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -15,15 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.BookmarksTourViewHolder;
-import com.example.travelplanner.controller.HomeActivity;
-import com.example.travelplanner.controller.TourDetailsActivity;
-import com.example.travelplanner.controller.SearchActivity;
-import com.example.travelplanner.controller.ToursViewHolder;
+import com.example.travelplanner.adapter.BookmarksTourViewHolder;
+import com.example.travelplanner.activity.HomeActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.SearchActivity;
+import com.example.travelplanner.adapter.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -197,7 +195,7 @@ public class DiscoverFragment extends Fragment {
                         //get avatar
                         Picasso.with(getContext()).load(tour.getCover()).into(TOTW_img);
                         tourofweek.setVisibility(View.VISIBLE);
-                        homeActivity.hideProgressingView();
+                        if(homeActivity.LOADING) homeActivity.hideProgressingView();
                     });
                 }
             });

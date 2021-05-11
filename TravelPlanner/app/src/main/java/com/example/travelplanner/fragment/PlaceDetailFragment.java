@@ -2,13 +2,10 @@ package com.example.travelplanner.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -38,13 +35,12 @@ import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.DestinationAdapter;
 import com.example.travelplanner.adapter.PhotosPlaceAdapter;
 import com.example.travelplanner.adapter.RelativeTourAdapter;
-import com.example.travelplanner.controller.HomeActivity;
+import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Reviews;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.URLRequest;
 import com.example.travelplanner.model.User;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -66,7 +62,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -734,31 +729,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
             //
         }
         return line;
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 
     private void BlurryView (BlurView blurView, ViewGroup rootView, float radius){
