@@ -2,13 +2,6 @@ package com.example.travelplanner.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.travelplanner.R;
-import com.example.travelplanner.adapter.BookmarksTourViewHolder;
-import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.activity.DetailsActivity;
+import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.activity.SearchActivity;
+import com.example.travelplanner.adapter.BookmarksTourViewHolder;
 import com.example.travelplanner.adapter.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
@@ -169,7 +168,7 @@ public class DiscoverFragment extends Fragment {
             cardview1 = (CardView) v.findViewById(R.id.cardView1);
             cardview3 = (CardView) v.findViewById(R.id.cardView3);
 
-            Query weekTour = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING).limit(1); //Lượt tải nhiều nhất tuần
+            Query weekTour = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("views", Query.Direction.DESCENDING).limit(1); //Lượt tải nhiều nhất tuần
             weekTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -209,7 +208,7 @@ public class DiscoverFragment extends Fragment {
                 }
             });
 
-            Query theNewestTour = db.collection("Tour").orderBy("rating_avg", Query.Direction.DESCENDING).limit(1); // Tour mới nhất
+            Query theNewestTour = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("rating_avg", Query.Direction.DESCENDING).limit(1); // Tour mới nhất
             theNewestTour.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -246,8 +245,8 @@ public class DiscoverFragment extends Fragment {
                 }
             });
 
-            Query PopularTour = db.collection("Tour").orderBy("views", Query.Direction.DESCENDING); //Rating avg cao nhất + lượt views nhiều nhất
-            Query budget = db.collection("Tour").orderBy("rating_avg", Query.Direction.ASCENDING);
+            Query PopularTour = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("views", Query.Direction.DESCENDING); //Rating avg cao nhất + lượt views nhiều nhất
+            Query budget = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("rating_avg", Query.Direction.DESCENDING);
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -290,11 +289,11 @@ public class DiscoverFragment extends Fragment {
             adapter_budget.notifyDataSetChanged();
             adapter_budget.startListening();
 
-            popularTour.setAdapter(adapter);
-            budgetTour.setAdapter(adapter_budget);
+            popularTour.setAdapter(adapter_budget);
+            budgetTour.setAdapter(adapter);
 
             Query RecommendedTour = db.collection("Tour"); // Số địa điểm trùng nhau nhiều nhất
-            Query searchQuery = db.collection("Tour").limit(5);
+            Query searchQuery = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("publish_day", Query.Direction.DESCENDING).limit(5);
             FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                     .setQuery(searchQuery, Tour.class)
                     .build();

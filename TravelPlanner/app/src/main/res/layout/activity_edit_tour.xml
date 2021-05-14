@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:text="Chỉnh Sửa chuyến đi"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="26sp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="0dp"
                 android:textStyle="bold" />
@@ -44,14 +44,14 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1.Tên chuyến đi"
+                    android:text="Tên chuyến đi"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -76,6 +76,7 @@
                             android:backgroundTint="@color/notSoDark"
                             android:layout_marginTop="10dp"
                             android:ems="10"
+                            android:textSize="12sp"
                             android:inputType="textPersonName"/>
 
                     </LinearLayout>
@@ -86,7 +87,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="2.Chọn ảnh bìa"
+                    android:text="Chọn ảnh bìa"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -124,7 +125,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="3.Mô tả"
+                    android:text="Mô tả"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -150,12 +151,15 @@
                             android:maxLines="10"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:scrollbars="vertical"
                             android:background="@drawable/edit_text_white"
                             android:textColor="@color/white"
                             android:backgroundTint="@color/notSoDark"
                             android:layout_marginTop="10dp"
                             android:ems="10"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="11sp"
                             android:hint="Nhập mô tả"
                             android:textColorHint="@color/grey"/>
 
@@ -167,7 +171,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="4.Công khai chuyến đi"
+                    android:text="Công khai chuyến đi"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -223,7 +227,7 @@
                                 android:background="@drawable/toggle_widget_background"
                                 android:button="@null"
                                 android:gravity="center"
-                                android:text="Công khai"
+                                android:text="CÔNG KHAI"
                                 android:textColor="@color/white" />
                         </RadioGroup>
 
@@ -240,13 +244,14 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/danger"
                     android:textStyle="bold"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     android:text="Xóa chuyến đi" />
 
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/finish_button"
-                    android:layout_width="130dp"
+                    android:padding="15dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:layout_gravity="right"
@@ -254,7 +259,7 @@
                     android:text="HOÀN THÀNH"
                     android:textStyle="bold"
                     android:layout_marginBottom="10dp"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:textColor="@color/white"
                     app:backgroundTint="@color/primaryColor" />
             </LinearLayout>

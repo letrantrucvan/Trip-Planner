@@ -23,6 +23,7 @@ import com.example.travelplanner.R;
 import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.activity.LoginActivity;
 import com.example.travelplanner.model.User;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -154,6 +155,7 @@ public class UserInfoFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     mAuth.signOut();
+                    LoginManager.getInstance().logOut();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     startActivity(i);
                 }

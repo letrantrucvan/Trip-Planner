@@ -33,17 +33,18 @@ import com.example.travelplanner.fragment.FragmentTwo;
 import com.example.travelplanner.fragment.MapTourFragment;
 import com.example.travelplanner.fragment.TabFragmentAdapter;
 import com.example.travelplanner.model.MyPlace;
+import com.example.travelplanner.model.Notification;
 import com.example.travelplanner.model.Rating;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
@@ -51,8 +52,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -60,7 +59,8 @@ import java.util.TreeMap;
 
 public class DetailsActivity extends AppCompatActivity{
 
-    private static final String TAG = "Van DetailsActivity";
+
+    private static final String TAG = "Thu DetailsActivity";
     private LinearLayout layoutDetails;
     private LinearLayout progressDetails;
     private Button readMore;
@@ -90,7 +90,6 @@ public class DetailsActivity extends AppCompatActivity{
     private ImageView iconSaved;
     private ImageView iconUnSaved;
     private LinearLayout CommentBox;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ListenerRegistration registration;
@@ -98,7 +97,6 @@ public class DetailsActivity extends AppCompatActivity{
     private ImageView btnMore;
     private ImageView back;
     private Fragment moreFragment;
-    public Tour tour;
 
     private FirestoreRecyclerAdapter adapterSameAuthorTour;
 
@@ -133,6 +131,7 @@ public class DetailsActivity extends AppCompatActivity{
             @Override
             public void run() {
                 indicatorWidth = mTabs.getWidth() / mTabs.getTabCount();
+                System.out.println("hihii" + mIndicator.getWidth());
                 //Assign new width
                 FrameLayout.LayoutParams indicatorParams = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
                 indicatorParams.width = indicatorWidth;
@@ -179,6 +178,7 @@ public class DetailsActivity extends AppCompatActivity{
 
         intent = getIntent();
         tourID = intent.getStringExtra("Key");
+        System.out.println(tourID);
 
         tourName = (TextView) findViewById(R.id.tour_name_txt);
         tourViews = (TextView) findViewById(R.id.tour_views);
@@ -260,8 +260,6 @@ public class DetailsActivity extends AppCompatActivity{
                 iconUnSaved.setVisibility(View.GONE);
             }
         });
-
-
     }
 
     @Override
@@ -285,7 +283,7 @@ public class DetailsActivity extends AppCompatActivity{
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (documentSnapshot.exists()) {
                     Log.i(TAG, "onEvent");
-                    tour = documentSnapshot.toObject(Tour.class);
+                    Tour tour = documentSnapshot.toObject(Tour.class);
                     cur_Tour = tour;
                     tourAuthorName.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -305,7 +303,6 @@ public class DetailsActivity extends AppCompatActivity{
 
                     //get thông tin tour
                     waypoints.clear();
-                    Log.i(TAG, "clear");
                     tourName.setText(tour.getName());
                     tourDescription.setText(tour.getDes());
                     tourDescriptionFull.setText(tour.getDes());
@@ -315,6 +312,7 @@ public class DetailsActivity extends AppCompatActivity{
                     tourRating.setText(formatTourRating(tour.getRating_avg()));
 
                     ArrayList<String> waypointIDs = tour.getWaypoints();
+
                     TreeMap<Integer, MyPlace> map = new TreeMap<Integer, MyPlace>();
                     for(int i = 0; i< waypointIDs.size(); i++)
                     {
@@ -511,6 +509,24 @@ public class DetailsActivity extends AppCompatActivity{
                         Rating userRating = new Rating(mAuth.getUid(), tourID, current_user_comment.getText().toString(), rate);
                         Rating.addRating(userRating);
                         Tour.alterRating(tourID, rate);
+
+                        db.collection("User").document(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                Log.i(TAG, "btnUploadComment");
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    if (document.exists()) {
+                                        User user = document.toObject(User.class);
+
+                                        Notification notification = new Notification(cur_Tour.getAuthor_id(), user.getFullname()+ " đã đánh giá "+ cur_Tour.getName(),
+                                                cur_Tour.getTour_id(), cur_Tour.getCover(),1);
+                                        DocumentReference documentReference = db.collection("Notification").document();
+                                        notification.setId(documentReference.getId());
+                                        documentReference.set(notification);                                    }
+                                }
+                            }
+                        });
                     }
                 }
             });

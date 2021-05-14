@@ -201,7 +201,7 @@ public class SearchActivity extends AppCompatActivity {
     }
     private void firestoreUserSearch(String text) {
 
-        Query searchQuery  = db.collection("Tour").orderBy("name");
+        Query searchQuery  = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("name");
         //Bind data
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)

@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.travelplanner.R;
 import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.MapsTourActivity;
 import com.example.travelplanner.model.CustomMapView;
@@ -31,8 +32,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
-
-import com.example.travelplanner.R;
 
 public class MapTourFragment extends Fragment {
     private static final String TAG = "Thu MapTourFragment";

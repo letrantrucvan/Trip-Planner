@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -62,6 +63,21 @@ public class EditTourActivity extends AppCompatActivity {
         save_Tour = (AppCompatButton) findViewById(R.id.finish_button);
 
         loadUI();
+
+        description.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                if (description.hasFocus()) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (event.getAction() & MotionEvent.ACTION_MASK){
+                        case MotionEvent.ACTION_SCROLL:
+                            v.getParent().requestDisallowInterceptTouchEvent(false);
+                            return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         deleteTour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,8 +146,10 @@ public class EditTourActivity extends AppCompatActivity {
 
                     //get avatar
                     Picasso.with(EditTourActivity.this).load(current.getCover()).into(cover_pic);
-                    is_publicc.setChecked(current.isArchived_mode());
-                    is_private.setChecked(!current.isArchived_mode());
+                    System.out.println("TRang thai tour: "+ current.isIs_public());
+
+                    is_publicc.setChecked(current.isIs_public());
+                    is_private.setChecked(!current.isIs_public());
                 }
             }
         });

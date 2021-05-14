@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="40dp"
                 android:layout_marginBottom="5dp"
+                android:background="@drawable/edit_text_white"
                 android:text="Log In"
                 android:textSize="18sp"
                 app:backgroundTint="#A9336E89"
@@ -154,8 +155,9 @@
 
                 <ImageView
                     android:id="@+id/login_btnGoogle"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
                     android:layout_marginHorizontal="10dp"
                     android:src="@drawable/ic_logo_google" />
 
@@ -168,6 +170,7 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginHorizontal="10dp"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/fb_logo" />
 
                     <com.facebook.login.widget.LoginButton

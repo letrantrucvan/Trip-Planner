@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         btnLogin = (Button) findViewById(R.id.login_btnLogin);
         btnLoginGoogle = findViewById(R.id.login_btnGoogle);
         logo_fb = findViewById(R.id.logo_fb);

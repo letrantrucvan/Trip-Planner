@@ -76,7 +76,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="CHUYẾN ĐI CỦA TUẦN"
+                        android:text="CHUYẾN ĐI ĐÁNG QUAN TÂM"
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
@@ -162,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="CHUYẾN ĐI MỚI NHẤT"
+                        android:text="CHUYẾN ĐI CHẤT LƯỢNG"
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
@@ -229,7 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/popularTour"
                     android:layout_marginBottom="-60dp"
-                    android:text="Chuyến đi nổi bật trong tháng"
+                    android:text="Chuyến đi được đánh giá cao"
                     
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -282,7 +282,7 @@
                     
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:text="Địa điểm nổi bật" />
+                    android:text="Chuyến đi mới nhất" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/island"
@@ -299,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/budget"
                     android:layout_marginBottom="-30dp"
-                    android:text="Địa điểm gần nơi đây"
+                    android:text="Chuyến đi nhiều lượt xem"
                     
                     android:textSize="16sp"
                     android:textStyle="bold" />

@@ -59,6 +59,14 @@ public class Tour {
         this.is_public = false;
     }
 
+    public boolean isIs_delete() {
+        return is_delete;
+    }
+
+    public void setIs_public(boolean is_public) {
+        this.is_public = is_public;
+    }
+
     //get
     public String getTour_id() {
         return tour_id;
@@ -82,6 +90,11 @@ public class Tour {
     public String getPublish_day() {
         return publish_day;
     }
+
+    public boolean isIs_public() {
+        return is_public;
+    }
+
     public Integer getRating_number() {
         return rating_number;
     }
@@ -182,7 +195,7 @@ public class Tour {
     public static void editTour(Tour tour){
         db.collection("Tour").document(tour.getTour_id()).update("name", tour.getName());
         db.collection("Tour").document(tour.getTour_id()).update("des", tour.getDes());
-        db.collection("Tour").document(tour.getTour_id()).update("is_public", tour.isArchived_mode());
+        db.collection("Tour").document(tour.getTour_id()).update("is_public", tour.isIs_public());
 
 
     }
