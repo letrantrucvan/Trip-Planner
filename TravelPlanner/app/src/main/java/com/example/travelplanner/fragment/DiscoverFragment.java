@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.activity.DetailsActivity;
+import com.example.travelplanner.activity.*;
 import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.activity.SearchActivity;
 import com.example.travelplanner.adapter.BookmarksTourViewHolder;

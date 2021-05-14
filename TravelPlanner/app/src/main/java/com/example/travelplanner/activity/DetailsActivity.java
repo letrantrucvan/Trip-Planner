@@ -396,7 +396,14 @@ public class DetailsActivity extends AppCompatActivity{
                         if (documentSnapshot.exists()) {
                             User b = documentSnapshot.toObject(User.class);
                             holder.setDetail(model, b);
-
+                            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(DetailsActivity.this, UserPageActivity.class);
+                                    intent.putExtra("id", b.getId());
+                                    startActivity(intent);
+                                }
+                            });
                             //Nếu user đánh giá rồi thì không cho đánh giá nữa
                             if (b.getId().equals(mAuth.getUid())) CommentBox.setVisibility(View.GONE);
 
