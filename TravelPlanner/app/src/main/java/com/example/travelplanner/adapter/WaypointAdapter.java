@@ -15,7 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.PlaceDetailActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.URLRequest;
@@ -99,7 +99,7 @@ public class WaypointAdapter extends RecyclerView.Adapter<WaypointAdapter.ViewHo
             @Override
             public boolean onLongClick(View v) {
                 Log.i(TAG,"onLongClick");
-                if(TourDetailsActivity.cur_Tour.getAuthor_id().equals(mAuth.getUid()))
+                if(DetailsActivity.cur_Tour.getAuthor_id().equals(mAuth.getUid()))
                     holder.delete.setVisibility(View.VISIBLE);
                 return true;
             }
@@ -108,7 +108,7 @@ public class WaypointAdapter extends RecyclerView.Adapter<WaypointAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"delete");
-                TourDetailsActivity.cur_Tour.deleteWaypoint(place.getPlace_id());
+                DetailsActivity.cur_Tour.deleteWaypoint(place.getPlace_id());
                 holder.itemView.setVisibility(View.GONE);
                 //delete Waypoint
             }

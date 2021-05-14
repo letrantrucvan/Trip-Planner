@@ -19,7 +19,7 @@ import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.SavedPlacesAdapter;
 import com.example.travelplanner.adapter.BookmarksTourViewHolder;
 import com.example.travelplanner.activity.HomeActivity;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.LoginActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
@@ -198,7 +198,7 @@ public class BookmarkFragment extends Fragment {
                                         holder.setDetail(model);
                                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             public void onClick(View view) {
-                                                Intent i = new Intent(getActivity(), TourDetailsActivity.class);
+                                                Intent i = new Intent(getActivity(), DetailsActivity.class);
                                                 String documentId = getSnapshots().getSnapshot(position).getId();
                                                 i.putExtra("Key", documentId);
                                                 startActivity(i);

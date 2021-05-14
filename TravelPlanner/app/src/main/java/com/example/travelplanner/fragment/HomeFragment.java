@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.example.travelplanner.activity.Create_new_tour;
 import com.example.travelplanner.R;
 import com.example.travelplanner.activity.HomeActivity;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.EditTourActivity;
 import com.example.travelplanner.adapter.ToursViewHolder;
 import com.example.travelplanner.model.Tour;
@@ -160,7 +160,7 @@ public class HomeFragment extends Fragment {
                     holder.setDetail(model);
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent i = new Intent(getActivity(), TourDetailsActivity.class);
+                            Intent i = new Intent(getActivity(), DetailsActivity.class);
                             String documentId = getSnapshots().getSnapshot(position).getId();
                             i.putExtra("Key", documentId);
                             startActivity(i);

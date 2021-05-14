@@ -88,13 +88,13 @@ public class MapsTourActivity extends AppCompatActivity implements
         uiSettings.setZoomControlsEnabled(true);
         markers = new ArrayList<>();
         // ArrayList<MyPlace> myPlaces = new ArrayList<>();
-        for(int i = 0; i< TourDetailsActivity.waypoints.size(); i++)
+        for(int i = 0; i< DetailsActivity.waypoints.size(); i++)
         {
-            MyPlace place = TourDetailsActivity.waypoints.get(i);
+            MyPlace place = DetailsActivity.waypoints.get(i);
             addIcon(i, new LatLng(place.getLatitude(), place.getlongtitude()), place.getName());
         }
 
-        viewPager.setAdapter(new PlaceOverViewAdapter(this, TourDetailsActivity.waypoints));
+        viewPager.setAdapter(new PlaceOverViewAdapter(this, DetailsActivity.waypoints));
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -177,7 +177,7 @@ public class MapsTourActivity extends AppCompatActivity implements
         //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin_fromAuto+"&destination=" + PlaceDetailFragment.cur_latitude +","+ PlaceDetailFragment.cur_longitude+ "&mode=" + mode_fromSpinner.toLowerCase()
         //+"&key="+getResources().getString(R.string.google_maps_key);
         //String url = URLRequest.getDirectionRequest("10.769267", "106.676273", PlaceDetailFragment.cur_latitude ,PlaceDetailFragment.cur_longitude);
-        String url = URLRequest.getDirectionRequest(TourDetailsActivity.waypoints);
+        String url = URLRequest.getDirectionRequest(DetailsActivity.waypoints);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override

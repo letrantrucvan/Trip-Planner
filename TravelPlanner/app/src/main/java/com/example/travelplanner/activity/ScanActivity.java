@@ -81,7 +81,7 @@ public class ScanActivity extends AppCompatActivity implements ZXingScannerView.
             System.out.println(rawResult.getText());
             Toast.makeText(this, rawResult.getText(), Toast.LENGTH_SHORT).show();
             Log.v(TAG,rawResult.getText());
-            Intent intent = new Intent(this, TourDetailsActivity.class);
+            Intent intent = new Intent(this, DetailsActivity.class);
             intent.putExtra("Key", rawResult.getText());
             startActivity(intent);
             finish();

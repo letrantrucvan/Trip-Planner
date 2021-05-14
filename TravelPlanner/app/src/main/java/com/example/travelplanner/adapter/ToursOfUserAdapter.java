@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -50,7 +50,7 @@ public class ToursOfUserAdapter extends
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, TourDetailsActivity.class);
+                Intent intent = new Intent(context, DetailsActivity.class);
                 intent.putExtra("Key", tour.getTour_id());
 
                 context.startActivity(intent);

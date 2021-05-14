@@ -52,7 +52,7 @@
             android:layout_height="20sp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:visibility="invisible"
+            android:visibility= "visible"
             android:src="@drawable/ic_baseline_drag_indicator_24"
 
             />

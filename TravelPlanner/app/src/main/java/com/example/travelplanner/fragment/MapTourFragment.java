@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.MapsTourActivity;
 import com.example.travelplanner.model.CustomMapView;
 import com.example.travelplanner.model.MyPlace;
@@ -71,8 +71,8 @@ public class MapTourFragment extends Fragment {
                 mMap = map;
                 Log.i(TAG, "onMapReady");
                 mMap = map;
-                for (int i = 0; i < TourDetailsActivity.waypoints.size(); i++) {
-                    MyPlace place = TourDetailsActivity.waypoints.get(i);
+                for (int i = 0; i < DetailsActivity.waypoints.size(); i++) {
+                    MyPlace place = DetailsActivity.waypoints.get(i);
                     addIcon(i, new LatLng(place.getLatitude(), place.getlongtitude()), place.getName());
                 }
                 // For showing a move to my location button

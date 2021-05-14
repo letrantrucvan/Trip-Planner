@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
 
+        <activity android:name=".activity.PlacesListActivity"/>
         <activity android:name=".activity.DetailsActivity" />
         <activity android:name=".activity.UserPageActivity" />
         <activity android:name=".activity.EditTourActivity" />

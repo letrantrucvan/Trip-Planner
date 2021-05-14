@@ -219,7 +219,7 @@ public class SearchActivity extends AppCompatActivity {
                     holder.setDetail(model);
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
-                            Intent i = new Intent(SearchActivity.this, TourDetailsActivity.class);
+                            Intent i = new Intent(SearchActivity.this, DetailsActivity.class);
                             String documentId = getSnapshots().getSnapshot(position).getId();
                             i.putExtra("Key", documentId);
                             startActivity(i);

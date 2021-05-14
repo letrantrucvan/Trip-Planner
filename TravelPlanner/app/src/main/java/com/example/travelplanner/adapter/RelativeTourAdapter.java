@@ -17,7 +17,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.model.Tour;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -80,7 +80,7 @@ public class RelativeTourAdapter extends FirestoreRecyclerAdapter<Tour, Relative
         holder.headerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(context, TourDetailsActivity.class);
+                Intent i = new Intent(context, DetailsActivity.class);
                 i.putExtra("Key", tour.getTour_id());
                 context.startActivity(i);
             }

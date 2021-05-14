@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.UserPageActivity;
 import com.example.travelplanner.model.Notification;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -71,7 +71,7 @@ public class NotificationAdapter extends
                         intent.putExtra("id", notification.getLink());
                         break;
                     case 1:
-                        intent = new Intent(context, TourDetailsActivity.class);
+                        intent = new Intent(context, DetailsActivity.class);
                         intent.putExtra("Key", notification.getLink());
                         break;
                     default:

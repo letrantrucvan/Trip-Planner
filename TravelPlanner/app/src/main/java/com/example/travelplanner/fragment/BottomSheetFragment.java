@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.travelplanner.activity.QrCodeActivity;
 import com.example.travelplanner.R;
-import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.activity.EditTourActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,7 +72,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         View v = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
         txtShareClick = (TextView) v.findViewById(R.id.txtShare);
         editTour = (TextView) v.findViewById(R.id.editTour);
-        if(TourDetailsActivity.cur_Tour.getAuthor_id().equals(FirebaseAuth.getInstance().getUid())) editTour.setVisibility(View.VISIBLE);
+        if(DetailsActivity.cur_Tour.getAuthor_id().equals(FirebaseAuth.getInstance().getUid())) editTour.setVisibility(View.VISIBLE);
 
         txtShareClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +113,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             public void onClick(View v) {
 
                 Intent i = new Intent(getActivity(), EditTourActivity.class);
-                i.putExtra("Key", TourDetailsActivity.cur_Tour.getTour_id());
+                i.putExtra("Key", DetailsActivity.cur_Tour.getTour_id());
                 startActivity(i);
             }
         });
