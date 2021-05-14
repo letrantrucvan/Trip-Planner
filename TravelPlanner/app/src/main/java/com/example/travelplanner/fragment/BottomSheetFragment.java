@@ -10,12 +10,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.travelplanner.QrCodeActivity;
+import com.example.travelplanner.activity.QrCodeActivity;
 import com.example.travelplanner.R;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.EditTourActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 /**
@@ -33,6 +34,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private TextView txtShareClick;
+    private TextView editTour;
     private String id;
 
     public BottomSheetFragment(String tourid) {
@@ -69,6 +71,8 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_bottom_sheet, container, false);
         txtShareClick = (TextView) v.findViewById(R.id.txtShare);
+        editTour = (TextView) v.findViewById(R.id.editTour);
+        if(TourDetailsActivity.cur_Tour.getAuthor_id().equals(FirebaseAuth.getInstance().getUid())) editTour.setVisibility(View.VISIBLE);
 
         txtShareClick.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +108,15 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+        editTour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(getActivity(), EditTourActivity.class);
+                i.putExtra("Key", TourDetailsActivity.cur_Tour.getTour_id());
+                startActivity(i);
+            }
+        });
         return v;
     }
 }

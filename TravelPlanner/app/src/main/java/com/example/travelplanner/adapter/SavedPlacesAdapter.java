@@ -7,25 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.PlaceDetailActivity;
+import com.example.travelplanner.activity.PlaceDetailActivity;
 import com.example.travelplanner.fragment.HomeFragment;
 import com.example.travelplanner.model.MyPlace;
-import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.URLRequest;
 import com.example.travelplanner.model.User;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -38,7 +35,7 @@ import static com.example.travelplanner.fragment.SearchPlaceResultFragment.EXTRA
 
 public class SavedPlacesAdapter extends
         FirestoreRecyclerAdapter<MyPlace, SavedPlacesAdapter.MyViewHolder> {
-    private final String TAG= "Thu SavedPlacesAdapter";
+    private static final String TAG= "Thu SavedPlacesAdapter";
     private ArrayList<MyPlace> places;
     private Context context;
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -85,22 +82,19 @@ public class SavedPlacesAdapter extends
                 Toast.makeText(context, "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
                 holder.itemView.setVisibility(View.GONE);
                 ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+                ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) holder.itemView.getLayoutParams();
                 params.height = 0;
-                holder.itemView.setLayoutParams(params);
+                p.setMargins(0,0,0,0);
+                p.height = 0;
+                holder.itemView.setLayoutParams(p);
             }
         });
         if(place.getRating()!= null)
             holder.ratingBar.setRating(Float.parseFloat(place.getRating()));
     }
 
-
-//    @Override
-//    public int getItemCount() {
-//        return places.size();
-//    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout item_row;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        public CardView item_row;
 
         public ImageView placeCover;
         public TextView txtName;
@@ -110,7 +104,7 @@ public class SavedPlacesAdapter extends
         public RatingBar ratingBar;
         public MyViewHolder(View view) {
             super(view);
-            item_row = view.findViewById(R.id.item_row);
+            item_row = view.findViewById(R.id.containerActivities);
 
             placeCover = view.findViewById(R.id.placeCover);
             txtName = view.findViewById(R.id.placeHeader);

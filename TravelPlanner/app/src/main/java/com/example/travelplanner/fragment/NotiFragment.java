@@ -1,94 +1,168 @@
 package com.example.travelplanner.fragment;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.Display;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 import com.example.travelplanner.R;
-import com.example.travelplanner.ScanActivity;
-import com.google.zxing.WriterException;
+import com.example.travelplanner.adapter.NotificationAdapter;
+import com.example.travelplanner.activity.HomeActivity;
+import com.example.travelplanner.model.Notification;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.Query.*;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Comparator;
 
-import static android.content.Context.WINDOW_SERVICE;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NotiFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NotiFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    Button openCam;
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private static final String TAG = " Thu NotiFragment";
+    private HomeActivity homeActivity;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    NotificationAdapter notificationAdapter;
     public NotiFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NotiFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NotiFragment newInstance(String param1, String param2) {
-        NotiFragment fragment = new NotiFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        Log.i(TAG, "NotiFragment");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    }
 
+    @Override
+    public void onResume() {
+        Log.i(TAG, "onResume");
+        if(notificationAdapter != null)
+            notificationAdapter.startListening();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "onStop");
+        if(notificationAdapter != null)
+            notificationAdapter.stopListening();
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onActivityCreated");
+        homeActivity = (HomeActivity) getActivity();
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
-        //Initial
-        openCam = (Button) v.findViewById(R.id.btnStartCam);
-        openCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent (getActivity(), ScanActivity.class);
-                startActivity(i);
-            }
-        });
+        Log.i(TAG, "onCreateView");
+        try {
+            // Inflate the layout for this fragment
+            FrameLayout v = (FrameLayout) inflater.inflate(R.layout.fragment_noti, container, false);
+            homeActivity = (HomeActivity) getActivity();
+            RecyclerView newNoti = v.findViewById(R.id.newNoti);
+            ImageButton seenAll = v.findViewById(R.id.seenAll);
 
-        return v;
+            newNoti.setLayoutManager(new LinearLayoutManager(getContext()));
+            seenAll.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    db.collection("Notification")
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                            document.getReference().update("seen", true);
+                                            //notificationAdapter.notifyDataSetChanged();
+                                        }
+                                        homeActivity.refresh();
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                }
+            });
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            if (mAuth.getCurrentUser() != null) {
+                Query query = db.collection("Notification")
+                        .whereEqualTo("userID", mAuth.getUid())
+                        .orderBy("time", Direction.DESCENDING);
+
+                FirestoreRecyclerOptions<Notification> response = new FirestoreRecyclerOptions.Builder<Notification>()
+                        .setQuery(query, Notification.class)
+                        .build();
+
+                notificationAdapter = new NotificationAdapter(getActivity(), response);
+                notificationAdapter.notifyDataSetChanged();
+                newNoti.setAdapter(notificationAdapter);
+
+                new ItemTouchHelper( new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
+                    @Override
+                    public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+                    @Override
+                    public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
+                        ViewGroup.LayoutParams params = viewHolder.itemView.getLayoutParams();
+                        params.height = 0;
+                        viewHolder.itemView.setLayoutParams(params);
+                        notificationAdapter.deleteItem(viewHolder.getAdapterPosition());
+                    }
+                }).attachToRecyclerView(newNoti);
+            }
+            if(homeActivity.LOADING) homeActivity.hideProgressingView();
+            return v;
+        } catch (Exception e) {
+            Log.e(TAG, "onCreateView", e);
+            throw e;
+        }
     }
+    public static Comparator<Notification> comparator = new Comparator<Notification>() {
+
+        public int compare(Notification s1, Notification s2) {
+            Long time1 = s1.getTime();
+            Long time2 = s2.getTime();
+
+            //ascending order
+//            return review1.compareTo(review2);
+
+            //descending order
+            return time2.compareTo(time1);
+        }
+    };
 }

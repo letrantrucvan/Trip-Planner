@@ -10,8 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="60dp">
-
+        android:layout_marginTop="30dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/view2"
@@ -26,7 +25,6 @@
             android:layout_marginLeft="16dp"
             android:fontFamily="sans-serif"
             android:text="Khám phá"
-            android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -63,30 +61,14 @@
                     android:layout_centerHorizontal="true"
                     app:cardCornerRadius="20dp">
 
-
                     <ImageView
                         android:id="@+id/tourOfTheWeek_img"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/discover"
+                        android:background="#121212"
                         android:visibility="visible"/>
-
-                    <LinearLayout
-                        android:id="@+id/discover_progress1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@color/black"
-                        android:visibility="gone">
-                        <ProgressBar
-                            android:layout_width="15pt"
-                            android:layout_height="15pt"
-                            android:indeterminate="true"
-                            android:indeterminateDrawable="@drawable/progress_bg"/>
-                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/textView4"
@@ -95,7 +77,6 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="CHUYẾN ĐI CỦA TUẦN"
-                        android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
@@ -117,6 +98,7 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:gravity="center_vertical">
+
                         <TextView
                             android:id="@+id/tourOfTheWeek_name"
                             android:layout_width="wrap_content"
@@ -124,10 +106,9 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginBottom="10dp"
-                            android:maxLines="1"
                             android:ellipsize="end"
-                            android:text="Hong Kong"
-                            android:textColor="@color/white"
+                            android:maxLines="1"
+                            
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:typeface="normal" />
@@ -138,8 +119,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
-                            android:text="5 địa điểm"
-                            android:textColor="@color/white"
+                            
                             android:textSize="14sp" />
 
                         <TextView
@@ -150,7 +130,6 @@
                             android:layout_marginRight="15dp"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:text="China"
                             android:textColor="@color/grey"
                             android:textSize="14sp"
                             android:textStyle="italic" />
@@ -173,23 +152,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
+                        android:background="#121212"
                         android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/tokyo" />
-
-                    <LinearLayout
-                        android:id="@+id/discover_progress2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@color/black"
-                        android:visibility="gone">
-                        <ProgressBar
-                            android:layout_width="15pt"
-                            android:layout_height="15pt"
-                            android:indeterminate="true"
-                            android:indeterminateDrawable="@drawable/progress_bg"/>
-                    </LinearLayout>
+                         />
 
                     <TextView
                         android:id="@+id/textView7"
@@ -198,7 +163,6 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="CHUYẾN ĐI MỚI NHẤT"
-                        android:textColor="@color/white"
                         android:textSize="30sp"
                         android:textStyle="bold" />
 
@@ -229,8 +193,6 @@
                             android:layout_marginBottom="10dp"
                             android:maxLines="1"
                             android:ellipsize="end"
-                            android:text="Hong Kong"
-                            android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold"
                             android:typeface="normal" />
@@ -241,7 +203,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:text="5 địa điểm"
-                            android:textColor="@color/white"
+                            
                             android:textSize="14sp"/>
 
                         <TextView
@@ -268,7 +230,7 @@
                     android:layout_above="@+id/popularTour"
                     android:layout_marginBottom="-60dp"
                     android:text="Chuyến đi nổi bật trong tháng"
-                    android:textColor="@color/white"
+                    
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -293,7 +255,7 @@
                     android:layout_above="@+id/fyp"
                     android:layout_marginBottom="-40dp"
                     android:text="Dành cho bạn"
-                    android:textColor="@color/white"
+                    
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -317,7 +279,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="-40dp"
                     android:layout_above="@+id/island"
-                    android:textColor="@color/white"
+                    
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:text="Địa điểm nổi bật" />
@@ -338,7 +300,7 @@
                     android:layout_above="@+id/budget"
                     android:layout_marginBottom="-30dp"
                     android:text="Địa điểm gần nơi đây"
-                    android:textColor="@color/white"
+                    
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

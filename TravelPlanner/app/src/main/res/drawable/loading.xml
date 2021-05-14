@@ -3,31 +3,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@drawable/ic_loading_1"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_1"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_2"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_2"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_3"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_3"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_4"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_4"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_5"
-        android:duration="300"/>
+        android:drawable="@drawable/loading_5"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_4"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_6"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_3"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_7"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_2"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_8"
+        android:duration="70"/>
     <item
-        android:drawable="@drawable/ic_loading_1"
-        android:duration="200"/>
+        android:drawable="@drawable/loading_9"
+        android:duration="70"/>
 
 </animation-list>

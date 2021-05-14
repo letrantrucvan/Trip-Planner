@@ -1,8 +1,6 @@
 package com.example.travelplanner.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +16,7 @@ import com.example.travelplanner.R;
 import com.example.travelplanner.fragment.PlaceDetailFragment;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Tour;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -55,33 +50,8 @@ public class ListTripPopUpAdapter extends RecyclerView.Adapter<ListTripPopUpAdap
         Log.i("Name",tours.get(position).getName());
         Tour tour = tours.get(position);
         holder.headerText.setText(tour.getName());
-//        //String urlPhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=" + place.getImage() + "&key=" + context.getResources().getString(R.string.google_maps_key);
-//        String urlPhoto = URLRequest.getPhotoRequest(tour.getCover());
-//
-//        if(tour.getCover() != null){
-//            Picasso.with(context).load(urlPhoto).into(holder.headerImage);
-//        }
-//        else
-//            holder.headerImage.setImageResource(R.drawable.discover);
-//        Log.i(TAG,"urlPhoto: "+urlPhoto);
-//
-        StorageReference imgRef = FirebaseStorage.getInstance().getReference().child(tour.getCover());
-        final long ONE_MEGABYTE = 1024 * 1024;
-        imgRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Log.i("Thu Photo",  tour.getName());
-                Log.i("Thu Photo",  tour.getCover());
-                holder.headerImage.setImageBitmap(bitmap);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+
+        Picasso.with(context).load(tour.getCover()).into(holder.headerImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +76,7 @@ public class ListTripPopUpAdapter extends RecyclerView.Adapter<ListTripPopUpAdap
         return tours.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView headerText;
         TextView content;

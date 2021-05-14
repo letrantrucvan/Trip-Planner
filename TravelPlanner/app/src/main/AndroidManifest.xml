@@ -10,34 +10,34 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
-        <activity android:name=".PlacesListActivity"></activity>
-        <activity android:name=".controller.EditTourActivity" />
-        <activity android:name=".Create_new_tour" />
-        <activity android:name=".ScanActivity" />
-        <activity android:name=".controller.DetailsActivity" />
-        <activity android:name=".controller.HomeActivity">
+
+        <activity android:name=".activity.DetailsActivity" />
+        <activity android:name=".activity.UserPageActivity" />
+        <activity android:name=".activity.EditTourActivity" />
+        <activity android:name=".activity.Create_new_tour" />
+        <activity android:name=".activity.ScanActivity" />
+        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".activity.ForgotPasswordActivity" />
+        <activity android:name=".activity.SignupActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.ForgotPasswordActivity" />
-        <activity android:name=".controller.SignupActivity" />
-        <activity android:name=".controller.LoginActivity" />
-        <activity android:name=".controller.MainActivity" />
-        <activity android:name=".SearchResult" />
-        <activity android:name=".testGallery" />
-        <activity android:name=".controller.SearchPlaceTable" />
-        <activity android:name=".controller.PlaceDetailActivity" />
-        <activity android:name=".controller.SearchActivity" />
-        <activity android:name=".controller.MapsTourActivity" />
-        <activity android:name=".QrCodeActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.PlaceDetailActivity" />
+        <activity android:name=".activity.SearchActivity" />
+        <activity android:name=".activity.MapsTourActivity" />
+        <activity android:name=".activity.QrCodeActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -45,6 +45,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/map_api_key" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

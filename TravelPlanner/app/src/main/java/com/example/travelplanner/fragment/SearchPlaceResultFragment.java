@@ -1,20 +1,15 @@
 package com.example.travelplanner.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,15 +22,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.travelplanner.R;
-import com.example.travelplanner.adapter.RelativeTourAdapter;
 import com.example.travelplanner.adapter.SearchPlaceResultAdapter;
-import com.example.travelplanner.controller.SearchActivity;
+import com.example.travelplanner.activity.SearchActivity;
 import com.example.travelplanner.model.MyPlace;
-import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.URLRequest;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -105,11 +95,9 @@ public class SearchPlaceResultFragment extends Fragment {
 
         requestQueue = Volley.newRequestQueue(getContext());
 
-
-
-            next_btn = view.findViewById(R.id.next_button);
-            prev_btn = view.findViewById(R.id.prev_button);
-            no_place_lable = (TextView) view.findViewById(R.id.no_place_label);
+        next_btn = view.findViewById(R.id.next_button);
+        prev_btn = view.findViewById(R.id.prev_button);
+        no_place_lable = (TextView) view.findViewById(R.id.no_place_label);
         prev_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

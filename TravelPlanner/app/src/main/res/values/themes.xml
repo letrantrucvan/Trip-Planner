@@ -16,8 +16,9 @@
 
         <!-- Customize your theme here. -->
         <item name="android:editTextColor">@android:color/white</item>
-        <item name="android:textColorHint">#A3A3A3</item>
+        <item name="android:textColorHint">#6C6C6C</item>
         <item name="android:textColor">#FFF</item>
+
     </style>
 
     <style name="Theme.TravelPlanner.NoActionBar">
@@ -29,4 +30,8 @@
     <style name="Theme.TravelPlanner.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.TravelPlanner.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="LaunchTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_launch</item>
+    </style>
 </resources>

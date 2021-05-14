@@ -4,124 +4,180 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.LoginActivity"
-    android:background="@color/white">
-
-
-    <LinearLayout
+    tools:context=".activity.LoginActivity"
+    >
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:orientation="vertical">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:outlineProvider="none">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="250dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_wave" />
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/travel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:text="TRAVEL PLANNER"
-                android:textColor="@color/white"
-                android:textSize="30dp"
-                android:textStyle="bold|italic" />
-        </androidx.cardview.widget.CardView>
+                android:layout_marginTop="70dp"
+                android:fontFamily="@font/black_ops_one"
+                android:gravity="center"
+                android:text="TRIP"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center|top"
-            android:layout_marginTop="-150dp"
-            android:elevation="20dp"
-            android:orientation="vertical"
-            android:padding="40dp">
+            <TextView
+                android:id="@+id/planner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/black_ops_one"
+                android:gravity="center"
+                android:text="PLANNER"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/travel" />
 
             <EditText
                 android:id="@+id/login_edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="40dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/edit_text_white"
                 android:ems="10"
                 android:hint="Email"
-                android:inputType="textPersonName" />
+                android:inputType="textEmailAddress"
+                app:layout_constraintBottom_toTopOf="@id/login_edtPassword" />
 
             <EditText
                 android:id="@+id/login_edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/edit_text_white"
                 android:ems="10"
                 android:hint="Password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                app:layout_constraintBottom_toTopOf="@id/login_btnLogin" />
 
             <Button
                 android:id="@+id/login_btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/bg_round"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginBottom="5dp"
                 android:text="Log In"
-                android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/orange" />
-
-            <Button
-                android:id="@+id/login_btnSignup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/bg_round"
-                android:text="SIGN UP"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/orange" />
-
+                app:backgroundTint="#A9336E89"
+                app:layout_constraintBottom_toTopOf="@id/login_edtForgot" />
             <TextView
                 android:id="@+id/login_edtForgot"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:background="#57FFFFFF"
                 android:gravity="center"
+                android:padding="3dp"
                 android:text="Forgot your password?"
                 android:textColor="@color/black"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@id/dontHaveAc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
 
-            <com.facebook.login.widget.LoginButton
-                android:id="@+id/login_button"
+            <TextView
+                android:id="@+id/dontHaveAc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:text="Dont have an account?"
+                android:background="#57FFFFFF"
+                android:padding="3dp"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@id/dontHaveAcc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textStyle="italic" />
+            <LinearLayout
+                android:id="@+id/dontHaveAcc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:padding="20dp"/>
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/orLoginWith">
 
 
-            <Button
-                android:id="@+id/login_btnGoogle"
+                <TextView
+                    android:id="@+id/login_btnSignup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="#57FFFFFF"
+                    android:padding="5dp"
+                    android:text="Sign Up"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/nonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="#57FFFFFF"
+                    android:padding="5dp"
+                    android:text="Continue without Login"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/orLoginWith"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_round"
-                android:drawableLeft="@drawable/ic_logo_google"
-                android:text="LOG IN WITH GOOGLE"
-                android:textAllCaps="false"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:gravity="center"
+                android:text="Or Login With"
                 android:textColor="@color/black"
-                android:textSize="14sp"
-                app:backgroundTint="@color/white" />
-        </LinearLayout>
+                android:textStyle="italic"
+                app:layout_constraintBottom_toTopOf="@id/ortherLogin" />
 
+            <LinearLayout
+                android:id="@+id/ortherLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/login_btnGoogle"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:src="@drawable/ic_logo_google" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/logo_fb"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:src="@drawable/fb_logo" />
+
+                    <com.facebook.login.widget.LoginButton
+                        android:id="@+id/login_button"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="15dp"
+                        android:visibility="invisible" />
+                </FrameLayout>
+
+            </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

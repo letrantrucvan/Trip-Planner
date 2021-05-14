@@ -5,15 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".controller.HomeActivity">
+    tools:context=".activity.HomeActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment"
         class="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:navGraph="@navigation/my_navi"
-        app:defaultNavHost="true"
 
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,6 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:itemIconTint="@drawable/btn_nav"
         app:itemTextColor="@drawable/btn_nav"
+        android:translationZ="30dp"
         app:menu="@menu/bottom_menu">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

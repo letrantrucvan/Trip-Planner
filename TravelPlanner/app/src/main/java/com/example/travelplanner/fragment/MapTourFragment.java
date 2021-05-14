@@ -5,17 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,46 +17,22 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.travelplanner.controller.DetailsActivity;
-import com.example.travelplanner.controller.MapsTourActivity;
+import com.example.travelplanner.activity.TourDetailsActivity;
+import com.example.travelplanner.activity.MapsTourActivity;
 import com.example.travelplanner.model.CustomMapView;
 import com.example.travelplanner.model.MyPlace;
-import com.example.travelplanner.model.URLRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.maps.android.PolyUtil;
 import com.google.maps.android.ui.IconGenerator;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.travelplanner.R;
-
-import static android.content.ContentValues.TAG;
 
 public class MapTourFragment extends Fragment {
     private static final String TAG = "Thu MapTourFragment";
@@ -101,8 +71,8 @@ public class MapTourFragment extends Fragment {
                 mMap = map;
                 Log.i(TAG, "onMapReady");
                 mMap = map;
-                for (int i = 0; i < DetailsActivity.waypoints.size(); i++) {
-                    MyPlace place = DetailsActivity.waypoints.get(i);
+                for (int i = 0; i < TourDetailsActivity.waypoints.size(); i++) {
+                    MyPlace place = TourDetailsActivity.waypoints.get(i);
                     addIcon(i, new LatLng(place.getLatitude(), place.getlongtitude()), place.getName());
                 }
                 // For showing a move to my location button

@@ -18,13 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.travelplanner.PlacesListActivity;
 import com.example.travelplanner.R;
-import com.example.travelplanner.controller.DetailsActivity;
+
+import com.example.travelplanner.activity.DetailsActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+
 
 import java.util.ArrayList;
 

@@ -2,12 +2,10 @@ package com.example.travelplanner.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -37,13 +35,12 @@ import com.example.travelplanner.R;
 import com.example.travelplanner.adapter.DestinationAdapter;
 import com.example.travelplanner.adapter.PhotosPlaceAdapter;
 import com.example.travelplanner.adapter.RelativeTourAdapter;
-import com.example.travelplanner.controller.HomeActivity;
+import com.example.travelplanner.activity.HomeActivity;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Reviews;
 import com.example.travelplanner.model.Tour;
 import com.example.travelplanner.model.URLRequest;
 import com.example.travelplanner.model.User;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,7 +62,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,8 +75,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private RequestQueue requestQueue;
-
-
     private TextView name;
     private ImageView save;
     private ImageView unSave;
@@ -100,14 +94,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     private TextView show_all_reviews;
     private LinearLayout review_zone;
     private ViewGroup progressView;
-    private BlurView blurName;
-    private BlurView blurDetail;
-    private BlurView blurPhoto;
-    private BlurView blurNearby;
-    private BlurView blurMap;
-    private BlurView blurReview;
-    private BlurView blurTrip;
-    private FloatingActionButton addButton;
 
     private LinearLayout row_address;
     private LinearLayout row_phone;
@@ -141,7 +127,14 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 
         LOADING = false;
         showProgressingView();
-
+        BlurView blurName = view.findViewById(R.id.blurName);
+        BlurView blurDetail = view.findViewById(R.id.blurDetail);
+        BlurView blurPhoto = view.findViewById(R.id.blurPhoto);
+        BlurView blurNearby = view.findViewById(R.id.blurNearby);
+        BlurView blurMap = view.findViewById(R.id.blurMap);
+        BlurView blurReview = view.findViewById(R.id.blurReview);
+        BlurView blurTrip = view.findViewById(R.id.blurTrip);
+        FloatingActionButton addButton = view.findViewById(R.id.addButton);
         Bundle bundle = requireArguments();
         width = bundle.getDouble("width");
         height = bundle.getDouble("height");
@@ -173,14 +166,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
         img_review = view.findViewById(R.id.img_review);
         show_all_reviews = view.findViewById(R.id.show_all_reviews);
         review_zone = view.findViewById(R.id.review_zone);
-        blurName = view.findViewById(R.id.blurName);
-        blurDetail = view.findViewById(R.id.blurDetail);
-        blurPhoto = view.findViewById(R.id.blurPhoto);
-        blurNearby = view.findViewById(R.id.blurNearby);
-        blurMap = view.findViewById(R.id.blurMap);
-        blurReview = view.findViewById(R.id.blurReview);
-        blurTrip = view.findViewById(R.id.blurTrip);
-        addButton = view.findViewById(R.id.addButton);
+
         save = view.findViewById(R.id.save);
         unSave = view.findViewById(R.id.unSave);
         recyclerDestination = view.findViewById(R.id.nearby_destinations);
@@ -223,70 +209,71 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
                 }
             });
         }
-        db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    User b = documentSnapshot.toObject(User.class);
-                    ArrayList<String> saved_places = b.getSaved_places();
-                    if (saved_places.contains(cur_placeID))
-                    {
-                        unSave.setVisibility(View.VISIBLE);
-                        save.setVisibility(View.GONE);
-                        Log.i(TAG, "contain "+ cur_placeID);
+        if (HomeFragment.mAuth.getCurrentUser() != null) {
 
-                    }
-                    else
-                    {
-                        unSave.setVisibility(View.GONE);
-                        save.setVisibility(View.VISIBLE);
-                        Log.i(TAG, "not contain "+ cur_placeID);
+            db.collection("User").document(HomeFragment.mAuth.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        User b = documentSnapshot.toObject(User.class);
+                        ArrayList<String> saved_places = b.getSaved_places();
+                        if (saved_places.contains(cur_placeID)) {
+                            unSave.setVisibility(View.VISIBLE);
+                            save.setVisibility(View.GONE);
+                            Log.i(TAG, "contain " + cur_placeID);
 
+                        } else {
+                            unSave.setVisibility(View.GONE);
+                            save.setVisibility(View.VISIBLE);
+                            Log.i(TAG, "not contain " + cur_placeID);
+
+                        }
                     }
                 }
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (HomeFragment.mAuth.getCurrentUser() == null){
-                    Toast.makeText(getContext(), "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                User.savePlace(HomeFragment.mAuth.getUid(), cur_placeID);
-                Toast.makeText(getContext(), "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
-                unSave.setVisibility(View.VISIBLE);
-                save.setVisibility(View.GONE);
-                //notifyDataSetChanged();
-            }
-        });
-        unSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User.unsavePlace(HomeFragment.mAuth.getUid(), cur_placeID);
-                Toast.makeText(getContext(), "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
-                unSave.setVisibility(View.GONE);
-                save.setVisibility(View.VISIBLE);
-                //notifyDataSetChanged();
-            }
-        });
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                                R.anim.slide_in_y,
-                                R.anim.fade_out,
-                                R.anim.fade_in,
-                                R.anim.slide_out_y
-                        )
-                        .setReorderingAllowed(true)
-                        .add(R.id.fragment_container_view, TripPopUpFragment.class, null)
-                        .addToBackStack("TripPopUp")
-                        .commit();
-            }
-        });
+            });
 
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (HomeFragment.mAuth.getCurrentUser() == null) {
+                        Toast.makeText(getContext(), "Bạn vui lòng đăng nhập để lưu địa điểm", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    User.savePlace(HomeFragment.mAuth.getUid(), cur_placeID);
+                    Toast.makeText(getContext(), "Đã lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    unSave.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.GONE);
+                    //notifyDataSetChanged();
+                }
+            });
+            unSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    User.unsavePlace(HomeFragment.mAuth.getUid(), cur_placeID);
+                    Toast.makeText(getContext(), "Đã bỏ lưu địa điểm", Toast.LENGTH_SHORT).show();
+                    unSave.setVisibility(View.GONE);
+                    save.setVisibility(View.VISIBLE);
+                    //notifyDataSetChanged();
+                }
+            });
+            addButton.setVisibility(View.VISIBLE);
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    getParentFragmentManager().beginTransaction()
+                            .setCustomAnimations(
+                                    R.anim.slide_in_y,
+                                    R.anim.fade_out,
+                                    R.anim.fade_in,
+                                    R.anim.slide_out_y
+                            )
+                            .setReorderingAllowed(true)
+                            .add(R.id.fragment_container_view, TripPopUpFragment.class, null)
+                            .addToBackStack("TripPopUp")
+                            .commit();
+                }
+            });
+        }
 
         //String urlPhoto = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1200&photoreference=" + image_reference + "&key=" + getResources().getString(R.string.google_maps_key);
         String urlPhoto = URLRequest.getPhotoRequest(image_reference);
@@ -564,7 +551,8 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getActivity(), "Nothing found!", Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, e.toString());
+                            Toast.makeText(getActivity(), "JSONException", Toast.LENGTH_SHORT).show();
                         }
 
                         hideProgressingView();
@@ -575,6 +563,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
             public void onErrorResponse(VolleyError error) {
 
                 hideProgressingView();
+                Log.i(TAG, error.toString());
                 Toast.makeText(getActivity(), "Nothing found!", Toast.LENGTH_SHORT).show();
 
             }
@@ -636,8 +625,12 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 
         if (!LOADING) {
             LOADING = true;
+            AnimationDrawable animationDrawable;
             progressView = (ViewGroup) getLayoutInflater().inflate(R.layout.loading_spinner, null);
             View v = getActivity().findViewById(android.R.id.content).getRootView();
+            ImageView loading = progressView.findViewById(R.id.loading);
+            animationDrawable = (AnimationDrawable) loading.getDrawable();
+            animationDrawable.start();
             ViewGroup viewGroup = (ViewGroup) v;
             viewGroup.addView(progressView);
         }
@@ -659,11 +652,11 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
     private void showDirection(){
         List<Polyline> path_list = new ArrayList<>();
         //String origin_fromAuto = "611 điện biên phủ";
-        RequestQueue mrequestQueue = Volley.newRequestQueue(getActivity());
        // origin_fromAuto.replace(" ","+");
         //String url = "https://maps.googleapis.com/maps/api/directions/json?origin="+origin_fromAuto+"&destination=" + PlaceDetailFragment.cur_latitude +","+ PlaceDetailFragment.cur_longitude
           //      +"&key="+getResources().getString(R.string.google_maps_key);
         try {
+            RequestQueue mrequestQueue = Volley.newRequestQueue(getActivity());
             String url = URLRequest.getDirectionRequest(HomeActivity.cur_lat.toString(), HomeActivity.cur_lng.toString(), PlaceDetailFragment.cur_latitude, PlaceDetailFragment.cur_longitude);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                     new Response.Listener<JSONObject>() {
@@ -736,31 +729,6 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
             //
         }
         return line;
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 
     private void BlurryView (BlurView blurView, ViewGroup rootView, float radius){
