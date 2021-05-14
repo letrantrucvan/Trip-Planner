@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -53,16 +52,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class DetailsActivity extends AppCompatActivity{
-
-
-    private static final String TAG = "Thu DetailsActivity";
+    private static final String TAG = "DetailsActivity";
     private LinearLayout layoutDetails;
     private LinearLayout progressDetails;
     private Button readMore;
@@ -99,10 +95,11 @@ public class DetailsActivity extends AppCompatActivity{
     private String tourID;
     private ImageView btnMore;
     private Fragment moreFragment;
+    private ArrayList<String> waypointIDs;
 
     private FirestoreRecyclerAdapter adapterSameAuthorTour;
 
-    //tablayout
+    //tab layout
     private  TabLayout mTabs;
     private View mIndicator;
     private ViewPager mViewPager;
@@ -132,8 +129,7 @@ public class DetailsActivity extends AppCompatActivity{
         mTabs.post(new Runnable() {
             @Override
             public void run() {
-                indicatorWidth = mTabs.getWidth() / mTabs.getTabCount();
-                System.out.println("hihii" + mIndicator.getWidth());
+                indicatorWidth = mTabs.getWidth() / 2;
                 //Assign new width
                 FrameLayout.LayoutParams indicatorParams = (FrameLayout.LayoutParams) mIndicator.getLayoutParams();
                 indicatorParams.width = indicatorWidth;
@@ -304,7 +300,7 @@ public class DetailsActivity extends AppCompatActivity{
 
                     tourRating.setText(formatTourRating(tour.getRating_avg()));
 
-                    ArrayList<String> waypointIDs = tour.getWaypoints();
+                    waypointIDs = tour.getWaypoints();
 
                     TreeMap<Integer, MyPlace> map = new TreeMap<Integer, MyPlace>();
                     for(int i = 0; i< waypointIDs.size(); i++)

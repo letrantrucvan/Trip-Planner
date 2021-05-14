@@ -4,4 +4,9 @@
     <style name="detail_tab_text_style" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">12dp</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryDark">@color/notSoDark</item>
+    </style>
 </resources>

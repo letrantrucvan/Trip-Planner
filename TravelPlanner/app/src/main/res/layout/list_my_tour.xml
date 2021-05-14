@@ -66,7 +66,7 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hong Kong Hong Kong Hong Kong Hong Kg Kon"
+                android:text="Hong Kong"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textColor="@color/white"

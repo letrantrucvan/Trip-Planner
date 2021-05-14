@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelPlanner">
-        <activity android:name=".controller.EditTourActivity"></activity>
+        <activity android:name=".PlacesListActivity"></activity>
+        <activity android:name=".controller.EditTourActivity" />
         <activity android:name=".Create_new_tour" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".controller.DetailsActivity" />
