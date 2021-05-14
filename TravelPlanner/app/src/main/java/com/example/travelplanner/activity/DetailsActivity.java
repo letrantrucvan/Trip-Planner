@@ -31,7 +31,7 @@ import com.example.travelplanner.adapter.WaypointAdapter;
 import com.example.travelplanner.fragment.BottomSheetFragment;
 import com.example.travelplanner.fragment.FragmentTwo;
 import com.example.travelplanner.fragment.MapTourFragment;
-import com.example.travelplanner.fragment.TabFragmentAdapter;
+import com.example.travelplanner.adapter.TabFragmentAdapter;
 import com.example.travelplanner.model.MyPlace;
 import com.example.travelplanner.model.Notification;
 import com.example.travelplanner.model.Rating;

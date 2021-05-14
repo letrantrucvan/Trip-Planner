@@ -9,51 +9,51 @@
     tools:context=".fragment.NotiFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/black">
-        <TextView
-            android:id="@+id/text"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thông báo"
-            android:textStyle="bold"
-            android:textColor="#fff"
-            android:textSize="26sp"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-        <ImageButton
-            android:id="@+id/seenAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_fact_check_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="33dp"
-            android:layout_marginEnd="30dp"
-            android:background="@color/orange"
-            android:padding="3dp"
-            />
-        <ScrollView
-            android:id="@+id/scrollViewTourBookmark"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text"
-            android:layout_marginTop="30dp"
             >
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thông báo"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:textSize="26sp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/newNoti"
+                />
+            <ImageButton
+                android:id="@+id/seenAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_fact_check_24"
+                android:layout_marginTop="33dp"
+                android:layout_marginStart="70dp"
+                android:background="@color/orange"
+                android:padding="3dp"
+                />
+        </LinearLayout>
+            <ScrollView
+                android:id="@+id/scrollViewTourBookmark"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </ScrollView>
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/newNoti"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </ScrollView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
         </FrameLayout>

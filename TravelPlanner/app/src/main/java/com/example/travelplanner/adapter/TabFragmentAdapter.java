@@ -1,4 +1,4 @@
-package com.example.travelplanner.fragment;
+package com.example.travelplanner.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
