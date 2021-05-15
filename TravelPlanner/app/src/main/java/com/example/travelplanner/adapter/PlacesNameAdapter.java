@@ -34,7 +34,7 @@ public class PlacesNameAdapter extends RecyclerView.Adapter<FragmentTwo.PlacesVi
     public FragmentTwo.PlacesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i(TAG, "onCreateViewHolder");
         View mView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.list_my_place, parent, false);
+                .inflate(R.layout.list_my_place, parent, false);
         return new FragmentTwo.PlacesViewHolder(mView);
     }
 

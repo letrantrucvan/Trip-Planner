@@ -31,6 +31,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -47,6 +48,9 @@ public class PlacesListActivity extends AppCompatActivity {
     private static final String TAG = "Van PlacesListActitvity";
     private FloatingActionButton editBtn;
     private ImageView backbtn;
+    private String author_id;
+    private String tour_id;
+    private FloatingActionButton submit;
 
 
     @Override
@@ -55,6 +59,7 @@ public class PlacesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_places_list);
         Log.i(TAG, "onCreate");
         places.clear();
+        tour_id = getIntent().getStringExtra("ID");
         places = (ArrayList<MyPlace>) getIntent().getSerializableExtra("Key");
         String author_id = getIntent().getStringExtra("Author");
 
@@ -143,7 +148,10 @@ public class PlacesListActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         myplaces.addItemDecoration(dividerItemDecoration);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(myplaces);
+        if(author_id == FirebaseAuth.getInstance().getUid()){
+            itemTouchHelper.attachToRecyclerView(myplaces);
+            adapter.notifyDataSetChanged();
+        }
 
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +181,8 @@ public class PlacesListActivity extends AppCompatActivity {
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.START | ItemTouchHelper.END | ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-             ItemTouchHelper.LEFT) {
+            ItemTouchHelper.LEFT) {
+
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             Log.i(TAG, "OnMove");
@@ -181,6 +190,7 @@ public class PlacesListActivity extends AppCompatActivity {
             int ToPosition = target.getAdapterPosition();
             Collections.swap(places, fromPosition, ToPosition);
             myplaces.getAdapter().notifyItemMoved(fromPosition, ToPosition);
+
             return false;
         }
 
