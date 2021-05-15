@@ -85,7 +85,7 @@ public class EditTourActivity extends AppCompatActivity {
                 Tour tour;
                 tour = new Tour();
                 tour.setId(tourID);
-                tour.setActive(false);
+                tour.setActive(true);
 
                 Tour.delete(tour);
 

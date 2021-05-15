@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment {
             };
             snapHelper.attachToRecyclerView(mytour);
 
-            Query searchQuery = db.collection("Tour");
+            Query searchQuery = db.collection("Tour").whereEqualTo("author_id", HomeFragment.mAuth.getUid()).whereEqualTo("is_delete", false);
 
             //Bind data
             FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()

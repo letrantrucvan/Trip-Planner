@@ -542,7 +542,7 @@ public class DetailsActivity extends AppCompatActivity{
     }
 
     void loadSameAuthorTour(String author_id){
-        Query searchQuery  = db.collection("Tour").whereEqualTo("author_id", author_id);
+        Query searchQuery  = db.collection("Tour").whereEqualTo("author_id", author_id).whereEqualTo("is_delete", false).whereEqualTo("is_public", true);
         //Bind data
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)

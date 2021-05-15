@@ -128,7 +128,7 @@ public class UserPageActivity extends AppCompatActivity {
                     });
         }
         getUserInformation();
-        Query searchQuery  = db.collection("Tour").whereEqualTo("author_id", uID);
+        Query searchQuery  = db.collection("Tour").whereEqualTo("author_id", uID).whereEqualTo("is_delete", false).whereEqualTo("is_public", true);
         //Bind data
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)

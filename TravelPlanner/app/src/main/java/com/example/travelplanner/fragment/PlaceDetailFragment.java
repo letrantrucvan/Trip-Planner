@@ -576,7 +576,7 @@ public class PlaceDetailFragment extends Fragment implements OnMapReadyCallback 
 //                        Tour.getRelativeTour(PlaceDetailFragment.cur_placeID));
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                Query query = db.collection("Tour").whereArrayContains("waypoints", PlaceDetailFragment.cur_placeID);
+                Query query = db.collection("Tour").whereArrayContains("waypoints", PlaceDetailFragment.cur_placeID).whereEqualTo("is_delete", false).whereEqualTo("is_public", true);
                 FirestoreRecyclerOptions<Tour> options= new FirestoreRecyclerOptions.Builder<Tour>()
                         .setQuery(query,Tour.class)
                         .build();

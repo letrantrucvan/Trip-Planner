@@ -201,7 +201,8 @@ public class SearchActivity extends AppCompatActivity {
     }
     private void firestoreUserSearch(String text) {
 
-        Query searchQuery  = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).orderBy("name");
+        text = text.toLowerCase();
+        Query searchQuery  = db.collection("Tour").whereEqualTo("is_public", true).whereEqualTo("is_delete", false).whereArrayContains("search_keywords",text);
         //Bind data
         FirestoreRecyclerOptions<Tour> response = new FirestoreRecyclerOptions.Builder<Tour>()
                 .setQuery(searchQuery, Tour.class)
@@ -210,12 +211,12 @@ public class SearchActivity extends AppCompatActivity {
         adapter = new FirestoreRecyclerAdapter<Tour, ToursViewHolder>(response) {
             @Override
             public void onBindViewHolder(ToursViewHolder holder, int position, Tour model) {
-                if (model.getName().toLowerCase().indexOf(text.toLowerCase()) == -1){
-                    holder.itemView.setVisibility(View.GONE);
-                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-                    return;
-                }
-                else {
+//                if (model.getName().toLowerCase().indexOf(text.toLowerCase()) == -1){
+//                    holder.itemView.setVisibility(View.GONE);
+//                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+//                    return;
+//                }
+//                else {
                     holder.setDetail(model);
                     holder.itemView.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View view) {
@@ -225,7 +226,7 @@ public class SearchActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
-                }
+//                }
             }
 
             @Override

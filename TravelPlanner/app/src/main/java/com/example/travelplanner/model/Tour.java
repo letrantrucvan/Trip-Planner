@@ -248,6 +248,7 @@ public class Tour {
         tour.setId(tourID);
         tour.setCover("Tour/" + tourID);
         tour.setRating_number(0);
+        tour.setRating_avg((float)0);
         tour.setViews(0);
         tour.setPublish_day(java.time.LocalDate.now().toString());
         newTourReference.set(tour);
